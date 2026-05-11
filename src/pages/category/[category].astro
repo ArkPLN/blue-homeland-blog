@@ -23,6 +23,10 @@ export function getStaticPaths() {
 const { category } = Astro.params;
 const currentCategory = category ?? '';
 const categoryPosts = categories.get(currentCategory) ?? [];
+const siteUrl = Astro.site ?? new URL('https://arkpln.netlify.app');
+const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+const pageTitle = `分类：${currentCategory} - 蔚蓝之家`;
+const pageDescription = `浏览分类「${currentCategory}」下的全部文章。`;
 ---
 
 <html lang="zh-CN">
@@ -32,7 +36,13 @@ const categoryPosts = categories.get(currentCategory) ?? [];
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>分类：{currentCategory} - 蔚蓝之家</title>
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
   </head>
   <body class="min-h-screen bg-slate-100 text-slate-900">
     <header class="fixed inset-x-0 top-0 z-40 flex h-16 items-center bg-sky-400 px-4">

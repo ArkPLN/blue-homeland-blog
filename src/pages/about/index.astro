@@ -59,6 +59,10 @@ const featuredRepos = [
     updatedAt: '2026-01-24',
   },
 ];
+const siteUrl = Astro.site ?? new URL('https://arkpln.netlify.app');
+const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+const pageTitle = 'About | 蔚蓝之家';
+const pageDescription = '关于蔚蓝之家与作者 ArkPLN 的简介、项目与公开仓库信息。';
 ---
 
 <html lang="zh-CN">
@@ -66,7 +70,13 @@ const featuredRepos = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>About | 蔚蓝之家</title>
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
   </head>
   <body class="min-h-screen bg-slate-100 text-slate-900">
     <header class="flex h-16 items-center bg-sky-400 px-4">

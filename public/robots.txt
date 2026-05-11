@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Reduce crawl load for non-content endpoints
+Disallow: /_astro/
+Disallow: /node_modules/
+Disallow: /dist/
+
+Sitemap: https://arkpln.netlify.app/sitemap.xml

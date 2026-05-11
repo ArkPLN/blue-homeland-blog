@@ -30,6 +30,7 @@ function remarkKeepImageAsHtml() {
 
 // https://astro.build/config
 export default defineConfig({
+  site: process.env.SITE_URL ?? 'https://arkpln.netlify.app',
   markdown: {
     remarkPlugins: [remarkKeepImageAsHtml],
   },
