@@ -9,9 +9,16 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "create": "node create.js",
+    "post": "node scripts/create-post.mjs",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.1.4"
-  }
+    "@lucide/astro": "^1.7.0",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/node": "^25.5.2",
+    "astro": "^6.1.4",
+    "tailwindcss": "^4.2.2"
+  },
+  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be"
 }

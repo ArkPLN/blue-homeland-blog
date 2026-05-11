@@ -1,0 +1,63 @@
+---
+import '../../style/index.css';
+import { Info } from '@lucide/astro';
+import SidebarNav from '../../components/SidebarNav.astro';
+import PostList from '../../components/PostList.astro';
+import { getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
+
+const allPosts = getAllPosts();
+const categories = groupPostsByCategory(allPosts);
+const tags = groupPostsByTag(allPosts);
+
+const categoryEntries = [...categories.entries()];
+const tagEntries = [...tags.entries()];
+
+export function getStaticPaths() {
+  const posts = getAllPosts();
+  const grouped = groupPostsByCategory(posts);
+  return [...grouped.keys()].map((category) => ({
+    params: { category },
+  }));
+}
+
+const { category } = Astro.params;
+const currentCategory = category ?? '';
+const categoryPosts = categories.get(currentCategory) ?? [];
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>分类：{currentCategory} - 蔚蓝之家</title>
+  </head>
+  <body class="min-h-screen bg-slate-100 text-slate-900">
+    <header class="fixed inset-x-0 top-0 z-40 flex h-16 items-center bg-sky-400 px-4">
+      <h1 class="pl-1.5 text-2xl font-bold text-white">
+        <a href="/">蔚蓝之家</a>
+      </h1>
+      <a href="/about" class="ml-auto">
+        <Info color="#ffffff" size={32} />
+      </a>
+    </header>
+
+    <div class="pt-16">
+      <aside class="max-h-[46vh] overflow-y-auto border-b border-slate-200 bg-white px-4 py-3 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4">
+        <SidebarNav
+          categoryEntries={categoryEntries}
+          tagEntries={tagEntries}
+          activeCategory={currentCategory}
+        />
+      </aside>
+
+      <main class="min-h-[calc(100vh-4rem)] p-4 lg:ml-[280px]">
+        <section class="mx-auto max-w-6xl space-y-6">
+          <PostList title={`分类：${currentCategory}`} posts={categoryPosts} emptyText="该分类下暂无文章。" />
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,174 @@
+---
+import '../../style/index.css';
+import { Info } from '@lucide/astro';
+import { fileURLToPath } from 'node:url';
+import { statSync } from 'node:fs';
+import SidebarNav from '../../components/SidebarNav.astro';
+import { getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
+
+type PostLoader = () => Promise<{ default: unknown; frontmatter?: Record<string, unknown> }>;
+type RawPostMap = Record<string, string>;
+
+function normalizeDateInput(value: string): string {
+  const trimmed = value.trim();
+  if (/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}(:\d{2})?$/.test(trimmed)) {
+    return trimmed.replace(/\s+/, 'T');
+  }
+  return trimmed;
+}
+
+function formatDate(value: string | Date | null): string {
+  if (!value) return '未知';
+  const date =
+    value instanceof Date
+      ? value
+      : new Date(typeof value === 'string' ? normalizeDateInput(value) : value);
+  if (Number.isNaN(date.getTime())) return '未知';
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(date);
+}
+
+function stripFrontmatter(markdown: string): string {
+  return markdown.replace(/^---[\s\S]*?---\s*/m, '');
+}
+
+function estimateReadingStats(markdown: string): { totalWords: number; readingMinutes: number } {
+  const content = stripFrontmatter(markdown)
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`[^`]*`/g, ' ')
+    .replace(/!\[[^\]]*]\([^)]*\)/g, ' ')
+    .replace(/\[[^\]]*]\([^)]*\)/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/[#>*_\-~]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const hanChars = content.match(/\p{Script=Han}/gu)?.length ?? 0;
+  const latinWords = content.match(/[A-Za-z0-9]+(?:['-][A-Za-z0-9]+)*/g)?.length ?? 0;
+  const totalWords = hanChars + latinWords;
+  const readingMinutes = Math.max(1, Math.ceil(hanChars / 300 + latinWords / 200));
+
+  return { totalWords, readingMinutes };
+}
+
+export function getStaticPaths() {
+  const postLoaders = import.meta.glob('../../../posts/*.md');
+  return Object.entries(postLoaders).map(([filePath, loader]) => ({
+    params: {
+      slug: (filePath.split('/').pop() ?? filePath.split('\\').pop() ?? '').replace(/\.md$/i, ''),
+    },
+    props: { loader, filePath },
+  }));
+}
+
+const { loader, filePath } = Astro.props as { loader: PostLoader; filePath: string };
+const mod = await loader();
+const frontmatter = mod.frontmatter ?? {};
+const Content = mod.default as unknown as AstroComponentFactory;
+const allPosts = getAllPosts();
+const categories = groupPostsByCategory(allPosts);
+const tags = groupPostsByTag(allPosts);
+const categoryEntries = [...categories.entries()];
+const tagEntries = [...tags.entries()];
+
+const rawPostMap = import.meta.glob('../../../posts/*.md', {
+  eager: true,
+  import: 'default',
+  query: '?raw',
+}) as RawPostMap;
+
+const rawMarkdown = rawPostMap[filePath] ?? '';
+const { totalWords, readingMinutes } = estimateReadingStats(rawMarkdown);
+
+const updatedField =
+  frontmatter.updated ??
+  frontmatter.updatedAt ??
+  frontmatter.lastmod ??
+  frontmatter.lastModified ??
+  frontmatter.date ??
+  null;
+
+let fallbackUpdated: Date | null = null;
+try {
+  const absolutePath = fileURLToPath(new URL(filePath, import.meta.url));
+  fallbackUpdated = statSync(absolutePath).mtime;
+} catch {
+  fallbackUpdated = null;
+}
+
+const updatedTime = formatDate((updatedField as string | Date | null) ?? fallbackUpdated);
+const rawCategories = frontmatter.categories ?? frontmatter.category;
+const rawTags = frontmatter.tags ?? frontmatter.tag;
+const postCategories = Array.isArray(rawCategories)
+  ? rawCategories
+  : typeof rawCategories === 'string'
+    ? [rawCategories]
+    : [];
+const postTags = Array.isArray(rawTags)
+  ? rawTags
+  : typeof rawTags === 'string'
+    ? [rawTags]
+    : [];
+const activeCategory = postCategories.length > 0 ? String(postCategories[0]) : null;
+const activeTag = postTags.length > 0 ? String(postTags[0]) : null;
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{String(frontmatter.title ?? '文章')}</title>
+  </head>
+  <body class="min-h-screen text-slate-900">
+    <div
+      class="pointer-events-none fixed inset-0 -z-20 bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/image/BG_View_Sky2.jpg');"
+      aria-hidden="true"
+    ></div>
+    <div class="pointer-events-none fixed inset-0 -z-10 bg-slate-100/78" aria-hidden="true"></div>
+
+    <header class="fixed inset-x-0 top-0 z-40 flex h-16 items-center bg-sky-400 px-4">
+      <h1 class="pl-1.5 text-2xl font-bold text-white">
+        <a href="/">蔚蓝之家</a>
+      </h1>
+      <a href="/about" class="ml-auto">
+        <Info color="#ffffff" size={32} />
+      </a>
+    </header>
+
+    <div class="pt-16">
+      <aside class="max-h-[46vh] overflow-y-auto border-b border-slate-200 bg-white px-4 py-3 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4">
+        <SidebarNav
+          categoryEntries={categoryEntries}
+          tagEntries={tagEntries}
+          activeCategory={activeCategory}
+          activeTag={activeTag}
+        />
+      </aside>
+
+      <main class="min-h-[calc(100vh-4rem)] lg:ml-[280px]">
+        <section class="mx-auto max-w-6xl p-4">
+          <a href="/" class="text-sm text-sky-700 hover:underline">← 返回首页</a>
+          <h1 class="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">{String(frontmatter.title ?? '文章')}</h1>
+          <div class="mt-4 flex flex-wrap gap-2 text-xs text-slate-600">
+            <span class="rounded-full bg-slate-200 px-3 py-1">更新时间：{updatedTime}</span>
+            <span class="rounded-full bg-slate-200 px-3 py-1">总字数：{totalWords}</span>
+            <span class="rounded-full bg-slate-200 px-3 py-1">预计阅读：{readingMinutes} 分钟</span>
+          </div>
+          <article class="markdown-content mt-4 max-w-none rounded-xl bg-white p-4 shadow-sm sm:p-6 md:p-8">
+            <Content />
+          </article>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

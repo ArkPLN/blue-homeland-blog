@@ -1,0 +1,185 @@
+---
+import '../../style/index.css';
+import { BookOpenText, GitBranch, Globe,Home } from '@lucide/astro';
+
+const profile = {
+  username: 'ArkPLN',
+  bio: 'A fullstack Developer. Keep learning!',
+  avatar: 'https://avatars.githubusercontent.com/u/178480666?v=4',
+  company: 'S.C.H.A.L.E',
+  location: 'Kivotos',
+  blog: 'https://arkpln.github.io',
+  github: 'https://github.com/ArkPLN',
+  juejin: 'https://juejin.cn/user/4484239094198752',
+  followers: 2,
+  publicRepos: 6,
+  joinedAt: '2024-08-15',
+  profileUpdatedAt: '2026-03-27',
+};
+
+const featuredRepos = [
+  {
+    name: 'ArkPLN.github.io',
+    href: 'https://github.com/ArkPLN/ArkPLN.github.io',
+    description: '个人站点仓库，持续更新博客与前端展示页面。',
+    stack: 'HTML / CSS / JavaScript',
+    stars: 1,
+    updatedAt: '2026-04-08',
+  },
+  {
+    name: 'MiniWordCards',
+    href: 'https://github.com/ArkPLN/MiniWordCards',
+    description: '轻量词卡应用，支持 CSV 导入、快速检索和闪卡复习。',
+    stack: 'Flutter / Dart',
+    stars: 0,
+    updatedAt: '2026-03-27',
+  },
+  {
+    name: 'auralink-backend',
+    href: 'https://github.com/ArkPLN/auralink-backend',
+    description: '面向社团与社区平台的后端服务，强调 AI 能力接入。',
+    stack: 'TypeScript / Node.js',
+    stars: 0,
+    updatedAt: '2026-02-22',
+  },
+  {
+    name: 'lite-wiki_front',
+    href: 'https://github.com/ArkPLN/lite-wiki_front',
+    description: 'AI 辅助文档编辑与团队协作前端应用。',
+    stack: 'React / Vite / TypeScript',
+    stars: 1,
+    updatedAt: '2025-12-15',
+  },
+  {
+    name: 'better-react-skills',
+    href: 'https://github.com/ArkPLN/better-react-skills',
+    description: '围绕 React 前端工程实践整理的技能与指导仓库。',
+    stack: 'React / Frontend Guidelines',
+    stars: 3,
+    updatedAt: '2026-01-24',
+  },
+];
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>About | 蔚蓝之家</title>
+  </head>
+  <body class="min-h-screen bg-slate-100 text-slate-900">
+    <header class="flex h-16 items-center bg-sky-400 px-4">
+      <h1 class="pl-1.5 text-2xl font-bold text-white">蔚蓝之家</h1>
+      <a href="/" class="ml-auto inline-flex items-center gap-1 text-white hover:opacity-90">
+        <Home size={24} />
+        <span class="text-sm font-medium">Home</span>
+      </a>
+    </header>
+
+    <main class="mx-auto w-full max-w-6xl space-y-6 p-4">
+      <section class="rounded-xl bg-white p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold tracking-[0.18em] text-sky-700">ABOUT</p>
+            <h2 class="mt-1 text-3xl font-bold">{profile.username}</h2>
+            <p class="mt-3 text-sm text-slate-600">{profile.bio}</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noreferrer"
+                class="inline-flex items-center gap-1 rounded-md bg-slate-900 px-3 py-2 text-sm text-white hover:bg-slate-800"
+              >
+                <GitBranch size={16} />
+                GitHub主页
+              </a>
+              <a
+                href={profile.blog}
+                target="_blank"
+                rel="noreferrer"
+                class="inline-flex items-center gap-1 rounded-md bg-[#304154] px-3 py-2 text-sm text-white hover:bg-gray-500"
+              >
+                <Globe size={16} />
+                个人博客（旧）
+              </a>
+<a
+                href={profile.blog}
+                target="_blank"
+                rel="noreferrer"
+                class="inline-flex items-center gap-1 rounded-md bg-[#367efd] px-3 py-2 text-sm text-white hover:bg-sky-500"
+              >
+                <BookOpenText size={16} />
+                掘金社区
+              </a>
+            </div>
+          </div>
+          <img
+            src={profile.avatar}
+            alt={`${profile.username} avatar`}
+            class="h-20 w-20 shrink-0 rounded-full border border-slate-200 object-cover md:h-24 md:w-24"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+        </div>
+      </section>
+
+      <section class="grid gap-6 md:grid-cols-2">
+        <article class="rounded-xl bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-semibold">Profile Snapshot</h3>
+          <ul class="mt-4 space-y-2 text-sm">
+            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Company</span><strong>{profile.company}</strong></li>
+            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Location</span><strong>{profile.location}</strong></li>
+            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Joined GitHub</span><strong>{profile.joinedAt}</strong></li>
+            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Followers</span><strong>{profile.followers}</strong></li>
+            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Public Repos</span><strong>{profile.publicRepos}</strong></li>
+            <li class="flex items-center justify-between"><span class="text-slate-500">Profile Updated</span><strong>{profile.profileUpdatedAt}</strong></li>
+          </ul>
+        </article>
+
+        <article class="rounded-xl bg-white p-6 shadow-sm">
+          <h3 class="text-lg font-semibold">Focus</h3>
+          <p class="mt-4 text-sm leading-7 text-slate-700">
+            关注AI前沿技术发展，专注AI应用+大前端开发领域，积极探索AI在前端工程中的应用与工程化实践，分享在学习和项目开发中的心得体会。
+          </p>
+          <p class="mt-3 text-xs text-slate-500">Data source: GitHub public profile and repositories (2026-04-09)</p>
+        </article>
+      </section>
+
+      <section class="rounded-xl bg-white p-6 shadow-sm">
+        <div class="flex items-center justify-between gap-3">
+          <h3 class="text-lg font-semibold">Featured Repositories</h3>
+          <a
+            href={profile.github + '?tab=repositories'}
+            target="_blank"
+            rel="noreferrer"
+            class="text-sm font-medium text-sky-700 hover:text-sky-600"
+          >
+            View All
+          </a>
+        </div>
+
+        <div class="mt-4 grid gap-3">
+          {
+            featuredRepos.map((repo) => (
+              <a
+                href={repo.href}
+                target="_blank"
+                rel="noreferrer"
+                class="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:border-sky-300 hover:bg-white"
+              >
+                <h4 class="text-base font-semibold text-slate-900">{repo.name}</h4>
+                <p class="mt-1 text-sm text-slate-600">{repo.description}</p>
+                <div class="mt-3 flex flex-wrap gap-3 text-xs text-slate-500">
+                  <span>Stack: {repo.stack}</span>
+                  <span>Stars: {repo.stars}</span>
+                  <span>Updated: {repo.updatedAt}</span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
