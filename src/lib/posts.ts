@@ -18,9 +18,21 @@ const postModules = import.meta.glob('../../posts/*.md', {
 
 const postLoaders = import.meta.glob('../../posts/*.md');
 
-function extractSlug(filePath: string): string {
+function safeDecodeFileName(filePath: string): string {
   const fileName = filePath.split('/').pop() ?? filePath.split('\\').pop() ?? '';
-  return fileName.replace(/\.md$/i, '');
+  try {
+    return decodeURIComponent(fileName);
+  } catch {
+    return fileName;
+  }
+}
+
+function normalizeSlug(value: string): string {
+  return value.replace(/%/g, '-');
+}
+
+export function extractSlug(filePath: string): string {
+  return normalizeSlug(safeDecodeFileName(filePath).replace(/\.md$/i, ''));
 }
 
 function toStringArray(value: unknown): string[] {

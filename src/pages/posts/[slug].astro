@@ -4,7 +4,7 @@ import { Info } from '@lucide/astro';
 import { fileURLToPath } from 'node:url';
 import { statSync } from 'node:fs';
 import SidebarNav from '../../components/SidebarNav.astro';
-import { getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
+import { extractSlug, getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
 
 type PostLoader = () => Promise<{ default: unknown; frontmatter?: Record<string, unknown> }>;
 type RawPostMap = Record<string, string>;
@@ -61,7 +61,7 @@ export function getStaticPaths() {
   const postLoaders = import.meta.glob('../../../posts/*.md');
   return Object.entries(postLoaders).map(([filePath, loader]) => ({
     params: {
-      slug: (filePath.split('/').pop() ?? filePath.split('\\').pop() ?? '').replace(/\.md$/i, ''),
+      slug: extractSlug(filePath),
     },
     props: { loader, filePath },
   }));
