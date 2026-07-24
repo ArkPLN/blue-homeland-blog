@@ -1,13 +1,13 @@
 ---
-import "../style/index.css";
-import { Info } from "@lucide/astro";
+import '../style/index.css';
 import {
-	getAllPosts,
-	groupPostsByCategory,
-	groupPostsByTag,
-} from "../lib/posts";
-import SidebarNav from "../components/SidebarNav.astro";
-import PostList from "../components/PostList.astro";
+  getAllPosts,
+  groupPostsByCategory,
+  groupPostsByTag,
+} from '../lib/posts';
+import SidebarNav from '../components/SidebarNav.astro';
+import PostList from '../components/PostList.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 
 const posts = getAllPosts();
 const categories = groupPostsByCategory(posts);
@@ -22,159 +22,153 @@ const pageDescription = '蔚蓝之家是一个以前端开发、全栈实践与 
 const pageKeywords = '蔚蓝之家,中文技术博客,前端开发,全栈开发,AI应用,Astro,文章归档,分类,标签';
 const ogImage = new URL('/image/BG_View_Sky2.jpg', siteUrl).toString();
 const websiteStructuredData = {
-	'@context': 'https://schema.org',
-	'@type': 'WebSite',
-	name: '蔚蓝之家',
-	url: canonical,
-	inLanguage: 'zh-CN',
-	description: pageDescription,
-	author: {
-		'@type': 'Person',
-		name: 'ArkPLN',
-	},
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: '蔚蓝之家',
+  url: canonical,
+  inLanguage: 'zh-CN',
+  description: pageDescription,
+  author: {
+    '@type': 'Person',
+    name: 'ArkPLN',
+  },
 };
 ---
 
 <html lang="zh-CN">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="author" content="ArkPLN" />
-		<meta name="keywords" content={pageKeywords} />
-		<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
-		<meta name="theme-color" content="#38bdf8" />
-		<title>{pageTitle}</title>
-		<meta name="description" content={pageDescription} />
-		<link rel="canonical" href={canonical} />
-		<meta property="og:type" content="website" />
-		<meta property="og:site_name" content="蔚蓝之家" />
-		<meta property="og:locale" content="zh_CN" />
-		<meta property="og:title" content={pageTitle} />
-		<meta property="og:description" content={pageDescription} />
-		<meta property="og:url" content={canonical} />
-		<meta property="og:image" content={ogImage} />
-		<meta property="og:image:alt" content="蔚蓝之家首页背景图" />
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={pageTitle} />
-		<meta name="twitter:description" content={pageDescription} />
-		<meta name="twitter:image" content={ogImage} />
-		<script type="application/ld+json" set:html={JSON.stringify(websiteStructuredData)}></script>
-	</head>
-	<body class="min-h-screen text-slate-900">
-		<div class="home-bg-wrap" aria-hidden="true">
-			<div class="home-bg-slide home-bg-1"></div>
-			<div class="home-bg-slide home-bg-2"></div>
-			<div class="home-bg-slide home-bg-3"></div>
-			<div class="home-bg-slide home-bg-4"></div>
-			<div class="home-bg-gradient"></div>
-		</div>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="author" content="ArkPLN" />
+    <meta name="keywords" content={pageKeywords} />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#38bdf8" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="蔚蓝之家" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="蔚蓝之家首页背景图" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteStructuredData)}></script>
+  </head>
+  <body class="min-h-screen text-slate-900">
+    <div class="home-bg-wrap" aria-hidden="true">
+      <div class="home-bg-slide home-bg-1"></div>
+      <div class="home-bg-slide home-bg-2"></div>
+      <div class="home-bg-slide home-bg-3"></div>
+      <div class="home-bg-slide home-bg-4"></div>
+      <div class="home-bg-gradient"></div>
+    </div>
 
-		<header
-			class="fixed inset-x-0 top-0 z-40 flex h-16 items-center bg-sky-400 px-4"
-		>
-			<h1 class="pl-1.5 text-2xl font-bold text-white">蔚蓝之家</h1>
-			<a href="/about" class="ml-auto">
-				<Info color="#ffffff" size={32} />
-			</a>
-		</header>
-		<div class="pt-16">
-			<aside
-				class="max-h-[46vh] overflow-y-auto border-b border-slate-200 bg-white px-4 py-3 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4"
-			>
-				<SidebarNav
-					categoryEntries={categoryEntries}
-					tagEntries={tagEntries}
-				/>
-			</aside>
+    <SiteHeader />
 
-			<main class="min-h-[calc(100vh-4rem)] p-4 lg:ml-[280px]">
-				<section class="mx-auto max-w-6xl space-y-3">
-					<PostList title="最新文章" posts={posts} />
-				</section>
-			</main>
-		</div>
-	</body>
+    <div class="pt-16">
+      <aside
+        class="max-h-[46vh] overflow-y-auto border-b border-slate-200 bg-white px-4 py-3 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4"
+      >
+        <SidebarNav
+          categoryEntries={categoryEntries}
+          tagEntries={tagEntries}
+        />
+      </aside>
+
+      <main class="min-h-[calc(100vh-4rem)] p-4 lg:ml-[280px]">
+        <section class="mx-auto max-w-6xl space-y-3">
+          <PostList title="最新文章" posts={posts} />
+        </section>
+      </main>
+    </div>
+  </body>
 </html>
 
 <style>
-	.home-bg-wrap {
-		position: fixed;
-		inset: 0;
-		z-index: -20;
-		pointer-events: none;
-		overflow: hidden;
-	}
+  .home-bg-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    pointer-events: none;
+    overflow: hidden;
+  }
 
-	.home-bg-slide {
-		position: absolute;
-		inset: 0;
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		opacity: 0;
-		animation: bg-rotate 24s linear infinite;
-	}
+  .home-bg-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    animation: bg-rotate 24s linear infinite;
+  }
 
-	.home-bg-1 {
-		background-image: url("/image/BG_View_Sky2.jpg");
-		animation-delay: 0s;
-	}
+  .home-bg-1 {
+    background-image: url("/image/BG_View_Sky2.jpg");
+    animation-delay: 0s;
+  }
 
-	.home-bg-2 {
-		background-image: url("/image/BG_View_Kivotos.jpg");
-		animation-delay: 6s;
-	}
+  .home-bg-2 {
+    background-image: url("/image/BG_View_Kivotos.jpg");
+    animation-delay: 6s;
+  }
 
-	.home-bg-3 {
-		background-image: url("/image/BG_IslandBeach.jpg");
-		animation-delay: 12s;
-	}
+  .home-bg-3 {
+    background-image: url("/image/BG_IslandBeach.jpg");
+    animation-delay: 12s;
+  }
 
-	.home-bg-4 {
-		background-image: url("/image/BG_View_Sky.jpg");
-		animation-delay: 18s;
-	}
+  .home-bg-4 {
+    background-image: url("/image/BG_View_Sky.jpg");
+    animation-delay: 18s;
+  }
 
-	.home-bg-gradient {
-		position: absolute;
-		inset: 0;
-		background:
-			linear-gradient(
-				130deg,
-				rgba(241, 245, 249, 0.82) 0%,
-				rgba(241, 245, 249, 0.72) 42%,
-				rgba(226, 232, 240, 0.8) 100%
-			);
-		animation: gradient-flow 8s ease-in-out infinite alternate;
-	}
+  .home-bg-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        130deg,
+        rgba(241, 245, 249, 0.82) 0%,
+        rgba(241, 245, 249, 0.72) 42%,
+        rgba(226, 232, 240, 0.8) 100%
+      );
+    animation: gradient-flow 8s ease-in-out infinite alternate;
+  }
 
-	@keyframes bg-rotate {
-		0% {
-			opacity: 0;
-		}
-		8% {
-			opacity: 1;
-		}
-		25% {
-			opacity: 1;
-		}
-		33% {
-			opacity: 0;
-		}
-		100% {
-			opacity: 0;
-		}
-	}
+  @keyframes bg-rotate {
+    0% {
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 1;
+    }
+    33% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
 
-	@keyframes gradient-flow {
-		0% {
-			opacity: 0.88;
-		}
-		100% {
-			opacity: 0.72;
-		}
-	}
+  @keyframes gradient-flow {
+    0% {
+      opacity: 0.88;
+    }
+    100% {
+      opacity: 0.72;
+    }
+  }
 </style>

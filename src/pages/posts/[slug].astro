@@ -1,9 +1,9 @@
 ---
 import '../../style/index.css';
-import { Info } from '@lucide/astro';
 import { fileURLToPath } from 'node:url';
 import { statSync } from 'node:fs';
 import SidebarNav from '../../components/SidebarNav.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
 import { extractSlug, getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
 
 type PostLoader = () => Promise<{ default: unknown; frontmatter?: Record<string, unknown> }>;
@@ -146,14 +146,7 @@ const descriptionText = String(frontmatter.description ?? `${titleText} - 蔚蓝
     ></div>
     <div class="pointer-events-none fixed inset-0 -z-10 bg-slate-100/78" aria-hidden="true"></div>
 
-    <header class="fixed inset-x-0 top-0 z-40 flex h-16 items-center bg-sky-400 px-4">
-      <h1 class="pl-1.5 text-2xl font-bold text-white">
-        <a href="/">蔚蓝之家</a>
-      </h1>
-      <a href="/about" class="ml-auto">
-        <Info color="#ffffff" size={32} />
-      </a>
-    </header>
+    <SiteHeader />
 
     <div class="pt-16">
       <aside class="max-h-[46vh] overflow-y-auto border-b border-slate-200 bg-white px-4 py-3 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4">
@@ -166,7 +159,7 @@ const descriptionText = String(frontmatter.description ?? `${titleText} - 蔚蓝
       </aside>
 
       <main class="min-h-[calc(100vh-4rem)] lg:ml-[280px]">
-        <section class="mx-auto max-w-6xl p-4">
+        <section class="w-full p-4 lg:px-6 lg:py-4 xl:px-8">
           <a href="/" class="text-sm text-sky-700 hover:underline">← 返回首页</a>
           <h1 class="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">{String(frontmatter.title ?? '文章')}</h1>
           <div class="mt-4 flex flex-wrap gap-2 text-xs text-slate-600">
@@ -174,7 +167,7 @@ const descriptionText = String(frontmatter.description ?? `${titleText} - 蔚蓝
             <span class="rounded-full bg-slate-200 px-3 py-1">总字数：{totalWords}</span>
             <span class="rounded-full bg-slate-200 px-3 py-1">预计阅读：{readingMinutes} 分钟</span>
           </div>
-          <article class="markdown-content mt-4 max-w-none rounded-xl bg-white p-4 shadow-sm sm:p-6 md:p-8">
+          <article class="markdown-content mt-4 w-full rounded-xl bg-white p-4 shadow-sm sm:p-6 md:p-8">
             <Content />
           </article>
         </section>

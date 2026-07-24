@@ -137,6 +137,14 @@
   text-align: left;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f8fafc;
+}
+
 @media (max-width: 767px) {
   .markdown-content h1 {
     font-size: 1.65rem;

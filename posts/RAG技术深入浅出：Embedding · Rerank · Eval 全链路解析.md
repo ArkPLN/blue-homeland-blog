@@ -7,6 +7,8 @@ tags:
   - 'rag'
   - 'ai'
   - 'fullstack'
+
+description: '26.06.27技术分析会:RAG全链路指南，串联 Embedding 向量表征、Rerank 精排与 Eval 评估三大关键环节，从理论到落地讲清检索增强生成的完整链路。'
 ---
 
 # RAG技术深入浅出：Embedding · Rerank · Eval 全链路解析
