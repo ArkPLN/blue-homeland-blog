@@ -1,7 +1,4 @@
-type MarkdownModule = {
-  default: unknown;
-  frontmatter?: Record<string, unknown>;
-};
+import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type PostSummary = {
   slug: string;
@@ -12,28 +9,7 @@ export type PostSummary = {
   tags: string[];
 };
 
-const postModules = import.meta.glob('../../posts/*.md', {
-  eager: true,
-}) as Record<string, MarkdownModule>;
-
-const postLoaders = import.meta.glob('../../posts/*.md');
-
-function safeDecodeFileName(filePath: string): string {
-  const fileName = filePath.split('/').pop() ?? filePath.split('\\').pop() ?? '';
-  try {
-    return decodeURIComponent(fileName);
-  } catch {
-    return fileName;
-  }
-}
-
-function normalizeSlug(value: string): string {
-  return value.replace(/%/g, '-');
-}
-
-export function extractSlug(filePath: string): string {
-  return normalizeSlug(safeDecodeFileName(filePath).replace(/\.md$/i, ''));
-}
+type PostEntry = CollectionEntry<'posts'>;
 
 function toStringArray(value: unknown): string[] {
   if (Array.isArray(value)) {
@@ -54,22 +30,29 @@ function toStringArray(value: unknown): string[] {
 
 function toTimestamp(dateValue: string | null): number {
   if (!dateValue) return 0;
-  const timestamp = Date.parse(dateValue);
+  // 兼容 "YYYY-MM-DD HH:mm:ss"（空格分隔）格式
+  const normalized = dateValue.trim().replace(/\s+/, 'T');
+  const timestamp = Date.parse(normalized);
   return Number.isNaN(timestamp) ? 0 : timestamp;
 }
 
-export function getAllPosts(): PostSummary[] {
-  return Object.entries(postModules)
-    .map(([filePath, mod]) => {
-      const frontmatter = mod.frontmatter ?? {};
-      const title = String(frontmatter.title ?? extractSlug(filePath));
-      const date = frontmatter.date ? String(frontmatter.date) : null;
-      const description = frontmatter.description ? String(frontmatter.description) : null;
-      const categories = toStringArray(frontmatter.categories ?? frontmatter.category);
-      const tags = toStringArray(frontmatter.tags ?? frontmatter.tag);
+/**
+ * 返回全部文章摘要，按日期降序。
+ * 基于 Content Collections getCollection，类型安全的 frontmatter。
+ */
+export async function getAllPosts(): Promise<PostSummary[]> {
+  const entries = await getCollection('posts');
+  return entries
+    .map((entry) => {
+      const data = entry.data;
+      const title = String(data.title ?? entry.id);
+      const date = data.date ? String(data.date) : null;
+      const description = data.description ? String(data.description) : null;
+      const categories = toStringArray(data.categories ?? data.category);
+      const tags = toStringArray(data.tags ?? data.tag);
 
       return {
-        slug: extractSlug(filePath),
+        slug: entry.id,
         title,
         date,
         description,
@@ -78,10 +61,6 @@ export function getAllPosts(): PostSummary[] {
       };
     })
     .sort((a, b) => toTimestamp(b.date) - toTimestamp(a.date));
-}
-
-export function getPostLoaders() {
-  return postLoaders;
 }
 
 export function groupPostsByCategory(posts: PostSummary[]): Map<string, PostSummary[]> {
@@ -104,7 +83,7 @@ export function groupPostsByTag(posts: PostSummary[]): Map<string, PostSummary[]
   for (const post of posts) {
     for (const tag of post.tags) {
       const current = grouped.get(tag) ?? [];
-      current.push(post);
+      current.push(tag);
       grouped.set(tag, current);
     }
   }
@@ -112,4 +91,7 @@ export function groupPostsByTag(posts: PostSummary[]): Map<string, PostSummary[]
   return new Map([...grouped.entries()].sort(([a], [b]) => a.localeCompare(b)));
 }
 
-export const postsLength = Object.keys(postModules).length;
+export async function getPostCount(): Promise<number> {
+  const entries = await getCollection('posts');
+  return entries.length;
+}

@@ -4,15 +4,15 @@ import PostList from '../../components/PostList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
 
-const allPosts = getAllPosts();
+const allPosts = await getAllPosts();
 const categories = groupPostsByCategory(allPosts);
 const tags = groupPostsByTag(allPosts);
 
 const categoryEntries = [...categories.entries()];
 const tagEntries = [...tags.entries()];
 
-export function getStaticPaths() {
-  const posts = getAllPosts();
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
   const grouped = groupPostsByTag(posts);
   return [...grouped.keys()].map((tag) => ({
     params: { tag },

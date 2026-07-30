@@ -4,7 +4,7 @@ import SidebarNav from '../components/SidebarNav.astro';
 import PostList from '../components/PostList.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const posts = getAllPosts();
+const posts = await getAllPosts();
 const categories = groupPostsByCategory(posts);
 const tags = groupPostsByTag(posts);
 

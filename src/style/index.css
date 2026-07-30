@@ -149,6 +149,21 @@
   padding: 0;
 }
 
+/* Shiki 代码块：统一使用 github-dark 主题（内置 inline color），
+   字体统一 Fira Code（通过 CDN 在 BaseLayout 引入） */
+.markdown-content .astro-code {
+  font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  font-variant-ligatures: contextual;
+  font-size: 0.9em;
+}
+
+/* mermaid pre 块（pre-mermaid 策略）不需要 shiki 样式，保持透明背景由客户端渲染 */
+.markdown-content pre.mermaid {
+  background: transparent;
+  color: inherit;
+  text-align: center;
+}
+
 .markdown-content {
   overflow-wrap: anywhere;
   word-break: break-word;

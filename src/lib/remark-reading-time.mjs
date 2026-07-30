@@ -1,12 +1,10 @@
-import readingTime from 'reading-time';
 import { toString } from 'mdast-util-to-string';
 
 /**
  * 构建时计算阅读时长与字数，注入 remarkPluginFrontmatter。
  *
- * 通过 import.meta.glob 直接加载的 markdown 模块不导出 remarkPluginFrontmatter，
- * 但该插件会在迁移到 Content Collections 后直接生效（render(entry) 返回值可读取）。
- * 当前页面侧以 compiledContent() 兜底，保证现在就能正确显示。
+ * Content Collections 下 render(entry) 返回的 remarkPluginFrontmatter
+ * 可直接读取 totalWords / minutesRead。
  */
 export function remarkReadingTime() {
   return function (tree, { data }) {

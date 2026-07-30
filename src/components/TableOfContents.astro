@@ -16,7 +16,7 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 {
   tocItems.length > 0 ? (
     <aside class="hidden w-56 shrink-0 lg:block">
-      <nav class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto" data-toc-nav aria-label="文章目录">
+      <nav class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar" data-toc-nav aria-label="文章目录">
         <p class="mb-3 text-sm font-semibold text-slate-900 dark:text-slate-100">目录</p>
         <ul class="space-y-1 border-l border-slate-200 text-sm dark:border-slate-700">
           {tocItems.map((h) => (
@@ -55,25 +55,56 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     if (headings.length === 0) return;
 
     let activeSlug = '';
+    let scrollRaf = 0;
 
+    function scrollToActive(link) {
+      if (!link) return;
+      const navRect = nav.getBoundingClientRect();
+      const linkRect = link.getBoundingClientRect();
+      // 让 active 项保持在 nav 中部附近，而非压在边缘
+      const navMiddle = navRect.top + navRect.height / 2;
+      const linkMiddle = linkRect.top + linkRect.height / 2;
+      const distance = linkMiddle - navMiddle;
+      // 超过 nav 高度 1/4 时才滚动，避免微小抖动
+      if (Math.abs(distance) > navRect.height / 4) {
+        cancelAnimationFrame(scrollRaf);
+        scrollRaf = requestAnimationFrame(() => {
+          const target = nav.scrollTop + distance;
+          nav.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+        });
+      }
+    }
+
+    function setActive(slug) {
+      if (!slug || slug === activeSlug) return;
+      activeSlug = slug;
+      for (const link of links) {
+        const isActive = link.dataset.tocLink === slug;
+        link.classList.toggle('border-sky-500', isActive);
+        link.classList.toggle('text-sky-700', isActive);
+        link.classList.toggle('font-medium', isActive);
+        link.classList.toggle('border-transparent', !isActive);
+        link.classList.toggle('text-slate-500', !isActive);
+      }
+      scrollToActive(linkBySlug.get(slug));
+    }
+
+    // scroll-spy：跟踪哪个标题最接近视口顶部偏下一点的位置
     const observer = new IntersectionObserver(
       (entries) => {
+        let candidate = null;
         for (const entry of entries) {
-          const slug = entry.target.id;
           if (entry.isIntersecting) {
-            activeSlug = slug;
+            candidate = entry.target.id;
           }
         }
-
-        for (const link of links) {
-          const slug = link.dataset.tocLink;
-          const isActive = slug === activeSlug;
-          link.classList.toggle('border-sky-500', isActive);
-          link.classList.toggle('text-sky-700', isActive);
-          link.classList.toggle('font-medium', isActive);
-          link.classList.toggle('border-transparent', !isActive);
-          link.classList.toggle('text-slate-500', !isActive);
+        if (candidate) {
+          setActive(candidate);
+          return;
         }
+        // 交叉为空时（标题在上下两区之间），推断最近的上方标题
+        const fallback = findNearestAbove();
+        if (fallback) setActive(fallback);
       },
       {
         rootMargin: '-80px 0px -70% 0px',
@@ -81,9 +112,29 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       },
     );
 
+    function findNearestAbove() {
+      const scrollY = window.scrollY + 100;
+      let nearest = null;
+      for (const h of headings) {
+        if (h.offsetTop <= scrollY) {
+          nearest = h.id;
+        } else {
+          break;
+        }
+      }
+      return nearest;
+    }
+
     for (const heading of headings) {
       observer.observe(heading);
     }
+
+    // 点击目录项跳转后，确保对应项滚动到 nav 可视区
+    links.forEach((link) => {
+      link.addEventListener('click', () => {
+        requestAnimationFrame(() => scrollToActive(link));
+      });
+    });
   }
 
   initTocHighlight();

@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { remarkReadingTime } from './src/lib/remark-reading-time.mjs';
+import { remarkMermaidToHtml } from './src/lib/remark-mermaid.mjs';
 
 /**
  * 将 Markdown 图片节点转成普通 HTML，绕过 Astro 对本地图片路径的解析与校验。
@@ -36,7 +37,11 @@ function remarkKeepImageAsHtml() {
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://arkpln.netlify.app',
   markdown: {
-    remarkPlugins: [remarkKeepImageAsHtml, remarkReadingTime],
+    remarkPlugins: [remarkKeepImageAsHtml, remarkMermaidToHtml, remarkReadingTime],
+    shikiConfig: {
+      theme: 'github-dark',
+      wrap: true,
+    },
     rehypePlugins: [
       rehypeSlug,
       [rehypeAutolinkHeadings, { behavior: 'append' }],

@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getSearchIndexPayload } from '../lib/search';
 
-export const GET: APIRoute = () => {
-  const payload = getSearchIndexPayload();
+export const GET: APIRoute = async () => {
+  const payload = await getSearchIndexPayload();
 
   return new Response(JSON.stringify(payload), {
     headers: {

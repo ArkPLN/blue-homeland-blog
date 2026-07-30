@@ -1,14 +1,9 @@
 ---
+import { getCollection, render } from 'astro:content';
 import SidebarNav from '../../components/SidebarNav.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
-import { extractSlug, getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
-
-type PostLoader = () => Promise<{
-  default: unknown;
-  frontmatter?: Record<string, unknown>;
-  getHeadings?: () => Array<{ depth: number; slug: string; text: string }>;
-}>;
+import { getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
 
 function normalizeDateInput(value: string): string {
   const trimmed = value.trim();
@@ -35,87 +30,49 @@ function formatDate(value: string | Date | null): string {
   }).format(date);
 }
 
-function estimateReadingStats(markdown: string): { totalWords: number; readingMinutes: number } {
-  const content = markdown
-    .replace(/^---[\s\S]*?---\s*/m, '')
-    .replace(/```[\s\S]*?```/g, ' ')
-    .replace(/`[^`]*`/g, ' ')
-    .replace(/!\[[^\]]*]\([^)]*\)/g, ' ')
-    .replace(/\[[^\]]*]\([^)]*\)/g, ' ')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/[#>*_\-~]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  const hanChars = content.match(/\p{Script=Han}/gu)?.length ?? 0;
-  const latinWords = content.match(/[A-Za-z0-9]+(?:['-][A-Za-z0-9]+)*/g)?.length ?? 0;
-  const totalWords = hanChars + latinWords;
-  const readingMinutes = Math.max(1, Math.ceil(hanChars / 300 + latinWords / 200));
-
-  return { totalWords, readingMinutes };
-}
-
-export function getStaticPaths() {
-  const postLoaders = import.meta.glob('../../../posts/*.md');
-  return Object.entries(postLoaders).map(([filePath, loader]) => ({
-    params: {
-      slug: extractSlug(filePath),
-    },
-    props: { loader, filePath },
+export async function getStaticPaths() {
+  const entries = await getCollection('posts');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
   }));
 }
 
-const { loader, filePath } = Astro.props as { loader: PostLoader; filePath: string };
-const mod = await loader();
-const frontmatter = mod.frontmatter ?? {};
-const Content = mod.default as unknown as AstroComponentFactory;
-const headings = mod.getHeadings?.() ?? [];
+const { entry } = Astro.props;
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+const data = entry.data;
 
-const allPosts = getAllPosts();
+const allPosts = await getAllPosts();
 const categories = groupPostsByCategory(allPosts);
 const tags = groupPostsByTag(allPosts);
 const categoryEntries = [...categories.entries()];
 const tagEntries = [...tags.entries()];
 
-const updatedField =
-  frontmatter.updated ??
-  frontmatter.updatedAt ??
-  frontmatter.lastmod ??
-  frontmatter.lastModified ??
-  frontmatter.date ??
-  null;
+const updatedField = data.updated ?? data.date ?? null;
+const updatedTime = formatDate(updatedField ?? null);
 
-const updatedTime = formatDate((updatedField as string | Date | null) ?? null);
+// remarkReadingTime 插件在 Content Collections render() 下可读取到
+const totalWords = remarkPluginFrontmatter.totalWords ?? 0;
+const readingMinutes = remarkPluginFrontmatter.minutesRead ?? 1;
 
-const rawPostMap = import.meta.glob('../../../posts/*.md', {
-  eager: true,
-  import: 'default',
-  query: '?raw',
-}) as Record<string, string>;
-
-const rawMarkdown = rawPostMap[filePath] ?? '';
-const { totalWords, readingMinutes } = estimateReadingStats(rawMarkdown);
-
-const rawCategories = frontmatter.categories ?? frontmatter.category;
-const rawTags = frontmatter.tags ?? frontmatter.tag;
-const postCategories = Array.isArray(rawCategories)
-  ? rawCategories
-  : typeof rawCategories === 'string'
-    ? [rawCategories]
+const postCategories = Array.isArray(data.categories)
+  ? data.categories
+  : typeof data.categories === 'string'
+    ? [data.categories]
     : [];
-const postTags = Array.isArray(rawTags)
-  ? rawTags
-  : typeof rawTags === 'string'
-    ? [rawTags]
+const postTags = Array.isArray(data.tags)
+  ? data.tags
+  : typeof data.tags === 'string'
+    ? [data.tags]
     : [];
 const activeCategory = postCategories.length > 0 ? String(postCategories[0]) : null;
 const activeTag = postTags.length > 0 ? String(postTags[0]) : null;
 const siteUrl = Astro.site ?? new URL('https://arkpln.netlify.app');
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
-const titleText = String(frontmatter.title ?? '文章');
-const descriptionText = String(frontmatter.description ?? `${titleText} - 蔚蓝之家`);
-const ogImage = frontmatter.cover
-  ? new URL(String(frontmatter.cover), siteUrl).toString()
+const titleText = String(data.title ?? '文章');
+const descriptionText = String(data.description ?? `${titleText} - 蔚蓝之家`);
+const ogImage = data.cover
+  ? new URL(String(data.cover), siteUrl).toString()
   : undefined;
 ---
 
@@ -213,3 +170,7 @@ const ogImage = frontmatter.cover
     background: rgba(11, 17, 32, 0.82);
   }
 </style>
+
+<script>
+  import '../../scripts/mermaid-init';
+</script>

@@ -1,4 +1,5 @@
-import { extractSlug, getAllPosts } from './posts';
+import { getCollection } from 'astro:content';
+import type { PostSummary } from './posts';
 
 export type SearchDocument = {
   id: string;
@@ -15,14 +16,6 @@ export type SearchIndexPayload = {
   total: number;
   items: SearchDocument[];
 };
-
-type RawPostMap = Record<string, string>;
-
-const rawPostMap = import.meta.glob('../../posts/*.md', {
-  eager: true,
-  import: 'default',
-  query: '?raw',
-}) as RawPostMap;
 
 function stripFrontmatter(markdown: string): string {
   return markdown.replace(/^---[\s\S]*?---\s*/m, '');
@@ -55,28 +48,37 @@ export function sanitizeMarkdownForSearch(markdown: string): string {
     .trim();
 }
 
-export function getSearchDocuments(): SearchDocument[] {
-  const rawBySlug = new Map<string, string>();
-  for (const [filePath, rawMarkdown] of Object.entries(rawPostMap)) {
-    rawBySlug.set(extractSlug(filePath), rawMarkdown);
-  }
+// 供 PostSummary 来源类型复用（避免循环依赖，类型引用）
+export type { PostSummary };
 
-  return getAllPosts().map((post) => {
-    const rawMarkdown = rawBySlug.get(post.slug) ?? '';
+/**
+ * 基于 Content Collections，从 entry.body 取原始 markdown 正文构建搜索文档。
+ * glob loader 默认保留 body，无需再 import.meta.glob('?raw')。
+ */
+export async function getSearchDocuments(): Promise<SearchDocument[]> {
+  const entries = await getCollection('posts');
+  return entries.map((entry) => {
+    const data = entry.data;
+    const slug = entry.id;
+    const title = String(data.title ?? slug);
+    const description = data.description ? String(data.description) : null;
+    const date = data.date ? String(data.date) : null;
+    const body = entry.body ?? '';
+
     return {
-      id: post.slug,
-      slug: post.slug,
-      title: post.title,
-      description: post.description,
-      date: post.date,
-      content: sanitizeMarkdownForSearch(rawMarkdown),
-      url: `/posts/${encodeURIComponent(post.slug)}`,
+      id: slug,
+      slug,
+      title,
+      description,
+      date,
+      content: sanitizeMarkdownForSearch(body),
+      url: `/posts/${encodeURIComponent(slug)}`,
     };
   });
 }
 
-export function getSearchIndexPayload(): SearchIndexPayload {
-  const items = getSearchDocuments();
+export async function getSearchIndexPayload(): Promise<SearchIndexPayload> {
+  const items = await getSearchDocuments();
   return {
     generatedAt: new Date().toISOString(),
     total: items.length,

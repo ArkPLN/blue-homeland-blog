@@ -1,8 +1,14 @@
 # example netlify.toml
 [build]
   command = "pnpm run build"
-  functions = "netlify/functions"
   publish = "dist"
+
+# 兼容旧 sitemap 地址，跳转到 @astrojs/sitemap 生成的索引文件
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+  force = true
 
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
   ## Not needed for static site generators.
