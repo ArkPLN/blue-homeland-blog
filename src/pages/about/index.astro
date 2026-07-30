@@ -1,7 +1,6 @@
 ---
-import '../../style/index.css';
 import { BookOpenText, GitBranch, Globe } from '@lucide/astro';
-import SiteHeader from '../../components/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const profile = {
   username: 'ArkPLN',
@@ -66,127 +65,170 @@ const pageTitle = 'About | 蔚蓝之家';
 const pageDescription = '关于蔚蓝之家与作者 ArkPLN 的简介、项目与公开仓库信息。';
 ---
 
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle}</title>
-    <meta name="description" content={pageDescription} />
-    <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={pageDescription} />
-    <meta property="og:url" content={canonical} />
-  </head>
-  <body class="min-h-screen bg-slate-100 text-slate-900">
-    <SiteHeader showHomeLink={true} showAboutLink={false} />
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  ogType="website"
+  siteHeaderProps={{ showHomeLink: true, showAboutLink: false }}
+>
+  <div class="page-bg-wrap" aria-hidden="true">
+    <div
+      class="page-bg-layer page-bg-light bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/image/BG_View_Sky2.webp');"
+    ></div>
+    <div
+      class="page-bg-layer page-bg-dark bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/image/night/BG_CommitteeRoom_Night.webp');"
+    ></div>
+    <div class="page-bg-overlay"></div>
+  </div>
 
-    <main class="mx-auto w-full max-w-6xl space-y-6 p-4 pt-20">
-      <section class="rounded-xl bg-white p-6 shadow-sm">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold tracking-[0.18em] text-sky-700">ABOUT</p>
-            <h2 class="mt-1 text-3xl font-bold">{profile.username}</h2>
-            <p class="mt-3 text-sm text-slate-600">{profile.bio}</p>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <a
-                href={profile.github}
-                target="_blank"
-                rel="noreferrer"
-                class="inline-flex items-center gap-1 rounded-md bg-slate-900 px-3 py-2 text-sm text-white hover:bg-slate-800"
-              >
-                <GitBranch size={16} />
-                GitHub主页
-              </a>
-              <a
-                href={profile.blog}
-                target="_blank"
-                rel="noreferrer"
-                class="inline-flex items-center gap-1 rounded-md bg-[#304154] px-3 py-2 text-sm text-white hover:bg-gray-500"
-              >
-                <Globe size={16} />
-                个人博客（旧）
-              </a>
-              <a
-                href={profile.juejin}
-                target="_blank"
-                rel="noreferrer"
-                class="inline-flex items-center gap-1 rounded-md bg-[#367efd] px-3 py-2 text-sm text-white hover:bg-sky-500"
-              >
-                <BookOpenText size={16} />
-                掘金社区
-              </a>
-            </div>
+  <main class="mx-auto w-full max-w-6xl space-y-6 p-4 pt-20">
+    <section class="rounded-xl bg-white/85 p-6 shadow-sm backdrop-blur-sm dark:bg-slate-800/85">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-xs font-semibold tracking-[0.18em] text-sky-700 dark:text-sky-400">ABOUT</p>
+          <h2 class="mt-1 text-3xl font-bold dark:text-slate-100">{profile.username}</h2>
+          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">{profile.bio}</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex items-center gap-1 rounded-md bg-slate-900 px-3 py-2 text-sm text-white hover:bg-slate-800"
+            >
+              <GitBranch size={16} />
+              GitHub主页
+            </a>
+            <a
+              href={profile.blog}
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex items-center gap-1 rounded-md bg-[#304154] px-3 py-2 text-sm text-white hover:bg-gray-500"
+            >
+              <Globe size={16} />
+              个人博客（旧）
+            </a>
+            <a
+              href={profile.juejin}
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex items-center gap-1 rounded-md bg-[#367efd] px-3 py-2 text-sm text-white hover:bg-sky-500"
+            >
+              <BookOpenText size={16} />
+              掘金社区
+            </a>
           </div>
-          <img
-            src={profile.avatar}
-            alt={`${profile.username} avatar`}
-            class="h-20 w-20 shrink-0 rounded-full border border-slate-200 object-cover md:h-24 md:w-24"
-            loading="lazy"
-            referrerpolicy="no-referrer"
-          />
         </div>
-      </section>
+        <img
+          src={profile.avatar}
+          alt={`${profile.username} avatar`}
+          class="h-20 w-20 shrink-0 rounded-full border border-slate-200 object-cover md:h-24 md:w-24 dark:border-slate-700"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        />
+      </div>
+    </section>
 
-      <section class="grid gap-6 md:grid-cols-2">
-        <article class="rounded-xl bg-white p-6 shadow-sm">
-          <h3 class="text-lg font-semibold">Profile Snapshot</h3>
-          <ul class="mt-4 space-y-2 text-sm">
-            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Company</span><strong>{profile.company}</strong></li>
-            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Location</span><strong>{profile.location}</strong></li>
-            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Joined GitHub</span><strong>{profile.joinedAt}</strong></li>
-            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Followers</span><strong>{profile.followers}</strong></li>
-            <li class="flex items-center justify-between border-b border-slate-100 pb-2"><span class="text-slate-500">Public Repos</span><strong>{profile.publicRepos}</strong></li>
-            <li class="flex items-center justify-between"><span class="text-slate-500">Profile Updated</span><strong>{profile.profileUpdatedAt}</strong></li>
-          </ul>
-        </article>
+    <section class="grid gap-6 md:grid-cols-2">
+      <article class="rounded-xl bg-white/85 p-6 shadow-sm backdrop-blur-sm dark:bg-slate-800/85">
+        <h3 class="text-lg font-semibold dark:text-slate-100">Profile Snapshot</h3>
+        <ul class="mt-4 space-y-2 text-sm">
+          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Company</span><strong class="dark:text-slate-200">{profile.company}</strong></li>
+          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Location</span><strong class="dark:text-slate-200">{profile.location}</strong></li>
+          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Joined GitHub</span><strong class="dark:text-slate-200">{profile.joinedAt}</strong></li>
+          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Followers</span><strong class="dark:text-slate-200">{profile.followers}</strong></li>
+          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Public Repos</span><strong class="dark:text-slate-200">{profile.publicRepos}</strong></li>
+          <li class="flex items-center justify-between"><span class="text-slate-500 dark:text-slate-400">Profile Updated</span><strong class="dark:text-slate-200">{profile.profileUpdatedAt}</strong></li>
+        </ul>
+      </article>
 
-        <article class="rounded-xl bg-white p-6 shadow-sm">
-          <h3 class="text-lg font-semibold">Focus</h3>
-          <p class="mt-4 text-sm leading-7 text-slate-700">
-            关注AI前沿技术发展，专注AI应用+大前端开发领域，积极探索AI在前端工程中的应用与工程化实践，分享在学习和项目开发中的心得体会。
-          </p>
-          <p class="mt-3 text-xs text-slate-500">Data source: GitHub public profile and repositories (2026-04-09)</p>
-        </article>
-      </section>
+      <article class="rounded-xl bg-white/85 p-6 shadow-sm backdrop-blur-sm dark:bg-slate-800/85">
+        <h3 class="text-lg font-semibold dark:text-slate-100">Focus</h3>
+        <p class="mt-4 text-sm leading-7 text-slate-700 dark:text-slate-300">
+          关注AI前沿技术发展，专注AI应用+大前端开发领域，积极探索AI在前端工程中的应用与工程化实践，分享在学习和项目开发中的心得体会。
+        </p>
+        <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">Data source: GitHub public profile and repositories (2026-04-09)</p>
+      </article>
+    </section>
 
-      <section class="rounded-xl bg-white p-6 shadow-sm">
-        <div class="flex items-center justify-between gap-3">
-          <h3 class="text-lg font-semibold">Featured Repositories</h3>
-          <a
-            href={profile.github + '?tab=repositories'}
-            target="_blank"
-            rel="noreferrer"
-            class="text-sm font-medium text-sky-700 hover:text-sky-600"
-          >
-            View All
-          </a>
-        </div>
+    <section class="rounded-xl bg-white/85 p-6 shadow-sm backdrop-blur-sm dark:bg-slate-800/85">
+      <div class="flex items-center justify-between gap-3">
+        <h3 class="text-lg font-semibold dark:text-slate-100">Featured Repositories</h3>
+        <a
+          href={profile.github + '?tab=repositories'}
+          target="_blank"
+          rel="noreferrer"
+          class="text-sm font-medium text-sky-700 hover:text-sky-600"
+        >
+          View All
+        </a>
+      </div>
 
-        <div class="mt-4 grid gap-3">
-          {
-            featuredRepos.map((repo) => (
-              <a
-                href={repo.href}
-                target="_blank"
-                rel="noreferrer"
-                class="rounded-lg border border-slate-200 bg-slate-50 p-4 transition hover:border-sky-300 hover:bg-white"
-              >
-                <h4 class="text-base font-semibold text-slate-900">{repo.name}</h4>
-                <p class="mt-1 text-sm text-slate-600">{repo.description}</p>
-                <div class="mt-3 flex flex-wrap gap-3 text-xs text-slate-500">
-                  <span>Stack: {repo.stack}</span>
-                  <span>Stars: {repo.stars}</span>
-                  <span>Updated: {repo.updatedAt}</span>
-                </div>
-              </a>
-            ))
-          }
-        </div>
-      </section>
-    </main>
-  </body>
-</html>
+      <div class="mt-4 grid gap-3">
+        {
+          featuredRepos.map((repo) => (
+            <a
+              href={repo.href}
+              target="_blank"
+              rel="noreferrer"
+              class="rounded-lg border border-slate-200 bg-slate-50/70 p-4 transition hover:border-sky-300 hover:bg-white dark:border-slate-700 dark:bg-slate-700/50 dark:hover:border-sky-600 dark:hover:bg-slate-700"
+            >
+              <h4 class="text-base font-semibold text-slate-900 dark:text-slate-100">{repo.name}</h4>
+              <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">{repo.description}</p>
+              <div class="mt-3 flex flex-wrap gap-3 text-xs text-slate-500 dark:text-slate-400">
+                <span>Stack: {repo.stack}</span>
+                <span>Stars: {repo.stars}</span>
+                <span>Updated: {repo.updatedAt}</span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .page-bg-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .page-bg-layer {
+    position: absolute;
+    inset: 0;
+    transition: opacity 900ms ease-in-out;
+  }
+
+  .page-bg-light {
+    opacity: 1;
+  }
+
+  .page-bg-dark {
+    opacity: 0;
+  }
+
+  :global(.dark) .page-bg-light {
+    opacity: 0;
+  }
+
+  :global(.dark) .page-bg-dark {
+    opacity: 1;
+  }
+
+  .page-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(241, 245, 249, 0.78);
+    transition: background 900ms ease-in-out;
+  }
+
+  :global(.dark) .page-bg-overlay {
+    background: rgba(11, 17, 32, 0.82);
+  }
+</style>

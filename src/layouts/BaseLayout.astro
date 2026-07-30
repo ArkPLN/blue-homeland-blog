@@ -1,0 +1,73 @@
+---
+import '../style/index.css';
+import SiteHeader from '../components/SiteHeader.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+  keywords?: string;
+  siteHeaderProps?: { showHomeLink?: boolean; showAboutLink?: boolean };
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogType = 'website',
+  ogImage,
+  keywords,
+  siteHeaderProps,
+} = Astro.props;
+
+const resolvedOgImage =
+  ogImage ?? new URL('/image/BG_View_Sky2.webp', Astro.site ?? 'https://arkpln.netlify.app').toString();
+
+const themeScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem('theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var isDark = stored ? stored === 'dark' : prefersDark;
+    if (isDark) document.documentElement.classList.add('dark');
+  } catch (e) {}
+})();
+`;
+---
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline set:html={themeScript} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="author" content="ArkPLN" />
+    {keywords ? <meta name="keywords" content={keywords} /> : null}
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#38bdf8" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:site_name" content="蔚蓝之家" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta property="og:image:alt" content="蔚蓝之家" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen text-slate-900 dark:text-slate-100">
+    <SiteHeader {...siteHeaderProps} />
+    <slot />
+  </body>
+</html>

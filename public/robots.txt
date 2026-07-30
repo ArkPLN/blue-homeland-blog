@@ -6,4 +6,4 @@ Disallow: /_astro/
 Disallow: /node_modules/
 Disallow: /dist/
 
-Sitemap: https://arkpln.netlify.app/sitemap.xml
+Sitemap: https://arkpln.netlify.app/sitemap-index.xml

@@ -1,6 +1,7 @@
 ---
+import { ChevronDown } from '@lucide/astro';
 import type { PostSummary } from '../lib/posts';
-import { postsLength } from '../lib/posts';
+
 interface Props {
   categoryEntries: Array<[string, PostSummary[]]>;
   tagEntries: Array<[string, PostSummary[]]>;
@@ -9,6 +10,10 @@ interface Props {
 }
 
 const { categoryEntries, tagEntries, activeCategory = null, activeTag = null } = Astro.props;
+
+// 有选中项时默认展开对应分组，便于定位
+const categoryExpanded = Boolean(activeCategory);
+const tagExpanded = Boolean(activeTag);
 ---
 
 <nav class="min-w-0">
@@ -16,8 +21,8 @@ const { categoryEntries, tagEntries, activeCategory = null, activeTag = null } =
     class:list={[
       'block rounded-md px-2 py-1.5 text-sm',
       !activeCategory && !activeTag
-        ? 'bg-slate-200 text-slate-900'
-        : 'text-slate-700 hover:bg-slate-100',
+        ? 'bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100'
+        : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800',
     ]}
     href="/"
   >
@@ -25,61 +30,122 @@ const { categoryEntries, tagEntries, activeCategory = null, activeTag = null } =
   </a>
 
   <div class="mt-4">
-    <span class="flex-row">
-    <p class="text-base font-semibold text-slate-900 inline-block">分类导航</p>
-      <p class="float-end text-base font-semibold text-slate-900 inline-block">
-        总文章数:{postsLength}
-      </p>
-    </span>
-    {
-      categoryEntries.length === 0 ? (
-        <p class="mt-2 text-sm text-slate-500">暂无分类</p>
-      ) : (
-        <ul class="mt-3 space-y-2 text-sm">
-          {categoryEntries.map(([name, list]) => (
-            <li>
-                <a
-                class:list={[
-                  'flex items-center justify-between gap-2 rounded-md px-2 py-1.5',
-                  activeCategory === name
-                    ? 'bg-sky-100 text-sky-800'
-                    : 'text-slate-700 hover:bg-sky-50 hover:text-sky-700',
-                ]}
-                href={`/category/${encodeURIComponent(name)}`}
-              >
-                <span class="min-w-0 flex-1 truncate">{name}</span>
-                <span class="shrink-0 text-xs text-slate-500">{list.length}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )
-    }
+    <button
+      type="button"
+      data-collapsible-trigger
+      aria-expanded={categoryExpanded}
+      class="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-base font-semibold text-slate-900 transition hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+    >
+      <span>分类导航</span>
+      <ChevronDown
+        size={18}
+        class="shrink-0 text-slate-500 transition-transform duration-300 dark:text-slate-400"
+        data-collapsible-icon
+      />
+    </button>
+    <div
+      data-collapsible-content
+      class:list={[
+        'grid transition-[grid-template-rows] duration-300 ease-out',
+        categoryExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+      ]}
+    >
+      <div class="overflow-hidden">
+        {
+          categoryEntries.length === 0 ? (
+            <p class="mt-2 px-2 text-sm text-slate-500 dark:text-slate-400">暂无分类</p>
+          ) : (
+            <ul class="mt-2 space-y-1 text-sm">
+              {categoryEntries.map(([name, list]) => (
+                <li>
+                  <a
+                    class:list={[
+                      'flex items-center justify-between gap-2 rounded-md px-2 py-1.5',
+                      activeCategory === name
+                        ? 'bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-200'
+                        : 'text-slate-700 hover:bg-sky-50 hover:text-sky-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-sky-300',
+                    ]}
+                    href={`/category/${encodeURIComponent(name)}`}
+                  >
+                    <span class="min-w-0 flex-1 truncate">{name}</span>
+                    <span class="shrink-0 text-xs text-slate-500 dark:text-slate-400">{list.length}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </div>
   </div>
 
-  <div class="mt-6 border-t border-slate-200 pt-4">
-    <h2 class="text-base font-semibold text-slate-900">标签导航</h2>
-    {
-      tagEntries.length === 0 ? (
-        <p class="mt-2 text-sm text-slate-500">暂无标签</p>
-      ) : (
-        <div class="mt-3 flex flex-wrap gap-2">
-          {tagEntries.map(([name, list]) => (
-            <a
-              class:list={[
-                'max-w-full break-all rounded-full px-3 py-1 text-xs',
-                activeTag === name
-                  ? 'bg-emerald-200 text-emerald-900'
-                  : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100',
-              ]}
-              href={`/tag/${encodeURIComponent(name)}`}
-              title={`${name} (${list.length})`}
-            >
-              #{name}
-            </a>
-          ))}
-        </div>
-      )
-    }
+  <div class="mt-6">
+    <button
+      type="button"
+      data-collapsible-trigger
+      aria-expanded={tagExpanded}
+      class="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-base font-semibold text-slate-900 transition hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+    >
+      <span>标签导航</span>
+      <ChevronDown
+        size={18}
+        class="shrink-0 text-slate-500 transition-transform duration-300 dark:text-slate-400"
+        data-collapsible-icon
+      />
+    </button>
+    <div
+      data-collapsible-content
+      class:list={[
+        'grid transition-[grid-template-rows] duration-300 ease-out',
+        tagExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+      ]}
+    >
+      <div class="overflow-hidden">
+        {
+          tagEntries.length === 0 ? (
+            <p class="mt-2 px-2 text-sm text-slate-500 dark:text-slate-400">暂无标签</p>
+          ) : (
+            <div class="mt-2 flex flex-wrap gap-2 px-2">
+              {tagEntries.map(([name, list]) => (
+                <a
+                  class:list={[
+                    'max-w-full break-all rounded-full px-3 py-1 text-xs',
+                    activeTag === name
+                      ? 'bg-emerald-200 text-emerald-900 dark:bg-emerald-900/50 dark:text-emerald-200'
+                      : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-300 dark:hover:bg-emerald-900/40',
+                  ]}
+                  href={`/tag/${encodeURIComponent(name)}`}
+                  title={`${name} (${list.length})`}
+                >
+                  #{name}
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
   </div>
 </nav>
+
+<script>
+  function initCollapsible() {
+    const triggers = document.querySelectorAll('[data-collapsible-trigger]');
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const content = trigger.nextElementSibling;
+        if (!content) return;
+
+        const isExpanded = content.classList.contains('grid-rows-[1fr]');
+        content.classList.toggle('grid-rows-[1fr]', !isExpanded);
+        content.classList.toggle('grid-rows-[0fr]', isExpanded);
+
+        trigger.setAttribute('aria-expanded', String(!isExpanded));
+        const icon = trigger.querySelector('[data-collapsible-icon]');
+        icon?.classList.toggle('rotate-180', !isExpanded);
+      });
+    });
+  }
+
+  initCollapsible();
+</script>

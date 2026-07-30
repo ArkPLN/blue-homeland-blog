@@ -1,13 +1,14 @@
 ---
-import '../../style/index.css';
-import { fileURLToPath } from 'node:url';
-import { statSync } from 'node:fs';
 import SidebarNav from '../../components/SidebarNav.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
 import { extractSlug, getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
 
-type PostLoader = () => Promise<{ default: unknown; frontmatter?: Record<string, unknown> }>;
-type RawPostMap = Record<string, string>;
+type PostLoader = () => Promise<{
+  default: unknown;
+  frontmatter?: Record<string, unknown>;
+  getHeadings?: () => Array<{ depth: number; slug: string; text: string }>;
+}>;
 
 function normalizeDateInput(value: string): string {
   const trimmed = value.trim();
@@ -34,12 +35,9 @@ function formatDate(value: string | Date | null): string {
   }).format(date);
 }
 
-function stripFrontmatter(markdown: string): string {
-  return markdown.replace(/^---[\s\S]*?---\s*/m, '');
-}
-
 function estimateReadingStats(markdown: string): { totalWords: number; readingMinutes: number } {
-  const content = stripFrontmatter(markdown)
+  const content = markdown
+    .replace(/^---[\s\S]*?---\s*/m, '')
     .replace(/```[\s\S]*?```/g, ' ')
     .replace(/`[^`]*`/g, ' ')
     .replace(/!\[[^\]]*]\([^)]*\)/g, ' ')
@@ -71,20 +69,13 @@ const { loader, filePath } = Astro.props as { loader: PostLoader; filePath: stri
 const mod = await loader();
 const frontmatter = mod.frontmatter ?? {};
 const Content = mod.default as unknown as AstroComponentFactory;
+const headings = mod.getHeadings?.() ?? [];
+
 const allPosts = getAllPosts();
 const categories = groupPostsByCategory(allPosts);
 const tags = groupPostsByTag(allPosts);
 const categoryEntries = [...categories.entries()];
 const tagEntries = [...tags.entries()];
-
-const rawPostMap = import.meta.glob('../../../posts/*.md', {
-  eager: true,
-  import: 'default',
-  query: '?raw',
-}) as RawPostMap;
-
-const rawMarkdown = rawPostMap[filePath] ?? '';
-const { totalWords, readingMinutes } = estimateReadingStats(rawMarkdown);
 
 const updatedField =
   frontmatter.updated ??
@@ -94,15 +85,17 @@ const updatedField =
   frontmatter.date ??
   null;
 
-let fallbackUpdated: Date | null = null;
-try {
-  const absolutePath = fileURLToPath(new URL(filePath, import.meta.url));
-  fallbackUpdated = statSync(absolutePath).mtime;
-} catch {
-  fallbackUpdated = null;
-}
+const updatedTime = formatDate((updatedField as string | Date | null) ?? null);
 
-const updatedTime = formatDate((updatedField as string | Date | null) ?? fallbackUpdated);
+const rawPostMap = import.meta.glob('../../../posts/*.md', {
+  eager: true,
+  import: 'default',
+  query: '?raw',
+}) as Record<string, string>;
+
+const rawMarkdown = rawPostMap[filePath] ?? '';
+const { totalWords, readingMinutes } = estimateReadingStats(rawMarkdown);
+
 const rawCategories = frontmatter.categories ?? frontmatter.category;
 const rawTags = frontmatter.tags ?? frontmatter.tag;
 const postCategories = Array.isArray(rawCategories)
@@ -121,57 +114,102 @@ const siteUrl = Astro.site ?? new URL('https://arkpln.netlify.app');
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const titleText = String(frontmatter.title ?? '文章');
 const descriptionText = String(frontmatter.description ?? `${titleText} - 蔚蓝之家`);
+const ogImage = frontmatter.cover
+  ? new URL(String(frontmatter.cover), siteUrl).toString()
+  : undefined;
 ---
 
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{titleText}</title>
-    <meta name="description" content={descriptionText} />
-    <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content={titleText} />
-    <meta property="og:description" content={descriptionText} />
-    <meta property="og:url" content={canonical} />
-  </head>
-  <body class="min-h-screen text-slate-900">
+<BaseLayout
+  title={titleText}
+  description={descriptionText}
+  canonical={canonical}
+  ogType="article"
+  ogImage={ogImage}
+>
+  <div class="post-bg-wrap" aria-hidden="true">
     <div
-      class="pointer-events-none fixed inset-0 -z-20 bg-cover bg-center bg-no-repeat"
-      style="background-image: url('/image/BG_View_Sky2.jpg');"
-      aria-hidden="true"
+      class="post-bg-layer post-bg-light bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/image/BG_View_Sky2.webp');"
     ></div>
-    <div class="pointer-events-none fixed inset-0 -z-10 bg-slate-100/78" aria-hidden="true"></div>
+    <div
+      class="post-bg-layer post-bg-dark bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/image/night/BG_CommitteeRoom_Night.webp');"
+    ></div>
+    <div class="post-bg-overlay"></div>
+  </div>
 
-    <SiteHeader />
+  <div class="pt-16">
+    <aside class="max-h-[46vh] overflow-y-auto no-scrollbar border-b border-slate-200 bg-white/85 px-4 py-3 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/85 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4">
+      <SidebarNav
+        categoryEntries={categoryEntries}
+        tagEntries={tagEntries}
+        activeCategory={activeCategory}
+        activeTag={activeTag}
+      />
+    </aside>
 
-    <div class="pt-16">
-      <aside class="max-h-[46vh] overflow-y-auto border-b border-slate-200 bg-white px-4 py-3 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4">
-        <SidebarNav
-          categoryEntries={categoryEntries}
-          tagEntries={tagEntries}
-          activeCategory={activeCategory}
-          activeTag={activeTag}
-        />
-      </aside>
+    <main class="min-h-[calc(100vh-4rem)] lg:ml-[280px]">
+      <div class="mx-auto w-full max-w-[1200px] p-4 lg:px-6 lg:py-4 xl:px-8">
+        <div class="flex gap-8">
+          <section class="min-w-0 flex-1">
+            <a href="/" class="text-sm text-sky-700 hover:underline dark:text-sky-400">← 返回首页</a>
+            <h1 class="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl dark:text-slate-100">{titleText}</h1>
+            <div class="mt-4 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
+              <span class="rounded-full bg-slate-200 px-3 py-1 dark:bg-slate-700">更新时间：{updatedTime}</span>
+              <span class="rounded-full bg-slate-200 px-3 py-1 dark:bg-slate-700">总字数：{totalWords}</span>
+              <span class="rounded-full bg-slate-200 px-3 py-1 dark:bg-slate-700">预计阅读：{readingMinutes} 分钟</span>
+            </div>
+            <article class="markdown-content mt-4 w-full rounded-xl bg-white/85 p-4 shadow-sm backdrop-blur-sm sm:p-6 md:p-8 dark:bg-slate-800/85">
+              <Content />
+            </article>
+          </section>
 
-      <main class="min-h-[calc(100vh-4rem)] lg:ml-[280px]">
-        <section class="w-full p-4 lg:px-6 lg:py-4 xl:px-8">
-          <a href="/" class="text-sm text-sky-700 hover:underline">← 返回首页</a>
-          <h1 class="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">{String(frontmatter.title ?? '文章')}</h1>
-          <div class="mt-4 flex flex-wrap gap-2 text-xs text-slate-600">
-            <span class="rounded-full bg-slate-200 px-3 py-1">更新时间：{updatedTime}</span>
-            <span class="rounded-full bg-slate-200 px-3 py-1">总字数：{totalWords}</span>
-            <span class="rounded-full bg-slate-200 px-3 py-1">预计阅读：{readingMinutes} 分钟</span>
-          </div>
-          <article class="markdown-content mt-4 w-full rounded-xl bg-white p-4 shadow-sm sm:p-6 md:p-8">
-            <Content />
-          </article>
-        </section>
-      </main>
-    </div>
-  </body>
-</html>
+          <TableOfContents headings={headings} />
+        </div>
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .post-bg-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .post-bg-layer {
+    position: absolute;
+    inset: 0;
+    transition: opacity 900ms ease-in-out;
+  }
+
+  .post-bg-light {
+    opacity: 1;
+  }
+
+  .post-bg-dark {
+    opacity: 0;
+  }
+
+  :global(.dark) .post-bg-light {
+    opacity: 0;
+  }
+
+  :global(.dark) .post-bg-dark {
+    opacity: 1;
+  }
+
+  .post-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(241, 245, 249, 0.78);
+    transition: background 900ms ease-in-out;
+  }
+
+  :global(.dark) .post-bg-overlay {
+    background: rgba(11, 17, 32, 0.82);
+  }
+</style>

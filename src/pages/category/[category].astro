@@ -1,8 +1,7 @@
 ---
-import '../../style/index.css';
 import SidebarNav from '../../components/SidebarNav.astro';
 import PostList from '../../components/PostList.astro';
-import SiteHeader from '../../components/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
 
 const allPosts = getAllPosts();
@@ -29,38 +28,80 @@ const pageTitle = `分类：${currentCategory} - 蔚蓝之家`;
 const pageDescription = `浏览分类「${currentCategory}」下的全部文章。`;
 ---
 
-<html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{pageTitle}</title>
-    <meta name="description" content={pageDescription} />
-    <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={pageDescription} />
-    <meta property="og:url" content={canonical} />
-  </head>
-  <body class="min-h-screen bg-slate-100 text-slate-900">
-    <SiteHeader />
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  ogType="website"
+>
+  <div class="page-bg-wrap" aria-hidden="true">
+    <div
+      class="page-bg-layer page-bg-light bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/image/BG_View_Sky2.webp');"
+    ></div>
+    <div
+      class="page-bg-layer page-bg-dark bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/image/night/BG_CommitteeRoom_Night.webp');"
+    ></div>
+    <div class="page-bg-overlay"></div>
+  </div>
 
-    <div class="pt-16">
-      <aside class="max-h-[46vh] overflow-y-auto border-b border-slate-200 bg-white px-4 py-3 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4">
-        <SidebarNav
-          categoryEntries={categoryEntries}
-          tagEntries={tagEntries}
-          activeCategory={currentCategory}
-        />
-      </aside>
+  <div class="pt-16">
+    <aside class="max-h-[46vh] overflow-y-auto no-scrollbar border-b border-slate-200 bg-white/85 px-4 py-3 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/85 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4">
+      <SidebarNav
+        categoryEntries={categoryEntries}
+        tagEntries={tagEntries}
+        activeCategory={currentCategory}
+      />
+    </aside>
 
-      <main class="min-h-[calc(100vh-4rem)] p-4 lg:ml-[280px]">
-        <section class="mx-auto max-w-6xl space-y-6">
-          <PostList title={`分类：${currentCategory}`} posts={categoryPosts} emptyText="该分类下暂无文章。" />
-        </section>
-      </main>
-    </div>
-  </body>
-</html>
+    <main class="min-h-[calc(100vh-4rem)] p-4 lg:ml-[280px]">
+      <section class="mx-auto max-w-6xl space-y-6">
+        <PostList title={`分类：${currentCategory}`} posts={categoryPosts} emptyText="该分类下暂无文章。" />
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-bg-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .page-bg-layer {
+    position: absolute;
+    inset: 0;
+    transition: opacity 900ms ease-in-out;
+  }
+
+  .page-bg-light {
+    opacity: 1;
+  }
+
+  .page-bg-dark {
+    opacity: 0;
+  }
+
+  :global(.dark) .page-bg-light {
+    opacity: 0;
+  }
+
+  :global(.dark) .page-bg-dark {
+    opacity: 1;
+  }
+
+  .page-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(241, 245, 249, 0.78);
+    transition: background 900ms ease-in-out;
+  }
+
+  :global(.dark) .page-bg-overlay {
+    background: rgba(11, 17, 32, 0.82);
+  }
+</style>

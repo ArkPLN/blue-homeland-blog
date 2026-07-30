@@ -1,0 +1,90 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{
+  tocItems.length > 0 ? (
+    <aside class="hidden w-56 shrink-0 lg:block">
+      <nav class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto" data-toc-nav aria-label="文章目录">
+        <p class="mb-3 text-sm font-semibold text-slate-900 dark:text-slate-100">目录</p>
+        <ul class="space-y-1 border-l border-slate-200 text-sm dark:border-slate-700">
+          {tocItems.map((h) => (
+            <li>
+              <a
+                href={`#${h.slug}`}
+                data-toc-link={h.slug}
+                class:list={[
+                  'block border-l-2 border-transparent py-1 text-slate-500 transition hover:text-sky-700 dark:text-slate-400 dark:hover:text-sky-400',
+                  h.depth === 3 ? 'ml-3 pl-3' : 'pl-3',
+                ]}
+              >
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+  ) : null
+}
+
+<script>
+  function initTocHighlight() {
+    const nav = document.querySelector('[data-toc-nav]');
+    if (!nav) return;
+
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+    if (links.length === 0) return;
+
+    const linkBySlug = new Map(links.map((link) => [link.dataset.tocLink, link]));
+    const headings = links
+      .map((link) => document.getElementById(link.dataset.tocLink ?? ''))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (headings.length === 0) return;
+
+    let activeSlug = '';
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const slug = entry.target.id;
+          if (entry.isIntersecting) {
+            activeSlug = slug;
+          }
+        }
+
+        for (const link of links) {
+          const slug = link.dataset.tocLink;
+          const isActive = slug === activeSlug;
+          link.classList.toggle('border-sky-500', isActive);
+          link.classList.toggle('text-sky-700', isActive);
+          link.classList.toggle('font-medium', isActive);
+          link.classList.toggle('border-transparent', !isActive);
+          link.classList.toggle('text-slate-500', !isActive);
+        }
+      },
+      {
+        rootMargin: '-80px 0px -70% 0px',
+        threshold: 0,
+      },
+    );
+
+    for (const heading of headings) {
+      observer.observe(heading);
+    }
+  }
+
+  initTocHighlight();
+</script>

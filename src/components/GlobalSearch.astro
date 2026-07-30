@@ -17,7 +17,7 @@ const {
   <button
     type="button"
     data-search-open
-    class="inline-flex h-11 items-center gap-2 rounded-full border border-white/18 bg-slate-950/18 px-3.5 text-sm font-medium text-white shadow-[0_14px_34px_rgba(3,7,18,0.18)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:border-[rgba(116,167,218,0.55)] hover:bg-white/16 hover:shadow-[0_18px_42px_rgba(48,92,146,0.24)] focus:outline-none focus:ring-2 focus:ring-[rgba(191,219,254,0.8)] focus:ring-offset-2 focus:ring-offset-[#33a9e8] motion-reduce:transform-none motion-reduce:transition-none"
+    class="inline-flex h-11 items-center gap-2 rounded-full border border-white/18 bg-slate-950/18 px-3.5 text-sm font-medium text-white shadow-[0_14px_34px_rgba(3,7,18,0.18)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:border-[rgba(116,167,218,0.55)] hover:bg-white/16 hover:shadow-[0_18px_42px_rgba(48,92,146,0.24)] focus:outline-none focus:ring-2 focus:ring-[rgba(191,219,254,0.8)] focus:ring-offset-2 focus:ring-offset-[#33a9e8] motion-reduce:transform-none motion-reduce:transition-none dark:border-white/20 dark:bg-white/10 dark:hover:bg-white/20 dark:focus:ring-offset-slate-900"
     aria-haspopup="dialog"
     aria-controls="global-search-dialog"
     aria-expanded="false"
@@ -35,7 +35,7 @@ const {
     class="pointer-events-none fixed inset-0 z-[70] hidden opacity-0 transition duration-300 ease-out motion-reduce:transition-none"
     aria-hidden="true"
   >
-    <div data-search-backdrop class="absolute inset-0 bg-[linear-gradient(180deg,rgba(240,249,255,0.72),rgba(226,232,240,0.62))] backdrop-blur-sm"></div>
+    <div data-search-backdrop class="absolute inset-0 bg-[linear-gradient(180deg,rgba(240,249,255,0.72),rgba(226,232,240,0.62))] backdrop-blur-sm dark:bg-[linear-gradient(180deg,rgba(2,6,23,0.78),rgba(15,23,42,0.72))]"></div>
     <div class="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.16),transparent_72%)]"></div>
 
     <div class="flex min-h-screen items-center justify-center px-3 py-3 sm:px-6 sm:py-6">
@@ -43,33 +43,33 @@ const {
         role="dialog"
         aria-modal="true"
         aria-labelledby="global-search-title"
-        class="search-panel-shell pointer-events-auto flex max-h-[calc(100dvh-1.5rem)] w-full max-w-[min(94vw,1040px)] translate-y-6 scale-[0.97] flex-col overflow-hidden rounded-[1.5rem] border border-white/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,250,252,0.96))] shadow-[0_28px_80px_rgba(15,23,42,0.18)] ring-1 ring-sky-100/80 transition duration-300 ease-out sm:max-h-[min(78vh,760px)] sm:max-w-[min(90vw,1040px)] sm:rounded-[2rem] motion-reduce:transform-none motion-reduce:transition-none"
+        class="search-panel-shell pointer-events-auto flex max-h-[calc(100dvh-1.5rem)] w-full max-w-[min(94vw,1040px)] translate-y-6 scale-[0.97] flex-col overflow-hidden rounded-[1.5rem] border border-white/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,250,252,0.96))] shadow-[0_28px_80px_rgba(15,23,42,0.18)] ring-1 ring-sky-100/80 transition duration-300 ease-out sm:max-h-[min(78vh,760px)] sm:max-w-[min(90vw,1040px)] sm:rounded-[2rem] motion-reduce:transform-none motion-reduce:transition-none dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(17,24,39,0.96),rgba(15,23,42,0.96))] dark:shadow-[0_28px_80px_rgba(0,0,0,0.5)] dark:ring-sky-900/40"
         data-search-panel
       >
         <div class="search-panel-noise"></div>
-        <div class="relative border-b border-slate-200/80 bg-[linear-gradient(180deg,rgba(240,249,255,0.92),rgba(255,255,255,0.94))] px-4 py-4 sm:px-7 sm:py-5">
+        <div class="relative border-b border-slate-200/80 bg-[linear-gradient(180deg,rgba(240,249,255,0.92),rgba(255,255,255,0.94))] px-4 py-4 sm:px-7 sm:py-5 dark:border-slate-700/60 dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.92),rgba(17,24,39,0.94))]">
           <div class="flex items-center gap-3">
-            <div class="flex h-11 w-11 items-center justify-center rounded-[1.1rem] bg-[linear-gradient(145deg,rgba(186,230,253,0.95),rgba(224,242,254,0.88))] text-sky-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_10px_24px_rgba(56,189,248,0.14)] ring-1 ring-sky-100 sm:h-13 sm:w-13 sm:rounded-[1.35rem]">
+            <div class="flex h-11 w-11 items-center justify-center rounded-[1.1rem] bg-[linear-gradient(145deg,rgba(186,230,253,0.95),rgba(224,242,254,0.88))] text-sky-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_10px_24px_rgba(56,189,248,0.14)] ring-1 ring-sky-100 sm:h-13 sm:w-13 sm:rounded-[1.35rem] dark:bg-[linear-gradient(145deg,rgba(2,132,199,0.35),rgba(56,189,248,0.25))] dark:text-sky-300 dark:ring-sky-900/50">
               <Search size={18} />
             </div>
             <div class="min-w-0 flex-1">
-              <p id="global-search-title" class="text-[1.45rem] font-semibold tracking-[-0.03em] text-slate-900 sm:text-[1.7rem]">全局搜索</p>
-              <p class="mt-1 text-[13px] text-slate-500 sm:text-sm">支持标题和正文内容检索</p>
+              <p id="global-search-title" class="text-[1.45rem] font-semibold tracking-[-0.03em] text-slate-900 sm:text-[1.7rem] dark:text-slate-100">全局搜索</p>
+              <p class="mt-1 text-[13px] text-slate-500 sm:text-sm dark:text-slate-400">支持标题和正文内容检索</p>
             </div>
             <button
               type="button"
               data-search-close
-              class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-500 transition duration-300 hover:rotate-90 hover:border-sky-200 hover:bg-sky-50 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200 sm:h-12 sm:w-12 motion-reduce:transform-none motion-reduce:transition-none"
+              class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-500 transition duration-300 hover:rotate-90 hover:border-sky-200 hover:bg-sky-50 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200 sm:h-12 sm:w-12 motion-reduce:transform-none motion-reduce:transition-none dark:border-slate-600 dark:bg-slate-700/90 dark:text-slate-400 dark:hover:border-sky-700 dark:hover:bg-slate-700 dark:hover:text-sky-300"
               aria-label="关闭搜索"
             >
               <X size={18} />
             </button>
           </div>
 
-          <div class="mt-4 overflow-hidden rounded-[1.45rem] border border-sky-100 bg-white/92 shadow-[0_14px_36px_rgba(148,163,184,0.14)] sm:mt-5 sm:rounded-[1.7rem]">
+          <div class="mt-4 overflow-hidden rounded-[1.45rem] border border-sky-100 bg-white/92 shadow-[0_14px_36px_rgba(148,163,184,0.14)] sm:mt-5 sm:rounded-[1.7rem] dark:border-sky-900/50 dark:bg-slate-900/92 dark:shadow-[0_14px_36px_rgba(0,0,0,0.3)]">
             <label for="global-search-input" class="sr-only">搜索标题或正文</label>
             <div class="flex items-center gap-3 px-4 py-3 sm:px-5 sm:py-4">
-              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-50 text-sky-700 ring-1 ring-sky-100 sm:h-11 sm:w-11">
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-50 text-sky-700 ring-1 ring-sky-100 sm:h-11 sm:w-11 dark:bg-sky-950/60 dark:text-sky-300 dark:ring-sky-900/50">
                 <Search size={18} />
               </span>
               <input
@@ -78,44 +78,44 @@ const {
                 type="search"
                 inputmode="search"
                 placeholder={placeholder}
-                class="h-11 min-w-0 flex-1 bg-transparent text-[1rem] font-medium tracking-[-0.02em] text-slate-800 outline-none placeholder:text-slate-400/80 sm:h-12 sm:text-[1.05rem]"
+                class="h-11 min-w-0 flex-1 bg-transparent text-[1rem] font-medium tracking-[-0.02em] text-slate-800 outline-none placeholder:text-slate-400/80 sm:h-12 sm:text-[1.05rem] dark:text-slate-100 dark:placeholder:text-slate-500"
                 autocomplete="off"
                 spellcheck="false"
               />
               <div class="hidden items-center gap-2 md:flex">
-                <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium tracking-[0.2em] text-slate-500">ESC</span>
-                <span class="rounded-full border border-sky-100 bg-sky-50 px-2.5 py-1 text-[11px] font-medium tracking-[0.2em] text-sky-700">ENTER</span>
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium tracking-[0.2em] text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">ESC</span>
+                <span class="rounded-full border border-sky-100 bg-sky-50 px-2.5 py-1 text-[11px] font-medium tracking-[0.2em] text-sky-700 dark:border-sky-900/50 dark:bg-sky-950/60 dark:text-sky-300">ENTER</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="relative min-h-0 flex-1 overflow-y-auto bg-[linear-gradient(180deg,rgba(248,250,252,0.96),rgba(240,249,255,0.82))] px-4 py-4 sm:px-7 sm:py-5">
-          <div data-search-idle class="search-state-card rounded-[1.5rem] border border-dashed border-sky-200 bg-white/88 px-5 py-8 text-center shadow-[0_16px_36px_rgba(148,163,184,0.12)] sm:rounded-[1.9rem] sm:px-6 sm:py-10">
-            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-[linear-gradient(145deg,rgba(224,242,254,0.98),rgba(186,230,253,0.9))] text-sky-700 shadow-[0_0_0_1px_rgba(186,230,253,0.9),0_14px_28px_rgba(56,189,248,0.14)] sm:h-18 sm:w-18 sm:rounded-[1.6rem]">
+        <div class="relative min-h-0 flex-1 overflow-y-auto bg-[linear-gradient(180deg,rgba(248,250,252,0.96),rgba(240,249,255,0.82))] px-4 py-4 sm:px-7 sm:py-5 dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.82))]">
+          <div data-search-idle class="search-state-card rounded-[1.5rem] border border-dashed border-sky-200 bg-white/88 px-5 py-8 text-center shadow-[0_16px_36px_rgba(148,163,184,0.12)] sm:rounded-[1.9rem] sm:px-6 sm:py-10 dark:border-sky-900/60 dark:bg-slate-800/88 dark:shadow-[0_16px_36px_rgba(0,0,0,0.3)]">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-[linear-gradient(145deg,rgba(224,242,254,0.98),rgba(186,230,253,0.9))] text-sky-700 shadow-[0_0_0_1px_rgba(186,230,253,0.9),0_14px_28px_rgba(56,189,248,0.14)] sm:h-18 sm:w-18 sm:rounded-[1.6rem] dark:bg-[linear-gradient(145deg,rgba(2,132,199,0.3),rgba(56,189,248,0.2))] dark:text-sky-300">
               <Sparkles size={24} />
             </div>
-            <p class="mt-4 text-base font-semibold tracking-[-0.02em] text-slate-900 sm:mt-5 sm:text-lg">输入至少 2 个字符开始搜索</p>
-            <p class="mt-2 text-sm leading-6 text-slate-500 sm:leading-7">会在文章标题与正文中同时检索，结果按标题优先排序。</p>
+            <p class="mt-4 text-base font-semibold tracking-[-0.02em] text-slate-900 sm:mt-5 sm:text-lg dark:text-slate-100">输入至少 2 个字符开始搜索</p>
+            <p class="mt-2 text-sm leading-6 text-slate-500 sm:leading-7 dark:text-slate-400">会在文章标题与正文中同时检索，结果按标题优先排序。</p>
           </div>
 
-          <div data-search-loading class="search-state-card hidden rounded-[1.5rem] border border-sky-100 bg-white/88 px-5 py-8 text-center shadow-[0_16px_36px_rgba(148,163,184,0.12)] sm:rounded-[1.9rem] sm:px-6 sm:py-10">
-            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-[linear-gradient(145deg,rgba(224,242,254,0.98),rgba(186,230,253,0.9))] text-sky-700 shadow-[0_0_0_1px_rgba(186,230,253,0.9),0_14px_28px_rgba(56,189,248,0.14)] sm:h-18 sm:w-18 sm:rounded-[1.6rem]">
+          <div data-search-loading class="search-state-card hidden rounded-[1.5rem] border border-sky-100 bg-white/88 px-5 py-8 text-center shadow-[0_16px_36px_rgba(148,163,184,0.12)] sm:rounded-[1.9rem] sm:px-6 sm:py-10 dark:border-sky-900/60 dark:bg-slate-800/88 dark:shadow-[0_16px_36px_rgba(0,0,0,0.3)]">
+            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-[linear-gradient(145deg,rgba(224,242,254,0.98),rgba(186,230,253,0.9))] text-sky-700 shadow-[0_0_0_1px_rgba(186,230,253,0.9),0_14px_28px_rgba(56,189,248,0.14)] sm:h-18 sm:w-18 sm:rounded-[1.6rem] dark:bg-[linear-gradient(145deg,rgba(2,132,199,0.3),rgba(56,189,248,0.2))] dark:text-sky-300">
               <LoaderCircle size={24} class="animate-spin motion-reduce:animate-none" />
             </div>
-            <p class="mt-4 text-base font-semibold tracking-[-0.02em] text-slate-900 sm:mt-5 sm:text-lg">正在构建搜索索引</p>
-            <p class="mt-2 text-sm leading-6 text-slate-500 sm:leading-7">首次打开时会懒加载数据与 FlexSearch。</p>
+            <p class="mt-4 text-base font-semibold tracking-[-0.02em] text-slate-900 sm:mt-5 sm:text-lg dark:text-slate-100">正在构建搜索索引</p>
+            <p class="mt-2 text-sm leading-6 text-slate-500 sm:leading-7 dark:text-slate-400">首次打开时会懒加载数据与 FlexSearch。</p>
           </div>
 
-          <div data-search-empty class="search-state-card hidden rounded-[1.5rem] border border-sky-100 bg-white/88 px-5 py-8 text-center shadow-[0_16px_36px_rgba(148,163,184,0.12)] sm:rounded-[1.9rem] sm:px-6 sm:py-10">
-            <p class="text-base font-semibold tracking-[-0.02em] text-slate-900 sm:text-lg">没有找到匹配结果</p>
-            <p class="mt-2 text-sm leading-6 text-slate-500 sm:leading-7">试试更短的关键词，或换用标题中的核心词汇。</p>
+          <div data-search-empty class="search-state-card hidden rounded-[1.5rem] border border-sky-100 bg-white/88 px-5 py-8 text-center shadow-[0_16px_36px_rgba(148,163,184,0.12)] sm:rounded-[1.9rem] sm:px-6 sm:py-10 dark:border-sky-900/60 dark:bg-slate-800/88 dark:shadow-[0_16px_36px_rgba(0,0,0,0.3)]">
+            <p class="text-base font-semibold tracking-[-0.02em] text-slate-900 sm:text-lg dark:text-slate-100">没有找到匹配结果</p>
+            <p class="mt-2 text-sm leading-6 text-slate-500 sm:leading-7 dark:text-slate-400">试试更短的关键词，或换用标题中的核心词汇。</p>
           </div>
 
           <div data-search-results-wrap class="hidden space-y-4">
             <div class="flex flex-col items-start gap-2 px-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-              <p data-search-meta class="text-sm font-medium tracking-[0.02em] text-slate-700"></p>
-              <p class="text-xs uppercase tracking-[0.22em] text-sky-600/70">Enter 打开首个结果</p>
+              <p data-search-meta class="text-sm font-medium tracking-[0.02em] text-slate-700 dark:text-slate-300"></p>
+              <p class="text-xs uppercase tracking-[0.22em] text-sky-600/70 dark:text-sky-400/70">Enter 打开首个结果</p>
             </div>
             <div data-search-results class="space-y-3"></div>
           </div>
