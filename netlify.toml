@@ -40,6 +40,12 @@
     Content-Type = "text/plain; charset=utf-8"
     Cache-Control = "public, max-age=3600, must-revalidate"
 
+[[headers]]
+  for = "/posts/*.md"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
   ## Not needed for static site generators.
   #[[redirects]]

@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import astroLlmsTxt from '@4hse/astro-llms-txt';
+import { llmsPostIndex } from './src/integrations/llms-post-index';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { remarkReadingTime } from './src/lib/remark-reading-time.mjs';
@@ -89,7 +90,7 @@ export default defineConfig({
       description:
         '蔚蓝之家是一个以前端开发、全栈实践与 AI 应用探索为主题的中文技术博客。',
       details:
-        '建议先阅读 /llms.txt 获取站点索引；需要完整正文时使用 /llms-full.txt；token 预算有限时使用 /llms-small.txt。文章正文位于 /posts/ 路径下。',
+        '建议先阅读 /llms.txt 获取站点索引（含每篇文章的 .md 链接）；单篇 Markdown 位于 /posts/{slug}.md；需要完整正文时使用 /llms-full.txt；token 预算有限时使用 /llms-small.txt。',
       notes: '- 内容由构建时从站点 HTML 自动提取生成。',
       optionalLinks: [
         {
@@ -147,6 +148,7 @@ export default defineConfig({
       ],
       pageSeparator: '\n\n---\n\n',
     }),
+    llmsPostIndex(),
   ],
   vite: {
     plugins: [tailwind()],
