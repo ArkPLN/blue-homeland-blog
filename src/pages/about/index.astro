@@ -14,46 +14,46 @@ const profile = {
   followers: 2,
   publicRepos: 6,
   joinedAt: '2024-08-15',
-  profileUpdatedAt: '2026-03-27',
+  profileUpdatedAt: '2026-07-17',
 };
 
 const featuredRepos = [
+  {
+    name: 'dbx',
+    href: 'https://github.com/ArkPLN/dbx',
+    description: '轻量级跨平台数据库客户端（fork），支持 MySQL、PostgreSQL、SQLite、Redis 等 90+ 数据库，内置 AI、MCP Server、CLI 与桌面端。',
+    stack: 'Rust',
+    stars: 0,
+    updatedAt: '2026-08-27',
+  },
   {
     name: 'ArkPLN.github.io',
     href: 'https://github.com/ArkPLN/ArkPLN.github.io',
     description: '个人站点仓库，持续更新博客与前端展示页面。',
     stack: 'HTML / CSS / JavaScript',
     stars: 1,
-    updatedAt: '2026-04-08',
+    updatedAt: '2026-06-10',
   },
   {
     name: 'MiniWordCards',
     href: 'https://github.com/ArkPLN/MiniWordCards',
-    description: '轻量词卡应用，支持 CSV 导入、快速检索和闪卡复习。',
-    stack: 'Flutter / Dart',
+    description: '「小小词卡」轻量 Flutter 词汇学习应用，支持 CSV 导入、快速查词和抽认卡复习，面向小众词表场景。',
+    stack: 'Flutter / Dart / HTML',
     stars: 0,
-    updatedAt: '2026-03-27',
+    updatedAt: '2026-05-08',
   },
   {
-    name: 'auralink-backend',
-    href: 'https://github.com/ArkPLN/auralink-backend',
-    description: '面向社团与社区平台的后端服务，强调 AI 能力接入。',
-    stack: 'TypeScript / Node.js',
+    name: 'ThinkCMF6-Skills',
+    href: 'https://github.com/ArkPLN/ThinkCMF6-Skills',
+    description: 'ThinkCMF6 文档非官方 Skills 封装，适配 Cursor、Claude Code、Codex、GitHub Copilot 等 AI 编码工具。',
+    stack: 'Python / ThinkCMF6 / PHP',
     stars: 0,
-    updatedAt: '2026-02-22',
-  },
-  {
-    name: 'lite-wiki_front',
-    href: 'https://github.com/ArkPLN/lite-wiki_front',
-    description: 'AI 辅助文档编辑与团队协作前端应用。',
-    stack: 'React / Vite / TypeScript',
-    stars: 1,
-    updatedAt: '2025-12-15',
+    updatedAt: '2026-05-06',
   },
   {
     name: 'better-react-skills',
     href: 'https://github.com/ArkPLN/better-react-skills',
-    description: '围绕 React 前端工程实践整理的技能与指导仓库。',
+    description: '围绕 React 前端工程实践整理的技能与指导仓库，面向 Agent Skills 提供更稳定的高质量指引。',
     stack: 'React / Frontend Guidelines',
     stars: 3,
     updatedAt: '2026-01-24',
@@ -85,18 +85,18 @@ const pageDescription = '关于蔚蓝之家与作者 ArkPLN 的简介、项目�
   </div>
 
   <main class="mx-auto w-full max-w-6xl space-y-6 p-4 pt-20">
-    <section class="rounded-xl bg-white/85 p-6 shadow-sm backdrop-blur-sm dark:bg-slate-800/85">
+    <section class="surface-panel p-6">
       <div class="flex items-start justify-between gap-4">
         <div>
-          <p class="text-xs font-semibold tracking-[0.18em] text-sky-700 dark:text-sky-400">ABOUT</p>
-          <h2 class="mt-1 text-3xl font-bold dark:text-slate-100">{profile.username}</h2>
-          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">{profile.bio}</p>
+          <p class="eyebrow">ABOUT</p>
+          <h2 class="page-title mt-1 text-3xl font-bold">{profile.username}</h2>
+          <p class="card-copy mt-3 text-sm">{profile.bio}</p>
           <div class="mt-4 flex flex-wrap gap-2">
             <a
               href={profile.github}
               target="_blank"
               rel="noreferrer"
-              class="inline-flex items-center gap-1 rounded-md bg-slate-900 px-3 py-2 text-sm text-white hover:bg-slate-800"
+              class="profile-action profile-action--github"
             >
               <GitBranch size={16} />
               GitHub主页
@@ -105,7 +105,7 @@ const pageDescription = '关于蔚蓝之家与作者 ArkPLN 的简介、项目�
               href={profile.blog}
               target="_blank"
               rel="noreferrer"
-              class="inline-flex items-center gap-1 rounded-md bg-[#304154] px-3 py-2 text-sm text-white hover:bg-gray-500"
+              class="profile-action profile-action--blog"
             >
               <Globe size={16} />
               个人博客（旧）
@@ -114,7 +114,7 @@ const pageDescription = '关于蔚蓝之家与作者 ArkPLN 的简介、项目�
               href={profile.juejin}
               target="_blank"
               rel="noreferrer"
-              class="inline-flex items-center gap-1 rounded-md bg-[#367efd] px-3 py-2 text-sm text-white hover:bg-sky-500"
+              class="profile-action profile-action--juejin"
             >
               <BookOpenText size={16} />
               掘金社区
@@ -124,7 +124,7 @@ const pageDescription = '关于蔚蓝之家与作者 ArkPLN 的简介、项目�
         <img
           src={profile.avatar}
           alt={`${profile.username} avatar`}
-          class="h-20 w-20 shrink-0 rounded-full border border-slate-200 object-cover md:h-24 md:w-24 dark:border-slate-700"
+          class="profile-avatar h-20 w-20 shrink-0 rounded-full object-cover md:h-24 md:w-24"
           loading="lazy"
           referrerpolicy="no-referrer"
         />
@@ -132,35 +132,35 @@ const pageDescription = '关于蔚蓝之家与作者 ArkPLN 的简介、项目�
     </section>
 
     <section class="grid gap-6 md:grid-cols-2">
-      <article class="rounded-xl bg-white/85 p-6 shadow-sm backdrop-blur-sm dark:bg-slate-800/85">
-        <h3 class="text-lg font-semibold dark:text-slate-100">Profile Snapshot</h3>
+      <article class="surface-panel p-6">
+        <h3 class="section-title text-lg font-semibold">Profile Snapshot</h3>
         <ul class="mt-4 space-y-2 text-sm">
-          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Company</span><strong class="dark:text-slate-200">{profile.company}</strong></li>
-          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Location</span><strong class="dark:text-slate-200">{profile.location}</strong></li>
-          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Joined GitHub</span><strong class="dark:text-slate-200">{profile.joinedAt}</strong></li>
-          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Followers</span><strong class="dark:text-slate-200">{profile.followers}</strong></li>
-          <li class="flex items-center justify-between border-b border-slate-100 pb-2 dark:border-slate-700"><span class="text-slate-500 dark:text-slate-400">Public Repos</span><strong class="dark:text-slate-200">{profile.publicRepos}</strong></li>
-          <li class="flex items-center justify-between"><span class="text-slate-500 dark:text-slate-400">Profile Updated</span><strong class="dark:text-slate-200">{profile.profileUpdatedAt}</strong></li>
+          <li class="profile-row flex items-center justify-between pb-2"><span class="profile-label">Company</span><strong class="profile-value">{profile.company}</strong></li>
+          <li class="profile-row flex items-center justify-between pb-2"><span class="profile-label">Location</span><strong class="profile-value">{profile.location}</strong></li>
+          <li class="profile-row flex items-center justify-between pb-2"><span class="profile-label">Joined GitHub</span><strong class="profile-value">{profile.joinedAt}</strong></li>
+          <li class="profile-row flex items-center justify-between pb-2"><span class="profile-label">Followers</span><strong class="profile-value">{profile.followers}</strong></li>
+          <li class="profile-row flex items-center justify-between pb-2"><span class="profile-label">Public Repos</span><strong class="profile-value">{profile.publicRepos}</strong></li>
+          <li class="flex items-center justify-between"><span class="profile-label">Profile Updated</span><strong class="profile-value">{profile.profileUpdatedAt}</strong></li>
         </ul>
       </article>
 
-      <article class="rounded-xl bg-white/85 p-6 shadow-sm backdrop-blur-sm dark:bg-slate-800/85">
-        <h3 class="text-lg font-semibold dark:text-slate-100">Focus</h3>
-        <p class="mt-4 text-sm leading-7 text-slate-700 dark:text-slate-300">
+      <article class="surface-panel p-6">
+        <h3 class="section-title text-lg font-semibold">Focus</h3>
+        <p class="card-copy mt-4 text-sm leading-7">
           关注AI前沿技术发展，专注AI应用+大前端开发领域，积极探索AI在前端工程中的应用与工程化实践，分享在学习和项目开发中的心得体会。
         </p>
-        <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">Data source: GitHub public profile and repositories (2026-04-09)</p>
+          <p class="muted-text mt-3 text-xs">Data source: GitHub public profile and repositories (2026-08-31)</p>
       </article>
     </section>
 
-    <section class="rounded-xl bg-white/85 p-6 shadow-sm backdrop-blur-sm dark:bg-slate-800/85">
+    <section class="surface-panel p-6">
       <div class="flex items-center justify-between gap-3">
-        <h3 class="text-lg font-semibold dark:text-slate-100">Featured Repositories</h3>
+        <h3 class="section-title text-lg font-semibold">Featured Repositories</h3>
         <a
           href={profile.github + '?tab=repositories'}
           target="_blank"
           rel="noreferrer"
-          class="text-sm font-medium text-sky-700 hover:text-sky-600"
+          class="text-link text-sm font-medium"
         >
           View All
         </a>
@@ -173,11 +173,11 @@ const pageDescription = '关于蔚蓝之家与作者 ArkPLN 的简介、项目�
               href={repo.href}
               target="_blank"
               rel="noreferrer"
-              class="rounded-lg border border-slate-200 bg-slate-50/70 p-4 transition hover:border-sky-300 hover:bg-white dark:border-slate-700 dark:bg-slate-700/50 dark:hover:border-sky-600 dark:hover:bg-slate-700"
+              class="surface-card interactive-card p-4"
             >
-              <h4 class="text-base font-semibold text-slate-900 dark:text-slate-100">{repo.name}</h4>
-              <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">{repo.description}</p>
-              <div class="mt-3 flex flex-wrap gap-3 text-xs text-slate-500 dark:text-slate-400">
+              <h4 class="card-title text-base font-semibold">{repo.name}</h4>
+              <p class="card-copy mt-1 text-sm">{repo.description}</p>
+              <div class="card-meta mt-3 flex flex-wrap gap-3 text-xs">
                 <span>Stack: {repo.stack}</span>
                 <span>Stars: {repo.stars}</span>
                 <span>Updated: {repo.updatedAt}</span>
@@ -189,46 +189,3 @@ const pageDescription = '关于蔚蓝之家与作者 ArkPLN 的简介、项目�
     </section>
   </main>
 </BaseLayout>
-
-<style>
-  .page-bg-wrap {
-    position: fixed;
-    inset: 0;
-    z-index: -20;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .page-bg-layer {
-    position: absolute;
-    inset: 0;
-    transition: opacity 900ms ease-in-out;
-  }
-
-  .page-bg-light {
-    opacity: 1;
-  }
-
-  .page-bg-dark {
-    opacity: 0;
-  }
-
-  :global(.dark) .page-bg-light {
-    opacity: 0;
-  }
-
-  :global(.dark) .page-bg-dark {
-    opacity: 1;
-  }
-
-  .page-bg-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(241, 245, 249, 0.78);
-    transition: background 900ms ease-in-out;
-  }
-
-  :global(.dark) .page-bg-overlay {
-    background: rgba(11, 17, 32, 0.82);
-  }
-</style>

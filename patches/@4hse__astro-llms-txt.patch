@@ -1,0 +1,21 @@
+diff --git a/src/index.ts b/src/index.ts
+index c17584cd3bf08316241f353624711e7fbdc62d3d..40482e71478d150a6498b57eac8acbc6391d3d9b 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -1,6 +1,7 @@
+ import type { AstroConfig, AstroIntegration } from "astro";
+ import fs from "fs/promises";
+ import path from "path";
++import { fileURLToPath } from "node:url";
+ import { JSDOM } from "jsdom";
+ import micromatch from "micromatch";
+ import { entryToSimpleMarkdown } from "./entryToSimpleMarkdown";
+@@ -56,7 +57,7 @@ export default function astroLlmsTxt(configOptions: LlmsConfig): AstroIntegratio
+         const context : PluginContext = {
+           config: configOptions,
+           astroConfig,
+-          distDir: dir.pathname,
++          distDir: fileURLToPath(dir),
+           pages: pages.map(page => ({ pathname: page.pathname })),
+         };
+ 

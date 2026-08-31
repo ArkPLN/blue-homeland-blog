@@ -60,6 +60,7 @@ const themeScript = `
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM index" />
     <meta property="og:site_name" content="蔚蓝之家" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:type" content={ogType} />
@@ -74,7 +75,7 @@ const themeScript = `
     <meta name="twitter:image" content={resolvedOgImage} />
     <slot name="head" />
   </head>
-  <body class="min-h-screen text-slate-900 dark:text-slate-100">
+  <body class="min-h-screen">
     <SiteHeader {...siteHeaderProps} />
     <slot />
   </body>

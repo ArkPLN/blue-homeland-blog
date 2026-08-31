@@ -7,3 +7,9 @@ Disallow: /node_modules/
 Disallow: /dist/
 
 Sitemap: https://arkpln.netlify.app/sitemap-index.xml
+
+# LLM-friendly site indexes
+# https://llmstxt.org/
+LLMs-Txt: https://arkpln.netlify.app/llms.txt
+LLMs-Full-Txt: https://arkpln.netlify.app/llms-full.txt
+LLMs-Small-Txt: https://arkpln.netlify.app/llms-small.txt

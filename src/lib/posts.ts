@@ -83,7 +83,7 @@ export function groupPostsByTag(posts: PostSummary[]): Map<string, PostSummary[]
   for (const post of posts) {
     for (const tag of post.tags) {
       const current = grouped.get(tag) ?? [];
-      current.push(tag);
+      current.push(post);
       grouped.set(tag, current);
     }
   }

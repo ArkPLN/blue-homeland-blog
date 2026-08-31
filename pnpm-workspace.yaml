@@ -1,3 +1,5 @@
 allowBuilds:
   esbuild: true
   sharp: true
+patchedDependencies:
+  '@4hse/astro-llms-txt': patches/@4hse__astro-llms-txt.patch

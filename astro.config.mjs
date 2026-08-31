@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import astroLlmsTxt from '@4hse/astro-llms-txt';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { remarkReadingTime } from './src/lib/remark-reading-time.mjs';
@@ -82,6 +83,69 @@ export default defineConfig({
         }
         return item;
       },
+    }),
+    astroLlmsTxt({
+      title: '蔚蓝之家',
+      description:
+        '蔚蓝之家是一个以前端开发、全栈实践与 AI 应用探索为主题的中文技术博客。',
+      details:
+        '建议先阅读 /llms.txt 获取站点索引；需要完整正文时使用 /llms-full.txt；token 预算有限时使用 /llms-small.txt。文章正文位于 /posts/ 路径下。',
+      notes: '- 内容由构建时从站点 HTML 自动提取生成。',
+      optionalLinks: [
+        {
+          label: 'About',
+          url: 'https://arkpln.netlify.app/about/',
+          description: '作者简介与精选仓库',
+        },
+        {
+          label: 'GitHub',
+          url: 'https://github.com/ArkPLN',
+          description: 'ArkPLN 的 GitHub 主页',
+        },
+        {
+          label: 'Sitemap',
+          url: 'https://arkpln.netlify.app/sitemap-index.xml',
+          description: '站点地图索引',
+        },
+      ],
+      docSet: [
+        {
+          title: '博客文章全文',
+          description: '全部文章与 About 页的完整 Markdown 正文',
+          url: '/llms-full.txt',
+          include: ['posts/**', 'about/**'],
+          promote: ['posts/**'],
+          mainSelector: 'main',
+          ignoreSelectors: [
+            'header',
+            '.content-sidebar',
+            '[data-toc-nav]',
+            '.post-bg-wrap',
+            '.page-bg-wrap',
+            '.home-bg-wrap',
+            '[data-global-search-root]',
+          ],
+        },
+        {
+          title: '博客文章结构索引',
+          description: '仅保留标题与列表结构的精简版，适合低 token 场景',
+          url: '/llms-small.txt',
+          include: ['posts/**'],
+          promote: ['posts/**'],
+          onlyStructure: true,
+          mainSelector: 'main',
+          ignoreSelectors: [
+            'header',
+            '.content-sidebar',
+            '[data-toc-nav]',
+            '.post-bg-wrap',
+            '.page-bg-wrap',
+            '.home-bg-wrap',
+            '[data-global-search-root]',
+          ],
+        },
+      ],
+      pageSeparator: '\n\n---\n\n',
     }),
   ],
   vite: {
