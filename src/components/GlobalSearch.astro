@@ -17,59 +17,60 @@ const {
   <button
     type="button"
     data-search-open
-    class="inline-flex h-11 items-center gap-2 rounded-full border border-white/18 bg-slate-950/18 px-3.5 text-sm font-medium text-white shadow-[0_14px_34px_rgba(3,7,18,0.18)] backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:border-[rgba(116,167,218,0.55)] hover:bg-white/16 hover:shadow-[0_18px_42px_rgba(48,92,146,0.24)] focus:outline-none focus:ring-2 focus:ring-[rgba(191,219,254,0.8)] focus:ring-offset-2 focus:ring-offset-[#33a9e8] motion-reduce:transform-none motion-reduce:transition-none dark:border-white/20 dark:bg-white/10 dark:hover:bg-white/20 dark:focus:ring-offset-slate-900"
+    class="header-search-button"
+    aria-label="打开全局搜索"
     aria-haspopup="dialog"
     aria-controls="global-search-dialog"
     aria-expanded="false"
   >
-    <span class="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/12">
+    <span class="header-search-icon">
       <Search size={17} />
     </span>
     <span class="hidden sm:inline">搜索</span>
-    <span class="hidden rounded-full border border-white/14 bg-white/8 px-2 py-0.5 text-[11px] tracking-[0.16em] text-blue-50/90 md:inline">CTRL K</span>
+    <span class="header-shortcut hidden md:inline">CTRL K</span>
   </button>
 
   <div
     id="global-search-dialog"
     data-search-overlay
-    class="pointer-events-none fixed inset-0 z-[70] hidden opacity-0 transition duration-300 ease-out motion-reduce:transition-none"
+    class="search-overlay pointer-events-none fixed inset-0 z-[70] hidden opacity-0"
     aria-hidden="true"
   >
-    <div data-search-backdrop class="absolute inset-0 bg-[linear-gradient(180deg,rgba(240,249,255,0.72),rgba(226,232,240,0.62))] backdrop-blur-sm dark:bg-[linear-gradient(180deg,rgba(2,6,23,0.78),rgba(15,23,42,0.72))]"></div>
-    <div class="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.16),transparent_72%)]"></div>
+    <div data-search-backdrop class="search-backdrop absolute inset-0"></div>
+    <div class="search-ambient pointer-events-none absolute inset-x-0 top-0 h-56"></div>
 
     <div class="flex min-h-screen items-center justify-center px-3 py-3 sm:px-6 sm:py-6">
       <section
         role="dialog"
         aria-modal="true"
         aria-labelledby="global-search-title"
-        class="search-panel-shell pointer-events-auto flex max-h-[calc(100dvh-1.5rem)] w-full max-w-[min(94vw,1040px)] translate-y-6 scale-[0.97] flex-col overflow-hidden rounded-[1.5rem] border border-white/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(248,250,252,0.96))] shadow-[0_28px_80px_rgba(15,23,42,0.18)] ring-1 ring-sky-100/80 transition duration-300 ease-out sm:max-h-[min(78vh,760px)] sm:max-w-[min(90vw,1040px)] sm:rounded-[2rem] motion-reduce:transform-none motion-reduce:transition-none dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(17,24,39,0.96),rgba(15,23,42,0.96))] dark:shadow-[0_28px_80px_rgba(0,0,0,0.5)] dark:ring-sky-900/40"
+        class="search-panel-shell pointer-events-auto flex max-h-[calc(100dvh-1.5rem)] w-full max-w-[min(94vw,1040px)] translate-y-6 scale-[0.97] flex-col overflow-hidden sm:max-h-[min(78vh,760px)] sm:max-w-[min(90vw,1040px)]"
         data-search-panel
       >
         <div class="search-panel-noise"></div>
-        <div class="relative border-b border-slate-200/80 bg-[linear-gradient(180deg,rgba(240,249,255,0.92),rgba(255,255,255,0.94))] px-4 py-4 sm:px-7 sm:py-5 dark:border-slate-700/60 dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.92),rgba(17,24,39,0.94))]">
+        <div class="search-panel-header relative px-4 py-4 sm:px-7 sm:py-5">
           <div class="flex items-center gap-3">
-            <div class="flex h-11 w-11 items-center justify-center rounded-[1.1rem] bg-[linear-gradient(145deg,rgba(186,230,253,0.95),rgba(224,242,254,0.88))] text-sky-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_10px_24px_rgba(56,189,248,0.14)] ring-1 ring-sky-100 sm:h-13 sm:w-13 sm:rounded-[1.35rem] dark:bg-[linear-gradient(145deg,rgba(2,132,199,0.35),rgba(56,189,248,0.25))] dark:text-sky-300 dark:ring-sky-900/50">
+            <div class="search-dialog-icon flex h-11 w-11 items-center justify-center sm:h-13 sm:w-13">
               <Search size={18} />
             </div>
             <div class="min-w-0 flex-1">
-              <p id="global-search-title" class="text-[1.45rem] font-semibold tracking-[-0.03em] text-slate-900 sm:text-[1.7rem] dark:text-slate-100">全局搜索</p>
-              <p class="mt-1 text-[13px] text-slate-500 sm:text-sm dark:text-slate-400">支持标题和正文内容检索</p>
+              <p id="global-search-title" class="search-dialog-title text-[1.45rem] font-semibold sm:text-[1.7rem]">全局搜索</p>
+              <p class="search-dialog-subtitle mt-1 text-[13px] sm:text-sm">支持标题和正文内容检索</p>
             </div>
             <button
               type="button"
               data-search-close
-              class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-500 transition duration-300 hover:rotate-90 hover:border-sky-200 hover:bg-sky-50 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200 sm:h-12 sm:w-12 motion-reduce:transform-none motion-reduce:transition-none dark:border-slate-600 dark:bg-slate-700/90 dark:text-slate-400 dark:hover:border-sky-700 dark:hover:bg-slate-700 dark:hover:text-sky-300"
+              class="search-close-button inline-flex h-11 w-11 items-center justify-center sm:h-12 sm:w-12"
               aria-label="关闭搜索"
             >
               <X size={18} />
             </button>
           </div>
 
-          <div class="mt-4 overflow-hidden rounded-[1.45rem] border border-sky-100 bg-white/92 shadow-[0_14px_36px_rgba(148,163,184,0.14)] sm:mt-5 sm:rounded-[1.7rem] dark:border-sky-900/50 dark:bg-slate-900/92 dark:shadow-[0_14px_36px_rgba(0,0,0,0.3)]">
+          <div class="search-input-shell mt-4 overflow-hidden sm:mt-5">
             <label for="global-search-input" class="sr-only">搜索标题或正文</label>
             <div class="flex items-center gap-3 px-4 py-3 sm:px-5 sm:py-4">
-              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-50 text-sky-700 ring-1 ring-sky-100 sm:h-11 sm:w-11 dark:bg-sky-950/60 dark:text-sky-300 dark:ring-sky-900/50">
+              <span class="search-input-icon flex h-10 w-10 shrink-0 items-center justify-center sm:h-11 sm:w-11">
                 <Search size={18} />
               </span>
               <input
@@ -78,44 +79,44 @@ const {
                 type="search"
                 inputmode="search"
                 placeholder={placeholder}
-                class="h-11 min-w-0 flex-1 bg-transparent text-[1rem] font-medium tracking-[-0.02em] text-slate-800 outline-none placeholder:text-slate-400/80 sm:h-12 sm:text-[1.05rem] dark:text-slate-100 dark:placeholder:text-slate-500"
+                class="search-input h-11 min-w-0 flex-1 bg-transparent text-[1rem] font-medium outline-none sm:h-12 sm:text-[1.05rem]"
                 autocomplete="off"
                 spellcheck="false"
               />
               <div class="hidden items-center gap-2 md:flex">
-                <span class="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium tracking-[0.2em] text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">ESC</span>
-                <span class="rounded-full border border-sky-100 bg-sky-50 px-2.5 py-1 text-[11px] font-medium tracking-[0.2em] text-sky-700 dark:border-sky-900/50 dark:bg-sky-950/60 dark:text-sky-300">ENTER</span>
+                <span class="search-key">ESC</span>
+                <span class="search-key search-key--accent">ENTER</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="relative min-h-0 flex-1 overflow-y-auto bg-[linear-gradient(180deg,rgba(248,250,252,0.96),rgba(240,249,255,0.82))] px-4 py-4 sm:px-7 sm:py-5 dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.82))]">
-          <div data-search-idle class="search-state-card rounded-[1.5rem] border border-dashed border-sky-200 bg-white/88 px-5 py-8 text-center shadow-[0_16px_36px_rgba(148,163,184,0.12)] sm:rounded-[1.9rem] sm:px-6 sm:py-10 dark:border-sky-900/60 dark:bg-slate-800/88 dark:shadow-[0_16px_36px_rgba(0,0,0,0.3)]">
-            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-[linear-gradient(145deg,rgba(224,242,254,0.98),rgba(186,230,253,0.9))] text-sky-700 shadow-[0_0_0_1px_rgba(186,230,253,0.9),0_14px_28px_rgba(56,189,248,0.14)] sm:h-18 sm:w-18 sm:rounded-[1.6rem] dark:bg-[linear-gradient(145deg,rgba(2,132,199,0.3),rgba(56,189,248,0.2))] dark:text-sky-300">
+        <div class="search-panel-body relative min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-7 sm:py-5">
+          <div data-search-idle class="search-state-card px-5 py-8 text-center sm:px-6 sm:py-10">
+            <div class="search-state-icon mx-auto flex h-16 w-16 items-center justify-center sm:h-18 sm:w-18">
               <Sparkles size={24} />
             </div>
-            <p class="mt-4 text-base font-semibold tracking-[-0.02em] text-slate-900 sm:mt-5 sm:text-lg dark:text-slate-100">输入至少 2 个字符开始搜索</p>
-            <p class="mt-2 text-sm leading-6 text-slate-500 sm:leading-7 dark:text-slate-400">会在文章标题与正文中同时检索，结果按标题优先排序。</p>
+            <p class="search-state-title mt-4 text-base font-semibold sm:mt-5 sm:text-lg">输入至少 2 个字符开始搜索</p>
+            <p class="search-state-description mt-2 text-sm leading-6 sm:leading-7">会在文章标题与正文中同时检索，结果按标题优先排序。</p>
           </div>
 
-          <div data-search-loading class="search-state-card hidden rounded-[1.5rem] border border-sky-100 bg-white/88 px-5 py-8 text-center shadow-[0_16px_36px_rgba(148,163,184,0.12)] sm:rounded-[1.9rem] sm:px-6 sm:py-10 dark:border-sky-900/60 dark:bg-slate-800/88 dark:shadow-[0_16px_36px_rgba(0,0,0,0.3)]">
-            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-[1.35rem] bg-[linear-gradient(145deg,rgba(224,242,254,0.98),rgba(186,230,253,0.9))] text-sky-700 shadow-[0_0_0_1px_rgba(186,230,253,0.9),0_14px_28px_rgba(56,189,248,0.14)] sm:h-18 sm:w-18 sm:rounded-[1.6rem] dark:bg-[linear-gradient(145deg,rgba(2,132,199,0.3),rgba(56,189,248,0.2))] dark:text-sky-300">
+          <div data-search-loading class="search-state-card hidden px-5 py-8 text-center sm:px-6 sm:py-10">
+            <div class="search-state-icon mx-auto flex h-16 w-16 items-center justify-center sm:h-18 sm:w-18">
               <LoaderCircle size={24} class="animate-spin motion-reduce:animate-none" />
             </div>
-            <p class="mt-4 text-base font-semibold tracking-[-0.02em] text-slate-900 sm:mt-5 sm:text-lg dark:text-slate-100">正在构建搜索索引</p>
-            <p class="mt-2 text-sm leading-6 text-slate-500 sm:leading-7 dark:text-slate-400">首次打开时会懒加载数据与 FlexSearch。</p>
+            <p class="search-state-title mt-4 text-base font-semibold sm:mt-5 sm:text-lg">正在构建搜索索引</p>
+            <p class="search-state-description mt-2 text-sm leading-6 sm:leading-7">首次打开时会懒加载数据与 FlexSearch。</p>
           </div>
 
-          <div data-search-empty class="search-state-card hidden rounded-[1.5rem] border border-sky-100 bg-white/88 px-5 py-8 text-center shadow-[0_16px_36px_rgba(148,163,184,0.12)] sm:rounded-[1.9rem] sm:px-6 sm:py-10 dark:border-sky-900/60 dark:bg-slate-800/88 dark:shadow-[0_16px_36px_rgba(0,0,0,0.3)]">
-            <p class="text-base font-semibold tracking-[-0.02em] text-slate-900 sm:text-lg dark:text-slate-100">没有找到匹配结果</p>
-            <p class="mt-2 text-sm leading-6 text-slate-500 sm:leading-7 dark:text-slate-400">试试更短的关键词，或换用标题中的核心词汇。</p>
+          <div data-search-empty class="search-state-card hidden px-5 py-8 text-center sm:px-6 sm:py-10">
+            <p class="search-state-title text-base font-semibold sm:text-lg">没有找到匹配结果</p>
+            <p class="search-state-description mt-2 text-sm leading-6 sm:leading-7">试试更短的关键词，或换用标题中的核心词汇。</p>
           </div>
 
           <div data-search-results-wrap class="hidden space-y-4">
             <div class="flex flex-col items-start gap-2 px-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-              <p data-search-meta class="text-sm font-medium tracking-[0.02em] text-slate-700 dark:text-slate-300"></p>
-              <p class="text-xs uppercase tracking-[0.22em] text-sky-600/70 dark:text-sky-400/70">Enter 打开首个结果</p>
+              <p data-search-meta class="search-results-meta text-sm font-medium"></p>
+              <p class="search-results-hint text-xs uppercase">Enter 打开首个结果</p>
             </div>
             <div data-search-results class="space-y-3"></div>
           </div>
@@ -130,8 +131,27 @@ const {
 </script>
 
 <style>
+  .search-overlay {
+    transition: opacity var(--motion-slow) var(--ease-standard);
+  }
+
+  .search-backdrop {
+    background: color-mix(in srgb, var(--color-canvas) 72%, transparent);
+    backdrop-filter: blur(8px) saturate(108%);
+  }
+
+  .search-ambient {
+    background: radial-gradient(circle at top, var(--color-brand-soft), transparent 72%);
+  }
+
   .search-panel-shell {
     position: relative;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-dialog);
+    background: linear-gradient(180deg, var(--color-surface-1), var(--color-surface-solid));
+    box-shadow: var(--shadow-medium);
+    backdrop-filter: blur(18px) saturate(112%);
+    transition: transform var(--motion-slow) var(--ease-enter), opacity var(--motion-slow) var(--ease-standard);
   }
 
   .search-panel-shell::before {
@@ -139,51 +159,202 @@ const {
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at 12% 10%, rgba(56, 189, 248, 0.12), transparent 22%),
-      radial-gradient(circle at 86% 14%, rgba(186, 230, 253, 0.3), transparent 18%);
+      radial-gradient(circle at 12% 10%, var(--color-brand-soft), transparent 23%),
+      radial-gradient(circle at 86% 14%, color-mix(in srgb, var(--color-brand) 13%, transparent), transparent 20%);
     pointer-events: none;
   }
 
   .search-panel-noise {
     position: absolute;
     inset: 0;
-    opacity: 0.03;
+    opacity: 0.025;
     pointer-events: none;
     background-image:
-      linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
-    background-size: 22px 22px;
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 24px 24px;
     mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 56%);
   }
 
-  .search-panel-active {
-    animation: search-panel-glow 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  .search-panel-header {
+    border-bottom: 1px solid var(--color-border);
+    background: linear-gradient(180deg, var(--color-surface-3), var(--color-surface-1));
+  }
+
+  .search-dialog-icon,
+  .search-input-icon,
+  .search-state-icon {
+    border-radius: var(--radius-panel);
+    background: var(--color-brand-soft);
+    color: var(--color-brand-strong);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-brand) 18%, transparent);
+  }
+
+  .search-input-icon {
+    border-radius: var(--radius-pill);
+  }
+
+  .search-dialog-title,
+  .search-state-title {
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+  }
+
+  .search-dialog-subtitle,
+  .search-state-description,
+  .search-results-meta {
+    color: var(--color-text-muted);
+  }
+
+  .search-close-button {
+    flex: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-1);
+    color: var(--color-text-muted);
+    transition: transform var(--motion-base) var(--ease-enter), color var(--motion-base) var(--ease-standard), border-color var(--motion-base) var(--ease-standard), background-color var(--motion-base) var(--ease-standard);
+  }
+
+  .search-input-shell,
+  .search-state-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-panel);
+    background: var(--color-surface-1);
+    box-shadow: var(--shadow-low);
+  }
+
+  .search-input-shell {
+    transition: border-color var(--motion-base) var(--ease-standard), box-shadow var(--motion-base) var(--ease-standard);
+  }
+
+  .search-input-shell:focus-within {
+    border-color: color-mix(in srgb, var(--color-brand) 48%, transparent);
+    box-shadow: var(--shadow-low), var(--shadow-focus);
+  }
+
+  .search-input {
+    color: var(--color-text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .search-input:focus-visible {
+    box-shadow: none;
+  }
+
+  .search-input::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0.72;
+  }
+
+  .search-key {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-3);
+    padding: 0.25rem 0.625rem;
+    color: var(--color-text-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+  }
+
+  .search-key--accent {
+    background: var(--color-brand-soft);
+    color: var(--color-brand-strong);
+  }
+
+  .search-panel-body {
+    background: linear-gradient(180deg, var(--color-surface-2), var(--color-surface-3));
   }
 
   .search-state-card {
-    animation: search-state-rise 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    border-style: dashed;
   }
 
-  .search-result-item {
+  .search-results-hint {
+    color: var(--color-brand-strong);
+    letter-spacing: 0.18em;
+    opacity: 0.72;
+  }
+
+  .search-panel-active {
+    animation: search-panel-glow var(--motion-slow) var(--ease-enter);
+  }
+
+  .search-state-card {
+    animation: search-state-rise var(--motion-slow) var(--ease-enter);
+  }
+
+  :global(.search-result-item) {
     opacity: 0;
-    transform: translateY(12px);
-    animation: search-result-rise 380ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    transform: translateY(8px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    background: var(--color-surface-1);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-low);
+    animation: search-result-rise var(--motion-slow) var(--ease-enter) forwards;
     animation-delay: var(--search-stagger, 0ms);
+    transition: transform var(--motion-base) var(--ease-enter), border-color var(--motion-base) var(--ease-standard), background-color var(--motion-base) var(--ease-standard), box-shadow var(--motion-base) var(--ease-standard);
+  }
+
+  :global(.search-result-title) {
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    transition: color var(--motion-base) var(--ease-standard);
+  }
+
+  :global(.search-result-excerpt) { color: var(--color-text-secondary); }
+  :global(.search-result-date) {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-3);
+    padding: 0.25rem 0.625rem;
+    color: var(--color-text-muted);
+  }
+
+  :global(.search-result-badge) {
+    border-radius: var(--radius-pill);
+    padding: 0.25rem 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+  }
+
+  :global(.search-result-badge--title) { background: var(--color-brand-soft); color: var(--color-brand-strong); }
+  :global(.search-result-badge--body) { background: var(--color-tag-soft); color: var(--color-tag); }
+
+  @media (hover: hover) {
+    .search-close-button:hover {
+      transform: rotate(45deg);
+      border-color: color-mix(in srgb, var(--color-brand) 42%, transparent);
+      background: var(--color-brand-soft);
+      color: var(--color-brand-strong);
+    }
+
+    :global(.search-result-item:hover) {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--color-brand) 42%, transparent);
+      background: var(--color-surface-solid);
+      box-shadow: var(--shadow-low);
+    }
+
+    :global(.search-result-item:hover .search-result-title) { color: var(--color-brand-strong); }
   }
 
   @keyframes search-panel-glow {
     0% {
-      box-shadow: 0 12px 34px rgba(148, 163, 184, 0.14);
+      box-shadow: var(--shadow-low);
     }
     100% {
-      box-shadow: 0 28px 80px rgba(148, 163, 184, 0.2), 0 0 0 1px rgba(186, 230, 253, 0.6);
+      box-shadow: var(--shadow-medium), 0 0 0 1px var(--color-brand-soft);
     }
   }
 
   @keyframes search-state-rise {
     0% {
       opacity: 0;
-      transform: translateY(10px) scale(0.985);
+      transform: translateY(8px) scale(0.99);
     }
     100% {
       opacity: 1;
@@ -194,12 +365,21 @@ const {
   @keyframes search-result-rise {
     0% {
       opacity: 0;
-      transform: translateY(12px);
+      transform: translateY(8px);
     }
     100% {
       opacity: 1;
       transform: translateY(0);
     }
   }
-</style>
 
+  @media (prefers-reduced-motion: reduce) {
+    .search-panel-active,
+    .search-state-card,
+    :global(.search-result-item) {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

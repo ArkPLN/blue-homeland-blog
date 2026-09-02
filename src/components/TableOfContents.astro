@@ -15,17 +15,17 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 
 {
   tocItems.length > 0 ? (
-    <aside class="hidden w-56 shrink-0 lg:block">
+    <aside class="hidden w-56 shrink-0 xl:block">
       <nav class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar" data-toc-nav aria-label="文章目录">
-        <p class="mb-3 text-sm font-semibold text-slate-900 dark:text-slate-100">目录</p>
-        <ul class="space-y-1 border-l border-slate-200 text-sm dark:border-slate-700">
+        <p class="toc-title mb-3 text-sm font-semibold">目录</p>
+        <ul class="toc-list space-y-1 border-l text-sm">
           {tocItems.map((h) => (
             <li>
               <a
                 href={`#${h.slug}`}
                 data-toc-link={h.slug}
                 class:list={[
-                  'block border-l-2 border-transparent py-1 text-slate-500 transition hover:text-sky-700 dark:text-slate-400 dark:hover:text-sky-400',
+                  'toc-link block border-l-2 border-transparent py-1',
                   h.depth === 3 ? 'ml-3 pl-3' : 'pl-3',
                 ]}
               >
@@ -80,11 +80,7 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       activeSlug = slug;
       for (const link of links) {
         const isActive = link.dataset.tocLink === slug;
-        link.classList.toggle('border-sky-500', isActive);
-        link.classList.toggle('text-sky-700', isActive);
-        link.classList.toggle('font-medium', isActive);
-        link.classList.toggle('border-transparent', !isActive);
-        link.classList.toggle('text-slate-500', !isActive);
+        link.classList.toggle('is-active', isActive);
       }
       scrollToActive(linkBySlug.get(slug));
     }

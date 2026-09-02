@@ -19,10 +19,8 @@ const tagExpanded = Boolean(activeTag);
 <nav class="min-w-0">
   <a
     class:list={[
-      'block rounded-md px-2 py-1.5 text-sm',
-      !activeCategory && !activeTag
-        ? 'bg-slate-200 text-slate-900 dark:bg-slate-700 dark:text-slate-100'
-        : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800',
+      'sidebar-home-link',
+      !activeCategory && !activeTag ? 'is-active' : '',
     ]}
     href="/"
   >
@@ -34,41 +32,39 @@ const tagExpanded = Boolean(activeTag);
       type="button"
       data-collapsible-trigger
       aria-expanded={categoryExpanded}
-      class="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-base font-semibold text-slate-900 transition hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+      class="sidebar-trigger flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-base font-semibold"
     >
       <span>分类导航</span>
       <ChevronDown
         size={18}
-        class="shrink-0 text-slate-500 transition-transform duration-300 dark:text-slate-400"
+        class="sidebar-trigger-icon shrink-0"
         data-collapsible-icon
       />
     </button>
     <div
       data-collapsible-content
       class:list={[
-        'grid transition-[grid-template-rows] duration-300 ease-out',
+        'sidebar-collapsible grid',
         categoryExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
       ]}
     >
       <div class="overflow-hidden">
         {
           categoryEntries.length === 0 ? (
-            <p class="mt-2 px-2 text-sm text-slate-500 dark:text-slate-400">暂无分类</p>
+            <p class="muted-text mt-2 px-2 text-sm">暂无分类</p>
           ) : (
             <ul class="mt-2 space-y-1 text-sm">
               {categoryEntries.map(([name, list]) => (
                 <li>
                   <a
                     class:list={[
-                      'flex items-center justify-between gap-2 rounded-md px-2 py-1.5',
-                      activeCategory === name
-                        ? 'bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-200'
-                        : 'text-slate-700 hover:bg-sky-50 hover:text-sky-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-sky-300',
+                      'sidebar-nav-item flex items-center justify-between gap-2 rounded-md px-2 py-1.5',
+                      activeCategory === name ? 'is-active' : '',
                     ]}
                     href={`/category/${encodeURIComponent(name)}`}
                   >
                     <span class="min-w-0 flex-1 truncate">{name}</span>
-                    <span class="shrink-0 text-xs text-slate-500 dark:text-slate-400">{list.length}</span>
+                    <span class="sidebar-count shrink-0 text-xs">{list.length}</span>
                   </a>
                 </li>
               ))}
@@ -84,35 +80,33 @@ const tagExpanded = Boolean(activeTag);
       type="button"
       data-collapsible-trigger
       aria-expanded={tagExpanded}
-      class="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-base font-semibold text-slate-900 transition hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+      class="sidebar-trigger flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-base font-semibold"
     >
       <span>标签导航</span>
       <ChevronDown
         size={18}
-        class="shrink-0 text-slate-500 transition-transform duration-300 dark:text-slate-400"
+        class="sidebar-trigger-icon shrink-0"
         data-collapsible-icon
       />
     </button>
     <div
       data-collapsible-content
       class:list={[
-        'grid transition-[grid-template-rows] duration-300 ease-out',
+        'sidebar-collapsible grid',
         tagExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
       ]}
     >
       <div class="overflow-hidden">
         {
           tagEntries.length === 0 ? (
-            <p class="mt-2 px-2 text-sm text-slate-500 dark:text-slate-400">暂无标签</p>
+            <p class="muted-text mt-2 px-2 text-sm">暂无标签</p>
           ) : (
             <div class="mt-2 flex flex-wrap gap-2 px-2">
               {tagEntries.map(([name, list]) => (
                 <a
                   class:list={[
-                    'max-w-full break-all rounded-full px-3 py-1 text-xs',
-                    activeTag === name
-                      ? 'bg-emerald-200 text-emerald-900 dark:bg-emerald-900/50 dark:text-emerald-200'
-                      : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-300 dark:hover:bg-emerald-900/40',
+                    'tag-chip max-w-full break-all rounded-full px-3 py-1 text-xs',
+                    activeTag === name ? 'is-active' : '',
                   ]}
                   href={`/tag/${encodeURIComponent(name)}`}
                   title={`${name} (${list.length})`}

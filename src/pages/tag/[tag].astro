@@ -47,7 +47,7 @@ const pageDescription = `浏览标签「${currentTag}」下的全部文章。`;
   </div>
 
   <div class="pt-16">
-    <aside class="max-h-[46vh] overflow-y-auto no-scrollbar border-b border-slate-200 bg-white/85 px-4 py-3 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/85 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4">
+    <aside class="content-sidebar">
       <SidebarNav categoryEntries={categoryEntries} tagEntries={tagEntries} activeTag={currentTag} />
     </aside>
 
@@ -58,46 +58,3 @@ const pageDescription = `浏览标签「${currentTag}」下的全部文章。`;
     </main>
   </div>
 </BaseLayout>
-
-<style>
-  .page-bg-wrap {
-    position: fixed;
-    inset: 0;
-    z-index: -20;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .page-bg-layer {
-    position: absolute;
-    inset: 0;
-    transition: opacity 900ms ease-in-out;
-  }
-
-  .page-bg-light {
-    opacity: 1;
-  }
-
-  .page-bg-dark {
-    opacity: 0;
-  }
-
-  :global(.dark) .page-bg-light {
-    opacity: 0;
-  }
-
-  :global(.dark) .page-bg-dark {
-    opacity: 1;
-  }
-
-  .page-bg-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(241, 245, 249, 0.78);
-    transition: background 900ms ease-in-out;
-  }
-
-  :global(.dark) .page-bg-overlay {
-    background: rgba(11, 17, 32, 0.82);
-  }
-</style>

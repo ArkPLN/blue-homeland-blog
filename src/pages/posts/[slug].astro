@@ -97,7 +97,7 @@ const ogImage = data.cover
   </div>
 
   <div class="pt-16">
-    <aside class="max-h-[46vh] overflow-y-auto no-scrollbar border-b border-slate-200 bg-white/85 px-4 py-3 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/85 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4">
+    <aside class="content-sidebar">
       <SidebarNav
         categoryEntries={categoryEntries}
         tagEntries={tagEntries}
@@ -110,18 +110,18 @@ const ogImage = data.cover
       <div class="mx-auto w-full max-w-[1200px] p-4 lg:px-6 lg:py-4 xl:px-8">
         <div class="flex gap-8">
           <section class="min-w-0 flex-1">
-            <a href="/" class="text-sm text-sky-700 hover:underline dark:text-sky-400">← 返回首页</a>
-            <h1 class="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl dark:text-slate-100">{titleText}</h1>
-            <div class="mt-4 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
-              <span class="rounded-full bg-slate-200 px-3 py-1 dark:bg-slate-700">更新时间：{updatedTime}</span>
-              <span class="rounded-full bg-slate-200 px-3 py-1 dark:bg-slate-700">总字数：{totalWords}</span>
-              <span class="rounded-full bg-slate-200 px-3 py-1 dark:bg-slate-700">预计阅读：{readingMinutes} 分钟</span>
+            <a href="/" class="text-link text-sm hover:underline">← 返回首页</a>
+            <h1 class="page-title mt-3 text-2xl font-bold sm:text-3xl">{titleText}</h1>
+            <div class="mt-4 flex flex-wrap gap-2 text-xs">
+              <span class="meta-chip">更新时间：{updatedTime}</span>
+              <span class="meta-chip">总字数：{totalWords}</span>
+              <span class="meta-chip">预计阅读：{readingMinutes} 分钟</span>
             </div>
             <AiSummary
               slug={entry.id}
               version={String(updatedField ?? '')}
             />
-            <article class="markdown-content mt-4 w-full rounded-xl bg-white/85 p-4 shadow-sm backdrop-blur-sm sm:p-6 md:p-8 dark:bg-slate-800/85">
+            <article class="markdown-content surface-panel mt-4 w-full p-4 sm:p-6 md:p-8">
               <Content />
             </article>
           </section>
@@ -132,49 +132,6 @@ const ogImage = data.cover
     </main>
   </div>
 </BaseLayout>
-
-<style>
-  .post-bg-wrap {
-    position: fixed;
-    inset: 0;
-    z-index: -20;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .post-bg-layer {
-    position: absolute;
-    inset: 0;
-    transition: opacity 900ms ease-in-out;
-  }
-
-  .post-bg-light {
-    opacity: 1;
-  }
-
-  .post-bg-dark {
-    opacity: 0;
-  }
-
-  :global(.dark) .post-bg-light {
-    opacity: 0;
-  }
-
-  :global(.dark) .post-bg-dark {
-    opacity: 1;
-  }
-
-  .post-bg-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(241, 245, 249, 0.78);
-    transition: background 900ms ease-in-out;
-  }
-
-  :global(.dark) .post-bg-overlay {
-    background: rgba(11, 17, 32, 0.82);
-  }
-</style>
 
 <script>
   import '../../scripts/mermaid-init';

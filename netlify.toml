@@ -6,7 +6,6 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-  external_node_modules = ["ai", "@ai-sdk/openai-compatible"]
 
 # 兼容旧 sitemap 地址，跳转到 @astrojs/sitemap 生成的索引文件
 [[redirects]]

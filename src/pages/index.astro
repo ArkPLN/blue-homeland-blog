@@ -55,9 +55,7 @@ const websiteStructuredData = {
   </div>
 
   <div class="pt-16">
-    <aside
-      class="max-h-[46vh] overflow-y-auto no-scrollbar border-b border-slate-200 bg-white/85 px-4 py-3 backdrop-blur-sm dark:border-slate-700 dark:bg-slate-800/85 lg:fixed lg:left-0 lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:max-h-none lg:w-[280px] lg:border-b-0 lg:border-r lg:p-4"
-    >
+    <aside class="content-sidebar">
       <SidebarNav
         categoryEntries={categoryEntries}
         tagEntries={tagEntries}
@@ -85,7 +83,7 @@ const websiteStructuredData = {
     position: absolute;
     inset: 0;
     overflow: hidden;
-    transition: opacity 900ms ease-in-out;
+    transition: opacity var(--motion-scene) var(--ease-standard);
   }
 
   .home-bg-light {
@@ -111,7 +109,8 @@ const websiteStructuredData = {
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0;
-    animation: bg-rotate 24s linear infinite;
+    animation: bg-rotate 24s var(--ease-standard) infinite;
+    will-change: opacity;
   }
 
   .home-bg-1 {
@@ -157,51 +156,49 @@ const websiteStructuredData = {
   .home-bg-gradient {
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(
-        130deg,
-        rgba(241, 245, 249, 0.82) 0%,
-        rgba(241, 245, 249, 0.72) 42%,
-        rgba(226, 232, 240, 0.8) 100%
-      );
+    background: linear-gradient(130deg, rgba(241, 245, 249, 0.46), rgba(241, 245, 249, 0.34) 44%, rgba(226, 232, 240, 0.5));
     animation: gradient-flow 8s ease-in-out infinite alternate;
-    transition: opacity 900ms ease-in-out;
+    transition: opacity var(--motion-scene) var(--ease-standard);
   }
 
   :global(.dark) .home-bg-gradient {
-    background:
-      linear-gradient(
-        130deg,
-        rgba(11, 17, 32, 0.88) 0%,
-        rgba(11, 17, 32, 0.82) 42%,
-        rgba(15, 23, 42, 0.9) 100%
-      );
+    background: linear-gradient(130deg, rgba(11, 17, 32, 0.7), rgba(11, 17, 32, 0.58) 44%, rgba(15, 23, 42, 0.74));
   }
 
   @keyframes bg-rotate {
-    0% {
-      opacity: 0;
-    }
-    8% {
+    0%,
+    24% {
       opacity: 1;
     }
-    25% {
-      opacity: 1;
-    }
-    33% {
+    29%,
+    95% {
       opacity: 0;
     }
     100% {
-      opacity: 0;
+      opacity: 1;
     }
   }
 
   @keyframes gradient-flow {
     0% {
-      opacity: 0.88;
+      opacity: 0.76;
     }
     100% {
-      opacity: 0.72;
+      opacity: 0.6;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-bg-slide {
+      animation: none;
+    }
+
+    .home-bg-slide:first-child {
+      opacity: 1;
+    }
+
+    .home-bg-gradient {
+      animation: none;
     }
   }
 </style>

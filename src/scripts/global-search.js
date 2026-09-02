@@ -82,12 +82,12 @@ function initGlobalSearch() {
 
   function createBadge(label) {
     const badge = document.createElement('span');
-    badge.className = 'rounded-full px-2.5 py-1 text-[11px] font-medium';
+    badge.className = 'search-result-badge';
     badge.textContent = label === 'title' ? '标题命中' : '正文命中';
     if (label === 'title') {
-      badge.classList.add('bg-sky-100', 'text-sky-700', 'dark:bg-sky-900/60', 'dark:text-sky-300');
+      badge.classList.add('search-result-badge--title');
     } else {
-      badge.classList.add('bg-emerald-100', 'text-emerald-800', 'dark:bg-emerald-900/60', 'dark:text-emerald-300');
+      badge.classList.add('search-result-badge--body');
     }
     return badge;
   }
@@ -100,8 +100,7 @@ function initGlobalSearch() {
     results.forEach((item, index) => {
       const link = document.createElement('a');
       link.href = item.url;
-      link.className =
-        'search-result-item group block rounded-[1.7rem] border border-slate-200 bg-white/92 p-5 text-slate-900 shadow-[0_12px_30px_rgba(148,163,184,0.12)] transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:bg-white hover:shadow-[0_18px_40px_rgba(148,163,184,0.18)] focus:outline-none focus:ring-2 focus:ring-sky-200 motion-reduce:transform-none motion-reduce:transition-none dark:border-slate-700 dark:bg-slate-800/92 dark:text-slate-100 dark:hover:border-sky-700 dark:hover:bg-slate-800 dark:hover:shadow-[0_18px_40px_rgba(0,0,0,0.4)] dark:focus:ring-sky-800';
+      link.className = 'search-result-item group block p-5 focus:outline-none';
       link.style.setProperty('--search-stagger', `${index * 55}ms`);
 
       const topRow = document.createElement('div');
@@ -111,11 +110,11 @@ function initGlobalSearch() {
       textWrap.className = 'min-w-0 flex-1';
 
       const title = document.createElement('h3');
-      title.className = 'break-words text-lg font-semibold leading-tight tracking-[-0.025em] text-slate-900 [overflow-wrap:anywhere] transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-300';
+      title.className = 'search-result-title break-words text-lg font-semibold leading-tight [overflow-wrap:anywhere]';
       title.textContent = item.title;
 
       const excerpt = document.createElement('p');
-      excerpt.className = 'mt-3 break-words text-sm leading-7 text-slate-600 dark:text-slate-300';
+      excerpt.className = 'search-result-excerpt mt-3 break-words text-sm leading-7';
       excerpt.textContent = item.excerpt;
 
       textWrap.append(title, excerpt);
@@ -124,7 +123,7 @@ function initGlobalSearch() {
       metaWrap.className = 'flex flex-wrap items-center gap-2 text-xs sm:justify-end';
       if (item.date) {
         const date = document.createElement('span');
-        date.className = 'rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-slate-500 dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-400';
+        date.className = 'search-result-date';
         date.textContent = item.date;
         metaWrap.appendChild(date);
       }
