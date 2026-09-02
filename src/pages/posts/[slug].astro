@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import SidebarNav from '../../components/SidebarNav.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
+import AiSummary from '../../components/AiSummary.astro';
 import { getAllPosts, groupPostsByCategory, groupPostsByTag } from '../../lib/posts';
 
 function normalizeDateInput(value: string): string {
@@ -116,6 +117,10 @@ const ogImage = data.cover
               <span class="rounded-full bg-slate-200 px-3 py-1 dark:bg-slate-700">总字数：{totalWords}</span>
               <span class="rounded-full bg-slate-200 px-3 py-1 dark:bg-slate-700">预计阅读：{readingMinutes} 分钟</span>
             </div>
+            <AiSummary
+              slug={entry.id}
+              version={String(updatedField ?? '')}
+            />
             <article class="markdown-content mt-4 w-full rounded-xl bg-white/85 p-4 shadow-sm backdrop-blur-sm sm:p-6 md:p-8 dark:bg-slate-800/85">
               <Content />
             </article>

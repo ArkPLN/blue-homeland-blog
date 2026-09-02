@@ -3,6 +3,10 @@
   command = "pnpm run build"
   publish = "dist"
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # 兼容旧 sitemap 地址，跳转到 @astrojs/sitemap 生成的索引文件
 [[redirects]]
   from = "/sitemap.xml"

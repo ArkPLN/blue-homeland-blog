@@ -1,0 +1,172 @@
+---
+interface Props {
+  slug: string;
+  version: string;
+}
+
+const { slug, version } = Astro.props;
+---
+
+<section
+  class="ai-summary"
+  data-ai-summary
+  data-slug={slug}
+  data-version={version}
+  aria-labelledby="ai-summary-title"
+>
+  <div class="ai-summary-heading">
+    <div>
+      <p class="ai-summary-kicker">AI 辅助阅读</p>
+      <h2 id="ai-summary-title">文章摘要</h2>
+    </div>
+    <button type="button" data-summary-button disabled>正在生成…</button>
+  </div>
+  <p class="ai-summary-status" data-summary-status aria-live="polite">
+    正在阅读文章并生成摘要，请稍候。
+  </p>
+  <p class="ai-summary-content" data-summary-content hidden></p>
+</section>
+
+<script>
+  function initAiSummary() {
+    const root = document.querySelector<HTMLElement>('[data-ai-summary]');
+    if (!root || root.dataset.initialized === 'true') return;
+
+    const button = root.querySelector<HTMLButtonElement>('[data-summary-button]');
+    const status = root.querySelector<HTMLElement>('[data-summary-status]');
+    const content = root.querySelector<HTMLElement>('[data-summary-content]');
+    const slug = root.dataset.slug ?? '';
+    const version = root.dataset.version ?? '';
+
+    if (!button || !status || !content || !slug) return;
+    root.dataset.initialized = 'true';
+
+    async function loadSummary() {
+      button.disabled = true;
+      button.textContent = '正在生成…';
+      status.textContent = '正在阅读文章并生成摘要，请稍候。';
+      content.hidden = true;
+      content.textContent = '';
+
+      try {
+        const params = new URLSearchParams({ slug });
+        if (version) params.set('v', version);
+
+        const response = await fetch(`/api/summary?${params.toString()}`, {
+          headers: { Accept: 'application/json' },
+        });
+        const payload: unknown = await response.json().catch(() => null);
+        const summary =
+          payload &&
+          typeof payload === 'object' &&
+          'summary' in payload &&
+          typeof payload.summary === 'string'
+            ? payload.summary.trim()
+            : '';
+
+        if (!response.ok || !summary) {
+          throw new Error('Summary request failed');
+        }
+
+        content.textContent = summary;
+        content.hidden = false;
+        status.textContent = 'AI 摘要已生成，仅供辅助阅读。';
+        button.hidden = true;
+      } catch {
+        status.textContent = '摘要生成失败，请稍后重试。文章正文不受影响。';
+        button.disabled = false;
+        button.textContent = '重新生成';
+      }
+    }
+
+    button.addEventListener('click', () => void loadSummary());
+    void loadSummary();
+  }
+
+  initAiSummary();
+</script>
+
+<style>
+  .ai-summary {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(8px);
+  }
+
+  :global(.dark) .ai-summary {
+    background: rgba(30, 41, 59, 0.85);
+  }
+
+  .ai-summary-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .ai-summary-kicker {
+    margin: 0 0 0.15rem;
+    color: #0284c7;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .ai-summary h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .ai-summary button {
+    flex: none;
+    border: 0;
+    border-radius: 0.65rem;
+    padding: 0.55rem 0.85rem;
+    background: #0284c7;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .ai-summary button:hover:not(:disabled) {
+    background: #0369a1;
+  }
+
+  .ai-summary button:focus-visible {
+    outline: 3px solid color-mix(in srgb, #38bdf8 55%, transparent);
+    outline-offset: 2px;
+  }
+
+  .ai-summary button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+
+  .ai-summary-status,
+  .ai-summary-content {
+    margin: 0.8rem 0 0;
+    line-height: 1.75;
+  }
+
+  .ai-summary-status {
+    color: color-mix(in srgb, currentColor 70%, transparent);
+    font-size: 0.85rem;
+  }
+
+  .ai-summary-content {
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 480px) {
+    .ai-summary-heading {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>
