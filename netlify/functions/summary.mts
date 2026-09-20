@@ -1,31 +1,17 @@
 import type { Config } from '@netlify/functions';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { generateText } from 'ai';
+import {
+  SUMMARY_CACHE_VARY,
+  summaryErrorResponse,
+  summaryJsonResponse,
+  validateSummaryRequest,
+} from '../shared/summary-request.ts';
 
 const DEFAULT_BASE_URL = 'https://api.siliconflow.cn/v1';
 const DEFAULT_MODEL = 'deepseek-ai/DeepSeek-V4-Flash';
-const MAX_SLUG_LENGTH = 160;
-const MAX_VERSION_LENGTH = 160;
 const MAX_SOURCE_CHARACTERS = 50_000;
 const MODEL_TIMEOUT_MS = 25_000;
-
-const NO_STORE_HEADERS = {
-  'Cache-Control': 'no-store',
-};
-
-function errorResponse(message: string, status: number): Response {
-  return Response.json({ error: message }, { status, headers: NO_STORE_HEADERS });
-}
-
-function isValidQueryValue(value: string, maxLength: number): boolean {
-  return (
-    value.length > 0 &&
-    value.length <= maxLength &&
-    !value.includes('/') &&
-    !value.includes('\\') &&
-    !/[\u0000-\u001f\u007f]/.test(value)
-  );
-}
 
 function isTimeoutError(error: unknown): boolean {
   let current: unknown = error;
@@ -55,21 +41,16 @@ function safeErrorType(error: unknown): string {
 }
 
 export default async function handler(request: Request): Promise<Response> {
-  if (request.method !== 'GET') {
-    return errorResponse('Method not allowed', 405);
+  const validation = validateSummaryRequest(request);
+  if (!validation.ok) {
+    return summaryErrorResponse(
+      validation.message,
+      validation.status,
+      request.method === 'HEAD',
+    );
   }
 
-  const requestUrl = new URL(request.url);
-  const slug = requestUrl.searchParams.get('slug')?.trim() ?? '';
-  const version = requestUrl.searchParams.get('v')?.trim() ?? '';
-
-  if (!isValidQueryValue(slug, MAX_SLUG_LENGTH)) {
-    return errorResponse('Invalid slug', 400);
-  }
-
-  if (version && !isValidQueryValue(version, MAX_VERSION_LENGTH)) {
-    return errorResponse('Invalid version', 400);
-  }
+  const { requestUrl, slug } = validation;
 
   try {
     const markdownUrl = new URL(
@@ -82,14 +63,14 @@ export default async function handler(request: Request): Promise<Response> {
     });
 
     if (markdownResponse.status === 404) {
-      return errorResponse('Post not found', 404);
+      return summaryErrorResponse('Post not found', 404);
     }
 
     if (!markdownResponse.ok) {
       console.error('[ai-summary] Failed to load post markdown', {
         status: markdownResponse.status,
       });
-      return errorResponse('Unable to load post', 502);
+      return summaryErrorResponse('Unable to load post', 502);
     }
 
     const markdown = (await markdownResponse.text()).slice(
@@ -97,13 +78,13 @@ export default async function handler(request: Request): Promise<Response> {
       MAX_SOURCE_CHARACTERS,
     );
     if (!markdown.trim()) {
-      return errorResponse('Post content is empty', 404);
+      return summaryErrorResponse('Post content is empty', 404);
     }
 
     const apiKey = process.env.SILICONFLOW_API_KEY?.trim();
     if (!apiKey) {
       console.error('[ai-summary] Missing SiliconFlow API key');
-      return errorResponse('Summary service is not configured', 500);
+      return summaryErrorResponse('Summary service is not configured', 500);
     }
 
     const siliconflow = createOpenAICompatible({
@@ -111,6 +92,13 @@ export default async function handler(request: Request): Promise<Response> {
       apiKey,
       baseURL:
         process.env.SILICONFLOW_BASE_URL?.trim() || DEFAULT_BASE_URL,
+    });
+
+    const modelStartedAt = Date.now();
+    console.info('[ai-summary] Model call started', {
+      slug,
+      sourceCharacters: markdown.length,
+      startedAt: new Date(modelStartedAt).toISOString(),
     });
 
     const result = await generateText({
@@ -130,19 +118,26 @@ export default async function handler(request: Request): Promise<Response> {
       },
     });
 
+    console.info('[ai-summary] Model call completed', {
+      slug,
+      durationMs: Date.now() - modelStartedAt,
+      usage: result.usage,
+    });
+
     const summary = result.text.replace(/\s+/g, ' ').trim();
     if (!summary) {
       console.error('[ai-summary] Model returned an empty summary');
-      return errorResponse('Summary generation failed', 502);
+      return summaryErrorResponse('Summary generation failed', 502);
     }
 
-    return Response.json(
+    return summaryJsonResponse(
       { summary },
       {
         headers: {
-          'Cache-Control': 'public, max-age=3600',
+          'Cache-Control': 'public, max-age=0, must-revalidate',
           'Netlify-CDN-Cache-Control':
-            'public, durable, max-age=604800, stale-while-revalidate=86400',
+            'public, durable, max-age=31536000',
+          'Netlify-Vary': SUMMARY_CACHE_VARY,
         },
       },
     );
@@ -154,8 +149,8 @@ export default async function handler(request: Request): Promise<Response> {
     });
 
     return timedOut
-      ? errorResponse('Summary request timed out', 504)
-      : errorResponse('Summary generation failed', 502);
+      ? summaryErrorResponse('Summary request timed out', 504)
+      : summaryErrorResponse('Summary generation failed', 502);
   }
 }
 
@@ -164,6 +159,6 @@ export const config: Config = {
   rateLimit: {
     aggregateBy: ['ip'],
     windowSize: 60,
-    windowLimit: 20,
+    windowLimit: 10,
   },
 };

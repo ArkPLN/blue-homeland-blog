@@ -117,10 +117,7 @@ const ogImage = data.cover
               <span class="meta-chip">总字数：{totalWords}</span>
               <span class="meta-chip">预计阅读：{readingMinutes} 分钟</span>
             </div>
-            <AiSummary
-              slug={entry.id}
-              version={String(updatedField ?? '')}
-            />
+            <AiSummary slug={entry.id} />
             <article class="markdown-content surface-panel mt-4 w-full p-4 sm:p-6 md:p-8">
               <Content />
             </article>

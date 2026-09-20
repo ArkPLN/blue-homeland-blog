@@ -7,6 +7,19 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+[[edge_functions]]
+  function = "summary-guard"
+  path = "/api/summary"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Content-Security-Policy = "frame-ancestors 'self'; object-src 'none'; base-uri 'self'"
+
 # 兼容旧 sitemap 地址，跳转到 @astrojs/sitemap 生成的索引文件
 [[redirects]]
   from = "/sitemap.xml"

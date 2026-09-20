@@ -3,6 +3,7 @@ Allow: /
 
 # Reduce crawl load for non-content endpoints
 Disallow: /_astro/
+Disallow: /api/
 Disallow: /node_modules/
 Disallow: /dist/
 

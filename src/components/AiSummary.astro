@@ -1,17 +1,15 @@
 ---
 interface Props {
   slug: string;
-  version: string;
 }
 
-const { slug, version } = Astro.props;
+const { slug } = Astro.props;
 ---
 
 <section
   class="ai-summary"
   data-ai-summary
   data-slug={slug}
-  data-version={version}
   aria-labelledby="ai-summary-title"
 >
   <div class="ai-summary-heading">
@@ -36,7 +34,6 @@ const { slug, version } = Astro.props;
     const status = root.querySelector<HTMLElement>('[data-summary-status]');
     const content = root.querySelector<HTMLElement>('[data-summary-content]');
     const slug = root.dataset.slug ?? '';
-    const version = root.dataset.version ?? '';
 
     if (!button || !status || !content || !slug) return;
     root.dataset.initialized = 'true';
@@ -50,7 +47,6 @@ const { slug, version } = Astro.props;
 
       try {
         const params = new URLSearchParams({ slug });
-        if (version) params.set('v', version);
 
         const response = await fetch(`/api/summary?${params.toString()}`, {
           headers: { Accept: 'application/json' },
