@@ -57,7 +57,7 @@ dat: 2026-02-21 21:16:45
 NestJS本身并不直接操作 `JSON.stringify`，而是通过 `class-transformer` 库，通过装饰器在类上声明序列化行为，并在响应时应用这些行为，利用`class-transformer`，我们可以实现对JavaScript类的更深入的操作。
 
 基础概念来自官方文档：
-[序列化]("https://docs.nestjs.cn/techniques/serialization")
+[序列化](https://docs.nestjs.cn/techniques/serialization)
 [类型映射](""https://docs.nestjs.cn/graphql/mapped-types#%E6%98%A0%E5%B0%84%E7%B1%BB%E5%9E%8B)
 
 - **@Exclude**：排除字段，不出现在序列化输出；

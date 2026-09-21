@@ -19,7 +19,7 @@ date: 2026-03-14 19:16:11
 
 去年年中的时候就已经听说过尤佬宣布要推出**VitePlus**以一举统一前端工具链，这我当然要拍手称快，但就如同过去近10年不断折腾的前端一样，就连统一也要不停的折腾。**Vite**，**Turbopack**，**Rspack**...CLI作为开发的入口，自然是兵家必争之地，虽然大家都心知肚明，CLI背后当然是各自的生态，VitePlus要寻求稳健的商业化路径，Turbopack是Vercel的潜在流量池，Rspack背后自然是字节跳动在开发框架上的巨大野心。
 
-所以，**VitePlus**到底**Plus**在哪，我阅读了VitePlus官网的[原文]("https://voidzero.dev/posts/announcing-vite-plus?utm_source=vite&utm_content=top_banner")，试图找出答案：
+所以，**VitePlus**到底**Plus**在哪，我阅读了VitePlus官网的[原文](https://voidzero.dev/posts/announcing-vite-plus?utm_source=vite&utm_content=top_banner)，试图找出答案：
 
 > **Vite+致力于解决的问题**
 > 

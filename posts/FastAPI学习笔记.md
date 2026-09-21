@@ -17,7 +17,7 @@ description: 'FastAPI高性能Python Web框架学习笔记，涵盖快速开发�
 
 **FastAPI** 是一个现代、快速（高性能）的 Web 框架，用于使用基于标准 Python 类型提示的 Python 构建 API。
 
-文档:[FastAPI档案]("https://fastapi.org.cn/")
+文档:[FastAPI档案](https://fastapi.org.cn/)
 
 ## 介绍
 

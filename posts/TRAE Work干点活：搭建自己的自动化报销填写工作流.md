@@ -22,7 +22,7 @@ cover: /images/trae-work-reimburse/01-pain-point.webp
 
 但问题随之而来，报销对我们这些不善言辞的程序员来说算个相当老大难的问题，当然也有可能单纯是因为我们公司*太那啥了*，反正每个月的报销条件似乎都不太一样，这个月要交Excel表，上个月又要提OA，可能审批了过几天，又要求你补材料。（甚至出现一次报销要打回两三次的情况）
 
-![报销流程痛点](/cdn-img/trae-work-reimburse/01-pain-point.webp)
+![报销流程痛点](./trae-work-reimburse/01-pain-point.webp)
 
 ***
 
@@ -80,26 +80,26 @@ cover: /images/trae-work-reimburse/01-pain-point.webp
 
 将上述提示词输入TRAE Work,让它自己搭建Workflow和对应的脚本工具即可.
 
-![搭建 Workflow 与脚本](/cdn-img/trae-work-reimburse/02-workflow-setup.webp)
+![搭建 Workflow 与脚本](./trae-work-reimburse/02-workflow-setup.webp)
 
 在AI运行的时候也可以及时的介入和补充
 
-![运行中介入补充](/cdn-img/trae-work-reimburse/03-ai-intervene.webp)
+![运行中介入补充](./trae-work-reimburse/03-ai-intervene.webp)
 
 AI会编写一些Python脚本实现简单的自动化功能
 
-![Python 自动化脚本](/cdn-img/trae-work-reimburse/04-python-scripts.webp)
+![Python 自动化脚本](./trae-work-reimburse/04-python-scripts.webp)
 
 和前两年相比,现在AI在自我测试和排查BUG问题的速度上也发展迅速.
 
-![自我测试与排错](/cdn-img/trae-work-reimburse/05-self-test.webp)
+![自我测试与排错](./trae-work-reimburse/05-self-test.webp)
 
 AI有时候依然不好使,需要人工介入指导修改,因为财务的眼睛容不得AI乱改.
 
-![人工介入修正](/cdn-img/trae-work-reimburse/06-manual-fix.webp)
+![人工介入修正](./trae-work-reimburse/06-manual-fix.webp)
 
 # 体验效果
 
-![体验效果 1](/cdn-img/trae-work-reimburse/07-result-a.webp)
+![体验效果 1](./trae-work-reimburse/07-result-a.webp)
 
-![体验效果 2](/cdn-img/trae-work-reimburse/08-result-b.webp)
+![体验效果 2](./trae-work-reimburse/08-result-b.webp)

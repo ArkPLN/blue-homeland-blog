@@ -27,7 +27,9 @@
   status = 301
   force = true
 
-# Netlify Image CDN：源图在 /images/*，对外用 /cdn-img/* 走转换与内容协商
+# Netlify Image CDN：源图在 /images/*（即 public/images/*），对外用 /cdn-img/* 走转换与内容协商。
+# 文章 Markdown 里写相对路径（相对 public/images/），构建时 remarkImageCdn 改写为 /cdn-img/<相对路径>；
+# 本机 astro dev/preview 不经此重定向，直接静态访问 /images/*。
 # 文档：https://docs.netlify.com/build/image-cdn/overview/
 [[redirects]]
   from = "/cdn-img/*"

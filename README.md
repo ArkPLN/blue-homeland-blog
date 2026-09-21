@@ -41,3 +41,26 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## 🖼 文章图片引用规则
+
+文章里的本地图片统一放在 `public/images/` 下，Markdown 里用相对 `public/images/` 的路径引用：
+
+```md
+![说明](./trae-work-reimburse/01-pain-point.webp)
+```
+
+对应源图位置：`public/images/trae-work-reimburse/01-pain-point.webp`
+
+构建时 `remarkImageCdn` 插件（`src/lib/remark-image-cdn.mjs`）按环境自动改写路径：
+
+- 本机 `pnpm dev` / `pnpm preview`：改写成 `/images/<相对路径>`，直接走静态文件，本地可渲染。
+- Netlify 部署（`NETLIFY=true`）：改写成 `/cdn-img/<相对路径>`，经 `netlify.toml` 重定向到 `/.netlify/images?url=/images/:splat&w=1280&q=80`，走 Netlify Image CDN 转换与内容协商。
+
+远程图片（`http(s)://`）、`data:` URI、以及已写死的绝对路径（以 `/` 开头）保持原样。frontmatter 的 `cover` 字段由布局组件单独渲染，按绝对路径写 `/images/...` 即可。
+
+约定要点：
+
+- 源图只放 `public/images/` 下，Markdown 里写相对路径，两边一一对应。
+- 不要在 Markdown 里写 `/cdn-img/...` 或 `/images/...` 绝对路径，会让本机预览失效。
+

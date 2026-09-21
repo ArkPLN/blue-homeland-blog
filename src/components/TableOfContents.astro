@@ -10,7 +10,7 @@ interface Props {
 }
 
 const { headings } = Astro.props;
-const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 4);
 ---
 
 {
@@ -26,7 +26,7 @@ const tocItems = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
                 data-toc-link={h.slug}
                 class:list={[
                   'toc-link block border-l-2 border-transparent py-1',
-                  h.depth === 3 ? 'ml-3 pl-3' : 'pl-3',
+                  h.depth === 3 ? 'ml-3 pl-3' : h.depth === 4 ? 'ml-6 pl-3' : 'pl-3',
                 ]}
               >
                 {h.text}

@@ -14,7 +14,7 @@ date: 2025-09-22 21:09:22
 
 # Moetalk桌面端无法正常使用的问题技术报告和解决方案
 
-**作者:** ArkPln [github]("https://github.com/arkpln") [个人博客]("https://arkpln.github.io")
+**作者:** ArkPln [github](https://github.com/arkpln) [个人博客](https://arkpln.github.io)
 
 本文旨在分析和尝试解决Moetalk(Windows桌面端)始终无法正常使用的问题;初步剖析了可能的技术原因,并通过使用Nginx反代和重构bat脚本的方式解决了这个问题,本人愿意尽自己的绵薄之力,希望该技术报告和改进方案可以被采纳,以充分解决长期以来Moetalk桌面离线端无法正常使用的问题,也利好各位广大热爱BA却苦于各种原因不善技术操作的二创老师们!
 

@@ -8,6 +8,7 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { remarkReadingTime } from './src/lib/remark-reading-time.mjs';
 import { remarkMermaidToHtml } from './src/lib/remark-mermaid.mjs';
+import { remarkImageCdn } from './src/lib/remark-image-cdn.mjs';
 
 /**
  * 将 Markdown 图片节点转成普通 HTML，绕过 Astro 对本地图片路径的解析与校验。
@@ -36,10 +37,15 @@ function remarkKeepImageAsHtml() {
 }
 
 // https://astro.build/config
+// Netlify 构建置 NETLIFY=true、netlify dev 置 NETLIFY_DEV=true；本机 astro dev/preview 两者皆无。
+// 在配置加载时（主进程）读取，通过插件选项闭包传入，避免在 Vite markdown 工作进程里拿不到环境变量。
+const imageCdnEnabled =
+  process.env.NETLIFY === 'true' || process.env.NETLIFY_DEV === 'true';
+
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://arkpln.netlify.app',
   markdown: {
-    remarkPlugins: [remarkKeepImageAsHtml, remarkMermaidToHtml, remarkReadingTime],
+    remarkPlugins: [[remarkImageCdn, { cdn: imageCdnEnabled }], remarkKeepImageAsHtml, remarkMermaidToHtml, remarkReadingTime],
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,
