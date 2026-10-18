@@ -1,0 +1,100 @@
+---
+import { Copy, Music } from '@lucide/astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../style/sonnet.css';
+import { AUDIO_NOTICE, MIT_LICENSE, THIRD_PARTY_NOTICE } from '../../features/sonnet/license';
+
+const siteUrl = Astro.site ?? new URL('https://arkpln.netlify.app');
+const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+const pageTitle = '音乐 · Sonnet 动态字幕 | 蔚蓝之家';
+const pageDescription =
+  '一个把 MP3 内嵌歌词编译成 WebGL2 动态字幕的实验页面：默认曲目《清明上河图（同花顺进行曲）》，支持导入本地 MP3 与 LRC。';
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonical={canonical}
+  ogType="website"
+  keywords="Sonnet, 动态字幕, 歌词可视化, WebGL2, MP3, LRC, 清明上河图"
+  siteHeaderProps={{ showHomeLink: true, showAboutLink: false }}
+>
+  <div class="sonnet-root">
+    <div id="sonnet-app"></div>
+
+    <section class="sonnet-license" id="license" aria-labelledby="license-title">
+      <div class="sonnet-license__inner">
+        <header class="sonnet-license__header">
+          <div>
+            <p class="eyebrow">LICENSE / 许可与署名</p>
+            <h2 id="license-title">Sonnet 引擎的许可说明</h2>
+          </div>
+          <span class="sonnet-license__badge">MIT + 第三方声明</span>
+        </header>
+
+        <p class="sonnet-license__lede">
+          本页的动态字幕引擎来源于 Sonnet WebGL Demo，以 MIT 许可证发布。演示音频《清明上河图（同花顺进行曲）》
+          是第三方版权作品，<strong>不在 MIT 许可范围内</strong>。你可以复制下面的完整文本用于转载或二次分发。
+        </p>
+
+        <div class="sonnet-license__actions">
+          <button type="button" class="sonnet-license__button" data-page-copy="mit">
+            <Copy size={15} />
+            复制 MIT 许可证
+          </button>
+          <button type="button" class="sonnet-license__button" data-page-copy="full">
+            <Copy size={15} />
+            复制完整声明
+          </button>
+          <span id="page-copy-status" class="sonnet-license__status" role="status" aria-live="polite"></span>
+        </div>
+
+        <div class="sonnet-license__grid">
+          <article class="sonnet-license__card">
+            <h3>MIT 许可证全文</h3>
+            <pre class="sonnet-license__pre">{MIT_LICENSE}</pre>
+          </article>
+
+          <article class="sonnet-license__card">
+            <h3>第三方声明</h3>
+            <pre class="sonnet-license__pre sonnet-license__pre--notice">{THIRD_PARTY_NOTICE}</pre>
+          </article>
+        </div>
+
+        <p class="sonnet-license__audio">
+          <Music size={15} />
+          <span>{AUDIO_NOTICE}</span>
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    import '../../features/sonnet/main';
+  </script>
+
+  <script>
+    import { FULL_NOTICE, MIT_LICENSE, copyText } from '../../features/sonnet/license';
+
+    const status = document.querySelector<HTMLElement>('#page-copy-status');
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-page-copy]');
+    let timer = 0;
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', async () => {
+        const target = button.dataset.pageCopy;
+        const ok = await copyText(target === 'mit' ? MIT_LICENSE : FULL_NOTICE);
+        if (!status) return;
+        status.textContent = ok
+          ? target === 'mit'
+            ? '已复制 MIT 许可证。'
+            : '已复制完整许可与第三方声明。'
+          : '复制失败，请手动选择文本复制。';
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          status.textContent = '';
+        }, 4000);
+      });
+    });
+  </script>
+</BaseLayout>

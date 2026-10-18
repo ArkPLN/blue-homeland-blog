@@ -41,6 +41,16 @@
   [headers.values]
     Cache-Control = "public, max-age=604800, must-revalidate"
 
+# /music 的默认演示音频（第三方版权内容，见 /music 页面的 LICENSE 区块）。
+# 刻意使用无扩展名路径 + application/octet-stream：IDM 等下载管理器会依据
+# `*.mp3` 扩展名或 `audio/*` 类型接管请求，导致页面 fetch 拿到空数据。
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "application/octet-stream"
+    X-Content-Type-Options = "nosniff"
+
 [[headers]]
   for = "/llms.txt"
   [headers.values]

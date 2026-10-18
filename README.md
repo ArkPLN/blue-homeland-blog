@@ -64,3 +64,16 @@ Feel free to check [our documentation](https://docs.astro.build) or jump into ou
 - 源图只放 `public/images/` 下，Markdown 里写相对路径，两边一一对应。
 - 不要在 Markdown 里写 `/cdn-img/...` 或 `/images/...` 绝对路径，会让本机预览失效。
 
+## 🎵 音乐 / 动态字幕页（`/music`）
+
+顶栏的音乐图标（`SiteHeader.astro` 中 `<GlobalSearch />` 左侧）进入 `/music`，页面由
+`src/pages/music/index.astro` 承载，渲染引擎来自独立项目 Sonnet（WebGL2 + 原生 TS）。
+
+- 引擎源码：`src/features/sonnet/`（`engine/` 原样移植，`main.ts` / `markup.ts` 为博客适配版）
+- 默认曲目：`public/media/qingmingshanghetu`（《清明上河图（同花顺进行曲）》— 颜小亿，无扩展名 + `application/octet-stream`，避免 IDM 拦截）
+- 样式：`src/style/sonnet.css`，全部选择器都以 `.sonnet-root` 为前缀，不会影响博客其他页面
+- 许可文案：`src/features/sonnet/license.ts` 是唯一事实源，页面与设置面板都引用它
+- 测试：`tests/sonnet/`（`pnpm test` 会一起跑）
+
+添加或替换默认曲目时，需同步修改 `src/features/sonnet/main.ts` 的 `DEFAULT_TRACK_PATH`
+与 `tests/sonnet/mp3.test.ts` 的断言。演示音频为第三方版权内容，**不在 MIT 许可范围内**。

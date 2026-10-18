@@ -1,0 +1,306 @@
+.sonnet-root{
+  position: relative;
+  padding-top: var(--header-height);
+  min-width: 320px;
+  min-height: calc(100vh - var(--header-height));
+  margin: 0;
+  font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  color: #eef0f5;
+  background: #070a16;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --night: #070a16;
+  --deep: #0d1235;
+  --deep-2: #111937;
+  --ink: #eef0f5;
+  --muted: #9aa2b8;
+  --soft: #6b7391;
+  --accent: #8c96b8;
+  --line: rgba(220, 226, 245, 0.12);
+  --mono: ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Consolas, monospace;
+}
+
+.sonnet-root, .sonnet-root *{ box-sizing: border-box; }
+.sonnet-root button, .sonnet-root input{ font: inherit; }
+.sonnet-root button{ color: inherit; }
+.sonnet-root button:focus-visible, .sonnet-root input:focus-visible{ outline: 2px solid var(--accent); outline-offset: 4px; }
+.sonnet-root .sr-only{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.sonnet-root [hidden]{ display: none !important; }
+
+.sonnet-root .app-shell{
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: calc(100vh - var(--header-height));
+  flex-direction: column;
+  /* `clip` prevents programmatic scrolling: the decorative blobs below extend
+     past the box, which made the shell a scroll container and shifted the masthead. */
+  overflow: clip;
+  background:
+    radial-gradient(ellipse at 48% 24%, rgba(51, 63, 112, 0.28), transparent 52%),
+    linear-gradient(152deg, #0a0e20 0%, #070a16 48%, #090d1d 100%);
+}
+.sonnet-root .latent{ position: absolute; z-index: -1; border-radius: 50%; filter: blur(110px); pointer-events: none; opacity: 0.24; }
+.sonnet-root .latent--one{ top: 6%; left: -16%; width: 480px; height: 480px; background: #32406f; }
+.sonnet-root .latent--two{ right: -18%; bottom: -10%; width: 520px; height: 520px; background: #3b3458; opacity: 0.2; }
+
+.sonnet-root .masthead, .sonnet-root .page-footer{ display: flex; align-items: center; justify-content: space-between; padding-inline: clamp(22px, 5vw, 76px); }
+.sonnet-root .masthead{ height: 82px; border-bottom: 1px solid rgba(220, 226, 245, 0.08); }
+.sonnet-root .wordmark{ display: flex; align-items: center; gap: 11px; color: var(--ink); text-decoration: none; }
+.sonnet-root .wordmark__mark{ display: grid; width: 33px; height: 33px; place-items: center; border: 1px solid rgba(140, 150, 184, 0.7); color: #b9c2de; font: 500 15px Georgia, serif; }
+.sonnet-root .wordmark__name{ font: 500 10px var(--mono); letter-spacing: 0.16em; }
+.sonnet-root .wordmark__name span{ color: var(--soft); }
+.sonnet-root .masthead__center{ display: flex; align-items: center; gap: 14px; color: #8d95ab; font-size: 10px; letter-spacing: 0.03em; }
+.sonnet-root .live-mark{ display: inline-flex; align-items: center; gap: 8px; color: #c1c8dd; font: 9px var(--mono); letter-spacing: 0.12em; }
+.sonnet-root .live-mark i, .sonnet-root .stage-status__pulse{ width: 5px; height: 5px; border-radius: 50%; background: #9aa6ca; box-shadow: 0 0 10px rgba(154, 166, 202, 0.7); }
+.sonnet-root .masthead__rule{ width: 1px; height: 13px; background: #39405a; }
+.sonnet-root .masthead__actions{ display: flex; align-items: center; gap: 15px; }
+.sonnet-root .audio-status{ color: #717a94; font: 8px var(--mono); letter-spacing: 0.1em; }
+.sonnet-root .ghost-button{ min-height: 27px; padding: 5px 10px; border: 1px solid rgba(203, 212, 235, 0.2); border-radius: 5px; background: rgba(255, 255, 255, 0.02); color: #b7bfd4; font: 9px var(--mono); letter-spacing: 0.08em; cursor: pointer; transition: border-color 0.2s, background 0.2s, color 0.2s; }
+.sonnet-root .ghost-button:hover{ border-color: rgba(201, 211, 238, 0.5); background: rgba(255, 255, 255, 0.06); color: #f0f2fa; }
+
+.sonnet-root .experience{ width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding-top: clamp(26px, 4.6vh, 48px); }
+.sonnet-root .experience__meta{ display: flex; align-items: end; justify-content: space-between; gap: 22px; margin-bottom: 22px; }
+.sonnet-root .eyebrow{ margin: 0 0 12px; color: #8e97af; font: 8px var(--mono); letter-spacing: 0.2em; }
+.sonnet-root .eyebrow span{ padding-inline: 5px; color: #6b7391; }
+.sonnet-root .experience h1{ margin: 0; color: #f1f2f7; font: 500 clamp(21px, 2.25vw, 29px)/1.35 'Microsoft YaHei UI', sans-serif; letter-spacing: 0.045em; }
+.sonnet-root .experience h1 em{ color: #c0c8df; font-style: normal; }
+.sonnet-root .experience__aside{ margin: 0 0 2px; color: #77809a; font: 11px/1.9 'Microsoft YaHei UI', sans-serif; text-align: right; }
+
+.sonnet-root .stage-frame{
+  position: relative;
+  width: 100%;
+  min-height: clamp(430px, 57vh, 640px);
+  overflow: hidden;
+  border: 1px solid rgba(207, 216, 239, 0.16);
+  background:
+    radial-gradient(ellipse at 50% 46%, rgba(42, 55, 98, 0.5), transparent 56%),
+    linear-gradient(128deg, #121a38 0%, #0c1230 46%, #0f1733 100%);
+  box-shadow: 0 38px 110px rgba(0, 0, 0, 0.4), inset 0 0 130px rgba(2, 5, 15, 0.55);
+}
+.sonnet-root .stage-frame::before, .sonnet-root .stage-frame::after{ position: absolute; z-index: 6; content: ''; pointer-events: none; }
+.sonnet-root .stage-frame::before{ inset: 0; border: 1px solid rgba(255, 255, 255, 0.035); }
+.sonnet-root .stage-frame::after{ top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(90deg, rgba(255, 255, 255, 0.025), transparent 12%, transparent 88%, rgba(255, 255, 255, 0.025)); }
+.sonnet-root #sonnet-canvas{ position: absolute; z-index: 1; inset: 0; display: block; width: 100%; height: 100%; }
+.sonnet-root .stage-vignette{ position: absolute; z-index: 2; inset: 0; background: radial-gradient(ellipse at center, transparent 38%, rgba(3, 6, 16, 0.52) 100%); pointer-events: none; }
+.sonnet-root .stage-grain{ position: absolute; z-index: 3; inset: 0; opacity: 0.18; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E"); mix-blend-mode: soft-light; pointer-events: none; }
+.sonnet-root .stage-status, .sonnet-root .stage-coordinate, .sonnet-root .stage-note{ position: absolute; z-index: 5; color: #8c94aa; font: 7px var(--mono); letter-spacing: 0.13em; pointer-events: none; }
+.sonnet-root .stage-status{ top: 50%; left: 20px; display: flex; align-items: center; gap: 8px; writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg); }
+.sonnet-root .stage-status__pulse{ width: 4px; height: 4px; }
+.sonnet-root .stage-coordinate{ top: 50%; right: 20px; line-height: 1.85; writing-mode: vertical-rl; }
+.sonnet-root .stage-note{ bottom: 17px; left: 50%; transform: translateX(-50%); color: #76809a; }
+.sonnet-root .debug-hud{ position: absolute; z-index: 8; top: 14px; right: 14px; display: flex; max-width: min(420px, 70%); flex-direction: column; gap: 4px; padding: 11px 13px; border: 1px solid rgba(173, 187, 224, 0.24); border-radius: 6px; background: rgba(5, 9, 23, 0.82); color: #b9c3dc; font: 8px/1.55 var(--mono); pointer-events: none; backdrop-filter: blur(8px); }
+.sonnet-root .debug-hud strong{ color: #edf0fa; font-weight: 500; }
+.sonnet-root .debug-hud span{ color: #8f99b5; }
+.sonnet-root .stage-error{ position: absolute; z-index: 10; top: 50%; left: 50%; max-width: min(480px, 84%); padding: 18px 20px; border: 1px solid rgba(255, 190, 190, 0.35); border-radius: 8px; background: rgba(17, 9, 18, 0.9); color: #f5d9d9; font-size: 12px; line-height: 1.7; transform: translate(-50%, -50%); }
+
+.sonnet-root .transport{ display: grid; min-height: 104px; grid-template-columns: 1fr 1.16fr 1fr; align-items: center; gap: 22px; padding: 15px 24px; border: 1px solid var(--line); border-top: 0; background: rgba(9, 13, 30, 0.72); backdrop-filter: blur(14px); }
+.sonnet-root .track-info{ display: flex; min-width: 0; align-items: center; gap: 13px; }
+.sonnet-root .track-cover{ position: relative; display: flex; width: 55px; height: 55px; flex: 0 0 auto; flex-direction: column; justify-content: end; overflow: hidden; padding: 6px 7px; border: 1px solid rgba(154, 164, 195, 0.34); background: linear-gradient(146deg, #26325a, #101834 62%, #33304c); }
+.sonnet-root .track-cover::before{ position: absolute; top: -21px; right: -8px; width: 50px; height: 50px; border: 1px solid rgba(179, 191, 229, 0.38); border-radius: 50%; content: ''; box-shadow: 0 0 0 8px rgba(179, 191, 229, 0.06); }
+.sonnet-root .track-cover__moon{ position: absolute; top: 10px; right: 11px; width: 16px; height: 16px; border-radius: 50%; background: #d7dff2; box-shadow: 0 0 16px rgba(190, 205, 240, 0.55); }
+.sonnet-root .track-cover__wave{ position: absolute; right: -8px; bottom: 12px; left: -8px; height: 15px; border-top: 1px solid rgba(174, 188, 224, 0.45); border-radius: 50%; transform: rotate(-12deg); }
+.sonnet-root .track-cover__name{ position: relative; z-index: 1; color: #e6eaf6; font: 8px/1.35 'Microsoft YaHei UI', sans-serif; letter-spacing: 0.1em; }
+.sonnet-root .track-info__copy{ display: flex; min-width: 0; flex-direction: column; gap: 4px; }
+.sonnet-root .track-info__eyebrow{ overflow: hidden; color: #7b849e; font: 7px var(--mono); letter-spacing: 0.1em; text-overflow: ellipsis; white-space: nowrap; }
+.sonnet-root .track-info__eyebrow span{ color: #aab4d0; }
+.sonnet-root .track-info__copy strong{ overflow: hidden; color: #e8ebf4; font: 500 13px 'Microsoft YaHei UI', sans-serif; letter-spacing: 0.04em; text-overflow: ellipsis; white-space: nowrap; }
+.sonnet-root .track-info__copy > span:last-child{ overflow: hidden; color: #7b849e; font: 8px 'Microsoft YaHei UI', sans-serif; text-overflow: ellipsis; white-space: nowrap; }
+.sonnet-root .track-info__copy i{ padding: 0 3px; color: #626b85; font-style: normal; }
+.sonnet-root .transport-center{ display: flex; flex-direction: column; align-items: stretch; gap: 11px; }
+.sonnet-root .timeline-row{ display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; gap: 10px; }
+.sonnet-root .time-label{ color: #9ba3ba; font: 8px var(--mono); font-variant-numeric: tabular-nums; }
+.sonnet-root .time-label--total{ color: #68718b; text-align: right; }
+.sonnet-root .progress-control{ position: relative; display: block; height: 14px; cursor: pointer; }
+.sonnet-root .progress-control input{ position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; opacity: 0; }
+.sonnet-root .progress-rail{ position: absolute; top: 6px; right: 0; left: 0; height: 2px; background: #333d5c; }
+.sonnet-root .progress-fill{ position: absolute; inset: 0; background: #aab7db; transform: scaleX(0); transform-origin: left; }
+.sonnet-root .progress-thumb{ position: absolute; top: 50%; width: 8px; height: 8px; border: 1px solid #d7e0f4; border-radius: 50%; background: #17203e; box-shadow: 0 0 8px rgba(180, 196, 235, 0.45); transform: translate(-50%, -50%); }
+.sonnet-root .progress-control:hover .progress-thumb{ width: 11px; height: 11px; }
+.sonnet-root .progress-markers{ position: absolute; inset: -3px 0; pointer-events: none; }
+.sonnet-root .progress-markers i{ position: absolute; top: 0; width: 1px; height: 8px; background: #606b8e; }
+.sonnet-root .transport-buttons{ display: flex; align-items: center; justify-content: center; gap: 18px; }
+.sonnet-root .icon-button, .sonnet-root .play-button{ display: grid; place-items: center; border: 0; background: transparent; cursor: pointer; }
+.sonnet-root .icon-button{ width: 27px; height: 27px; color: #8993ad; transition: color 0.2s, transform 0.2s; }
+.sonnet-root .icon-button:hover{ color: #dbe3f5; transform: rotate(-20deg); }
+.sonnet-root .icon-button svg{ width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.4; }
+.sonnet-root .play-button{ width: 35px; height: 35px; border: 1px solid rgba(201, 213, 240, 0.46); border-radius: 50%; background: linear-gradient(145deg, rgba(220, 229, 250, 0.13), rgba(50, 61, 96, 0.12)); color: #e5ecfa; transition: background 0.2s, transform 0.2s; }
+.sonnet-root .play-button:hover{ background: rgba(161, 178, 219, 0.2); transform: scale(1.07); }
+.sonnet-root .play-button svg{ width: 15px; height: 15px; fill: currentColor; }
+.sonnet-root .play-icon{ margin-left: 2px; }
+.sonnet-root .pause-icon{ display: none; fill: none !important; stroke: currentColor; stroke-linecap: round; stroke-width: 2; }
+.sonnet-root .play-button[aria-pressed='true'] .play-icon{ display: none; }
+.sonnet-root .play-button[aria-pressed='true'] .pause-icon{ display: block; }
+.sonnet-root .transport-hint{ color: #656f8a; font: 7px var(--mono); letter-spacing: 0.09em; }
+.sonnet-root .transport-hint span{ color: #858fa9; }
+.sonnet-root .transport-right{ display: flex; flex-direction: column; align-items: end; gap: 7px; }
+.sonnet-root .preset-label{ color: #68728c; font: 7px var(--mono); letter-spacing: 0.14em; }
+.sonnet-root .segmented{ display: inline-flex; overflow: hidden; border: 1px solid rgba(196, 208, 237, 0.2); border-radius: 5px; }
+.sonnet-root .segmented button{ padding: 5px 9px; border: 0; border-right: 1px solid rgba(196, 208, 237, 0.14); background: transparent; color: #7d879f; font: 8px var(--mono); letter-spacing: 0.06em; cursor: pointer; }
+.sonnet-root .segmented button:last-child{ border-right: 0; }
+.sonnet-root .segmented button[aria-pressed='true']{ background: rgba(180, 195, 229, 0.15); color: #e6ecfa; }
+.sonnet-root .segmented button:hover{ background: rgba(180, 195, 229, 0.09); }
+
+.sonnet-root .settings-panel{ position: fixed; z-index: 30; top: calc(var(--header-height) + 94px); right: clamp(18px, 4.4vw, 64px); display: flex; width: min(370px, calc(100vw - 36px)); max-height: calc(100vh - var(--header-height) - 118px); overflow: auto; flex-direction: column; gap: 18px; padding: 20px; border: 1px solid rgba(196, 208, 237, 0.2); border-radius: 10px; background: rgba(10, 15, 34, 0.94); box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5); backdrop-filter: blur(20px); }
+.sonnet-root .settings-panel__header{ display: flex; align-items: start; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid rgba(196, 208, 237, 0.1); }
+.sonnet-root .settings-panel__header .eyebrow{ margin-bottom: 5px; }
+.sonnet-root .settings-panel h2{ margin: 0; color: #eceff9; font: 500 16px 'Microsoft YaHei UI', sans-serif; letter-spacing: 0.04em; }
+.sonnet-root .settings-group{ display: flex; flex-direction: column; gap: 9px; }
+.sonnet-root .settings-label{ color: #9aa3ba; font: 8px var(--mono); letter-spacing: 0.1em; }
+.sonnet-root .seed-row{ display: grid; grid-template-columns: 1fr auto auto; gap: 7px; }
+.sonnet-root .seed-row input{ min-width: 0; height: 29px; padding: 0 9px; border: 1px solid rgba(196, 208, 237, 0.2); border-radius: 5px; background: rgba(255, 255, 255, 0.03); color: #dfe6f5; font: 9px var(--mono); }
+.sonnet-root .settings-note{ margin: 0; color: #6b7590; font-size: 9px; line-height: 1.6; }
+.sonnet-root .audio-row{ display: flex; gap: 7px; }
+.sonnet-root .file-button{ display: inline-flex; align-items: center; }
+.sonnet-root .file-button input{ position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.sonnet-root .settings-group--row{ flex-direction: row; flex-wrap: wrap; gap: 14px; padding-top: 3px; }
+.sonnet-root .check-row{ display: inline-flex; align-items: center; gap: 7px; color: #a8b1c7; font-size: 10px; cursor: pointer; }
+.sonnet-root .check-row input{ accent-color: #8c96b8; }
+.sonnet-root .settings-panel__footer{ display: flex; justify-content: space-between; padding-top: 13px; border-top: 1px solid rgba(196, 208, 237, 0.1); color: #5f6983; font: 7px var(--mono); letter-spacing: 0.08em; }
+
+.sonnet-root .page-footer{ min-height: 52px; margin-top: auto; color: #5f6981; font: 7px var(--mono); letter-spacing: 0.11em; }
+.sonnet-root .page-footer__center{ color: #707a93; }
+.sonnet-root .page-footer__center i{ padding: 0 5px; color: #a3b0cf; font-style: normal; }
+.sonnet-root .page-footer b{ padding-left: 5px; color: #aab6d3; font-weight: 400; }
+
+.sonnet-root.is-playing .stage-status__pulse, .sonnet-root.is-playing .live-mark i{ animation: sonnet-breathe 1.6s ease-in-out infinite; }
+@keyframes sonnet-breathe{ 0%, 100% { opacity: 0.45; } 50% { opacity: 1; box-shadow: 0 0 13px rgba(154, 166, 202, 0.9); } }
+
+@media (min-height: 920px){ .sonnet-root .experience{ padding-top: 5vh; } .sonnet-root .stage-frame{ min-height: min(59vh, 680px); } }
+@media (max-width: 900px){
+  .sonnet-root .masthead{ height: 70px; }
+  .sonnet-root .masthead__center{ font-size: 9px; }
+  .sonnet-root .experience{ width: min(100% - 40px, 720px); padding-top: 30px; }
+  .sonnet-root .stage-frame{ min-height: clamp(390px, 54vh, 540px); }
+  .sonnet-root .transport{ grid-template-columns: 1fr 1.2fr; gap: 16px; padding-inline: 18px; }
+  .sonnet-root .transport-right{ display: none; }
+  .sonnet-root .settings-panel{ top: calc(var(--header-height) + 82px); }
+}
+@media (max-width: 620px){
+  .sonnet-root .masthead{ height: 62px; padding-inline: 18px; }
+  .sonnet-root .masthead__center{ display: none; }
+  .sonnet-root .wordmark__mark{ width: 29px; height: 29px; }
+  .sonnet-root .audio-status{ display: none; }
+  .sonnet-root .experience{ width: calc(100% - 26px); padding-top: 24px; }
+  .sonnet-root .experience__meta{ align-items: start; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+  .sonnet-root .experience__aside{ display: none; }
+  .sonnet-root .eyebrow{ margin-bottom: 8px; font-size: 7px; }
+  .sonnet-root .experience h1{ font-size: 19px; }
+  .sonnet-root .stage-frame{ min-height: min(58vh, 500px); }
+  .sonnet-root .stage-status{ left: 10px; font-size: 6px; }
+  .sonnet-root .stage-coordinate{ right: 10px; font-size: 6px; }
+  .sonnet-root .stage-note{ bottom: 12px; font-size: 6px; white-space: nowrap; }
+  .sonnet-root .debug-hud{ top: 9px; right: 9px; max-width: 86%; font-size: 7px; }
+  .sonnet-root .transport{ grid-template-columns: 1fr; min-height: 138px; gap: 12px; padding: 13px 14px 12px; }
+  .sonnet-root .track-cover{ width: 43px; height: 43px; }
+  .sonnet-root .track-info__copy strong{ font-size: 12px; }
+  .sonnet-root .timeline-row{ grid-template-columns: 30px 1fr 30px; gap: 8px; }
+  .sonnet-root .time-label{ font-size: 7px; }
+  .sonnet-root .transport-buttons{ gap: 15px; }
+  .sonnet-root .transport-right{ display: none; }
+  .sonnet-root .page-footer{ min-height: 43px; padding-inline: 14px; font-size: 6px; }
+  .sonnet-root .page-footer__center{ display: none; }
+  .sonnet-root .settings-panel{ top: calc(var(--header-height) + 70px); right: 13px; left: 13px; width: auto; max-height: calc(100vh - var(--header-height) - 90px); overflow: auto; }
+}
+@media (max-width: 370px){
+  .sonnet-root .stage-frame{ min-height: 380px; }
+  .sonnet-root .stage-status, .sonnet-root .stage-coordinate{ display: none; }
+  .sonnet-root .track-info__copy > span:last-child{ max-width: 220px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .sonnet-root, .sonnet-root *, .sonnet-root *::before, .sonnet-root *::after{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
+
+.sonnet-root .stage-cover{
+  position: absolute;
+  z-index: 0;
+  inset: -24px;
+  background: center / cover no-repeat;
+  filter: blur(34px) saturate(0.75) brightness(0.42);
+  opacity: 0.5;
+  transform: scale(1.12);
+  pointer-events: none;
+}
+.sonnet-root .stage-loading{
+  position: absolute;
+  z-index: 9;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 14px;
+  background: rgba(5, 9, 20, 0.55);
+  color: #cbd3e8;
+  font: 10px var(--mono);
+  letter-spacing: 0.1em;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+.sonnet-root .stage-loading p{ margin: 0; }
+.sonnet-root .stage-loading__bar{
+  display: block;
+  width: 120px;
+  height: 2px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, #aab7db, transparent);
+  animation: sonnet-loading-sweep 1.4s ease-in-out infinite;
+}
+@keyframes sonnet-loading-sweep{
+  0%, 100% { transform: scaleX(0.2); opacity: 0.35; }
+  50% { transform: scaleX(1); opacity: 1; }
+}
+.sonnet-root .track-cover img{
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sonnet-root .track-cover.has-image{ background: #111827; }
+.sonnet-root .track-cover.has-image::before{ display: none; }
+.sonnet-root .track-cover.has-image .track-cover__moon, .sonnet-root .track-cover.has-image .track-cover__wave, .sonnet-root .track-cover.has-image .track-cover__name{ display: none; }
+.sonnet-root .track-cover.has-image::after{
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: '';
+  background: linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.55));
+}
+.sonnet-root button:disabled{ opacity: 0.38; cursor: not-allowed; }
+.sonnet-root button:disabled:hover{ transform: none; }
+
+.sonnet-root .license-group{ padding-top: 14px; border-top: 1px solid rgba(196, 208, 237, 0.1); }
+.sonnet-root .license-actions{ display: flex; flex-wrap: wrap; gap: 7px; }
+.sonnet-root .license-details{ border: 1px solid rgba(196, 208, 237, 0.14); border-radius: 5px; background: rgba(255, 255, 255, 0.02); }
+.sonnet-root .license-details summary{ padding: 7px 9px; color: #a8b1c7; font: 9px var(--mono); letter-spacing: 0.06em; cursor: pointer; }
+.sonnet-root .license-details pre{ max-height: 190px; margin: 0; padding: 0 10px 10px; overflow: auto; color: #8d96ad; font: 8px/1.65 var(--mono); white-space: pre-wrap; }
+
+/* Page-level licensing block shown below the Sonnet experience. */
+.sonnet-root .sonnet-license {
+  position: relative;
+  padding: clamp(28px, 5vw, 64px) clamp(18px, 5vw, 76px) clamp(40px, 6vw, 80px);
+  border-top: 1px solid rgba(220, 226, 245, 0.1);
+  background: linear-gradient(180deg, #070a16 0%, #0a0e20 100%);
+}
+.sonnet-root .sonnet-license__inner { width: min(1180px, 100%); margin: 0 auto; }
+.sonnet-root .sonnet-license__header { display: flex; align-items: end; justify-content: space-between; gap: 20px; }
+.sonnet-root .sonnet-license__header h2 { margin: 0; color: #eef0f5; font: 500 clamp(20px, 2.2vw, 27px)/1.4 'Microsoft YaHei UI', sans-serif; letter-spacing: 0.04em; }
+.sonnet-root .sonnet-license__badge { padding: 5px 10px; border: 1px solid rgba(196, 208, 237, 0.22); border-radius: 999px; color: #aab3c9; font: 9px var(--mono); letter-spacing: 0.08em; white-space: nowrap; }
+.sonnet-root .sonnet-license__lede { max-width: 78ch; margin: 16px 0 0; color: #9aa2b8; font-size: 13px; line-height: 1.9; }
+.sonnet-root .sonnet-license__lede strong { color: #e7ebf6; font-weight: 600; }
+.sonnet-root .sonnet-license__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 20px; }
+.sonnet-root .sonnet-license__button { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 7px 13px; border: 1px solid rgba(196, 208, 237, 0.24); border-radius: 6px; background: rgba(255, 255, 255, 0.035); color: #c7cfe2; font: 10px var(--mono); letter-spacing: 0.06em; cursor: pointer; transition: border-color 0.2s, background 0.2s, color 0.2s; }
+.sonnet-root .sonnet-license__button:hover { border-color: rgba(201, 211, 238, 0.55); background: rgba(255, 255, 255, 0.08); color: #f0f2fa; }
+.sonnet-root .sonnet-license__status { color: #9fd0b6; font-size: 11px; }
+.sonnet-root .sonnet-license__grid { display: grid; gap: 16px; margin-top: 24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.sonnet-root .sonnet-license__card { display: flex; min-width: 0; flex-direction: column; gap: 10px; padding: 16px 18px; border: 1px solid rgba(196, 208, 237, 0.16); border-radius: 8px; background: rgba(12, 18, 40, 0.7); }
+.sonnet-root .sonnet-license__card h3 { margin: 0; color: #d7dded; font: 500 12px var(--mono); letter-spacing: 0.1em; }
+.sonnet-root .sonnet-license__pre { max-height: 300px; margin: 0; padding: 12px 14px; overflow: auto; border: 1px solid rgba(196, 208, 237, 0.1); border-radius: 6px; background: rgba(4, 7, 18, 0.72); color: #99a3bb; font: 10px/1.75 var(--mono); white-space: pre-wrap; }
+.sonnet-root .sonnet-license__pre--notice { color: #8f99b1; }
+.sonnet-root .sonnet-license__audio { display: flex; align-items: start; gap: 9px; margin: 20px 0 0; color: #7f889f; font-size: 11px; line-height: 1.8; }
+.sonnet-root .sonnet-license__audio svg { flex: 0 0 auto; margin-top: 3px; }
+@media (max-width: 620px) {
+  .sonnet-root .sonnet-license__header { align-items: start; flex-direction: column; gap: 10px; }
+  .sonnet-root .sonnet-license__pre { max-height: 240px; font-size: 9px; }
+}

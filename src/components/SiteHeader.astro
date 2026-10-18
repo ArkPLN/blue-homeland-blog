@@ -1,5 +1,5 @@
 ---
-import { Home, Info, Moon, Sun } from '@lucide/astro';
+import { Home, Info, Moon, Music, Sun } from '@lucide/astro';
 import GlobalSearch from './GlobalSearch.astro';
 
 interface Props {
@@ -22,6 +22,15 @@ const {
     </div>
 
     <div class="ml-auto flex items-center gap-2 lg:justify-end lg:px-4">
+      <a
+        href="/music"
+        class="header-icon-button"
+        aria-label="音乐 / 动态字幕"
+        title="音乐 / 动态字幕"
+      >
+        <Music size={18} />
+      </a>
+
       <GlobalSearch />
 
       <button

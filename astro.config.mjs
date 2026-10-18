@@ -88,6 +88,12 @@ export default defineConfig({
           item.priority = 0.6;
           return item;
         }
+        // 音乐 / 动态字幕实验页
+        if (item.url.endsWith('/music')) {
+          item.changefreq = 'monthly';
+          item.priority = 0.6;
+          return item;
+        }
         return item;
       },
     }),
@@ -103,6 +109,11 @@ export default defineConfig({
           label: 'About',
           url: 'https://arkpln.netlify.app/about/',
           description: '作者简介与精选仓库',
+        },
+        {
+          label: '音乐 / Sonnet 动态字幕',
+          url: 'https://arkpln.netlify.app/music/',
+          description: 'MP3 歌词 → WebGL2 动态字幕实验，含许可与第三方声明',
         },
         {
           label: 'GitHub',
